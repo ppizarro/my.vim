@@ -10,9 +10,6 @@ endif
 
 let neobundle_readme=expand('~/.config/nvim/bundle/neobundle.vim/README.md')
 
-let g:vim_bootstrap_langs = "go"
-let g:vim_bootstrap_editor = "nvim"				" nvim or vim
-
 if !filereadable(neobundle_readme)
   echo "Installing NeoBundle..."
   echo ""
@@ -43,11 +40,6 @@ NeoBundle 'tomasr/molokai'
 
 "" Go Lang Bundle
 NeoBundle "fatih/vim-go"
-
-"" Include user's extra bundle
-if filereadable(expand("~/.config/nvim/local_bundles.vim"))
-  source ~/.config/nvim/local_bundles.vim
-endif
 
 call neobundle#end()
 
@@ -131,16 +123,15 @@ let g:airline#extensions#tagbar#enabled = 1
 "*****************************************************************************
 "" Abbreviations
 "*****************************************************************************
-"" no one is really happy until you have this shortcuts
 
 "" NERDTree configuration
 let g:NERDTreeChDirMode=2
-"let g:NERDTreeShowBookmarks=1
-"let g:nerdtree_tabs_focus_on_files=1
-"let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
+let g:NERDTreeShowBookmarks=1
+let g:nerdtree_tabs_focus_on_files=1
+let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
 let g:NERDTreeWinSize = 50
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc
-"nnoremap <silent> <F2> :NERDTreeFind<CR>
+nnoremap <silent> <F2> :NERDTreeFind<CR>
 noremap <F3> :NERDTreeToggle<CR>
 
 "*****************************************************************************
@@ -159,13 +150,6 @@ let g:go_fmt_command = "goimports"
 augroup FileType go
   au!
 
-"  au FileType go nmap gd <Plug>(go-def)
-"  au FileType go nmap <Leader>dd <Plug>(go-def-vertical)
-
-"  au FileType go nmap <Leader>dv <Plug>(go-doc-vertical)
-"  au FileType go nmap <Leader>db <Plug>(go-doc-browser)
-
-
   au FileType go nmap <leader>r <Plug>(go-run)
   au FileType go nmap <leader>b <Plug>(go-build)
   au FileType go nmap <leader>t <Plug>(go-test)
@@ -173,6 +157,7 @@ augroup FileType go
   au FileType go nmap <Leader>e <Plug>(go-rename)
   au FileType go nmap <Leader>i <Plug>(go-info)
 
+"  au FileType go nmap gd <Plug>(go-def)
   au FileType go nmap <Leader>ds <Plug>(go-def-split)
   au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
   au FileType go nmap <Leader>dt <Plug>(go-def-tab)
