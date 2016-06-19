@@ -44,7 +44,7 @@ NeoBundle "fatih/vim-go"
 call neobundle#end()
 
 " Required:
-filetype plugin indent on
+filetype plugin indent on " Load plugins according to detected filetype.
 
 " If there are uninstalled bundles found on startup,
 " this will conveniently prompt you to install them.
@@ -58,8 +58,7 @@ set encoding=utf-8
 set fileencoding=utf-8
 set fileencodings=utf-8
 
-"" Fix backspace indent
-set backspace=indent,eol,start
+set backspace=indent,eol,start	" Make backspace work as you would expect.
 
 "" Tabs. May be overriten by autocmd rules
 set tabstop=4					" Render TABs using this many spaces.
@@ -71,7 +70,7 @@ set expandtab					" Insert spaces when TAB is pressed.
 let mapleader=','
 
 "" Enable hidden buffers
-set hidden
+set hidden						" Switch between buffers without having to save first.
 
 "" Searching
 set hlsearch					" Highlight search results.
@@ -100,7 +99,7 @@ let g:session_command_aliases = 1
 "*****************************************************************************
 "" Visual Settings
 "*****************************************************************************
-syntax on
+syntax on						" Enable syntax highlighting.
 set ruler						" Show the line and column numbers of the cursor.
 set number						" Show the line numbers on the left side.
 
