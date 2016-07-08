@@ -9,6 +9,12 @@ Put your init file into folder $XDG_CONFIG_HOME/nvim/init.vim
 mv ~/Downloads/generate.vim $XDG_CONFIG_HOME/nvim/init.vim
 ```
 
+Install gocode
+
+```
+go get -u github.com/nsf/gocode
+```
+
 Execute ViM and it will install plugins automatically
 ```
 vim +NeoBundleInstall +qall

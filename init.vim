@@ -41,6 +41,10 @@ NeoBundle 'tomasr/molokai'
 "" Go Lang Bundle
 NeoBundle "fatih/vim-go"
 
+"" Go Lang Context-sensitive autocompletion
+NeoBundle 'Shougo/deoplete.nvim'
+NeoBundle 'zchee/deoplete-go', {'build': {'unix': 'make'}}
+
 call neobundle#end()
 
 " Required:
@@ -166,6 +170,22 @@ augroup FileType go
   au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
   au FileType go nmap <Leader>s  <Plug>(go-implements)
 augroup END
+
+" neocomplete like
+set completeopt+=noinsert
+" deoplete.nvim recommend
+set completeopt+=noselect
+
+" Run deoplete.nvim automatically
+let g:deoplete#enable_at_startup = 1
+" deoplete-go settings
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+let g:deoplete#sources#go#package_dot = 1
+let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+let g:deoplete#sources#go#pointer = 1
+let g:deoplete#sources#go#use_cache = 1
+let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
+let g:deoplete#sources#go#cgo = 1
 
 "*****************************************************************************
 "" Convenience variables
