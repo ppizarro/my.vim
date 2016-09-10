@@ -188,6 +188,7 @@ augroup FileType go
   ""au FileType go nmap <leader>b <Plug>(go-build)
   au FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
   au FileType go nmap <leader>t <Plug>(go-test)
+  au FileType go nmap <leader>tf <Plug>(go-test-func)
   au FileType go nmap <leader>c <Plug>(go-coverage)
   au FileType go nmap <Leader>e <Plug>(go-rename)
   au FileType go nmap <Leader>i <Plug>(go-info)
