@@ -95,6 +95,12 @@ set fileformats=unix,dos,mac
 set showcmd 					" Show (partial) command in status line.
 set shell=/bin/sh
 
+"" Call make on save
+set autowrite
+
+"" quickfix list instead of location lists
+let g:go_list_type = "quickfix"
+
 " session management
 let g:session_directory = "~/.config/nvim/session"
 let g:session_autoload = "no"
@@ -155,6 +161,11 @@ nnoremap <silent> <S-t> :tabnew<CR>
 nmap <silent> <F4> :TagbarToggle<CR>
 let g:tagbar_autofocus = 1
 
+"" Next/Previous error
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
+
 "*****************************************************************************
 "" Go Lang
 "*****************************************************************************
@@ -179,6 +190,7 @@ augroup FileType go
   au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
   au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
   au FileType go nmap <Leader>s  <Plug>(go-implements)
+
 augroup END
 
 " neocomplete like
