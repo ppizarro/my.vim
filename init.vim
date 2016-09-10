@@ -171,11 +171,22 @@ nnoremap <leader>a :cclose<CR>
 "*****************************************************************************
 let g:go_fmt_command = "goimports"
 
+" run :GoBuild or :GoTestCompile based on the go file
+function! s:build_go_files()
+  let l:file = expand('%')
+  if l:file =~# '^\f\+_test\.go$'
+    call go#cmd#Test(0, 1)
+  elseif l:file =~# '^\f\+\.go$'
+    call go#cmd#Build(0)
+  endif
+endfunction
+
 augroup FileType go
   au!
 
   au FileType go nmap <leader>r <Plug>(go-run)
-  au FileType go nmap <leader>b <Plug>(go-build)
+  ""au FileType go nmap <leader>b <Plug>(go-build)
+  au FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
   au FileType go nmap <leader>t <Plug>(go-test)
   au FileType go nmap <leader>c <Plug>(go-coverage)
   au FileType go nmap <Leader>e <Plug>(go-rename)
