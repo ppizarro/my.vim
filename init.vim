@@ -31,10 +31,12 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 "" NeoBundle install packages
 "*****************************************************************************
 NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'jistr/vim-nerdtree-tabs.git'
+"NeoBundle 'jistr/vim-nerdtree-tabs.git'
 NeoBundle 'vim-airline/vim-airline'
 NeoBundle 'vim-airline/vim-airline-themes'
 NeoBundle 'majutsushi/tagbar'
+
+NeoBundle 'ctrlpvim/ctrlp.vim'
 
 "" Color
 NeoBundle 'tomasr/molokai'
@@ -44,7 +46,7 @@ NeoBundle "fatih/vim-go"
 
 "" Go Lang Context-sensitive autocompletion
 NeoBundle 'Shougo/deoplete.nvim'
-NeoBundle 'zchee/deoplete-go', {'build': {'unix': 'make'}}
+NeoBundle 'zchee/deoplete-go', {'do': 'make'}
 
 call neobundle#end()
 
@@ -95,11 +97,8 @@ set fileformats=unix,dos,mac
 set showcmd 					" Show (partial) command in status line.
 set shell=/bin/sh
 
-"" Call make on save
+" Automatically save before :next, :make etc.
 set autowrite
-
-"" quickfix list instead of location lists
-let g:go_list_type = "quickfix"
 
 " session management
 let g:session_directory = "~/.config/nvim/session"
@@ -110,23 +109,23 @@ let g:session_command_aliases = 1
 " Path to python interpreter for neovim
 let g:python3_host_prog  = '/usr/bin/python3'
 " Skip the check of neovim module
-let g:python3_host_skip_check = 1
+" let g:python3_host_skip_check = 1
 
 "*****************************************************************************
 "" Visual Settings
 "*****************************************************************************
-syntax on						" Enable syntax highlighting.
+"syntax on						" Enable syntax highlighting.
 set ruler						" Show the line and column numbers of the cursor.
 set number						" Show the line numbers on the left side.
 
-let no_buffers_menu=1
-if !exists('g:not_finsh_neobundle')
-  colorscheme molokai
-endif
+let g:rehash256 = 1
+set background=dark
+colorscheme molokai
 
-if &term =~ '256color'
-  set t_ut=
-endif
+set nocursorcolumn           	" speed up syntax highlighting
+set nocursorline
+
+set lazyredraw          		" Wait to redraw
 
 " vim-airline
 let g:airline_theme = 'powerlineish'
@@ -169,7 +168,22 @@ nnoremap <leader>a :cclose<CR>
 "*****************************************************************************
 "" Go Lang
 "*****************************************************************************
+let g:go_fmt_fail_silently = 0
 let g:go_fmt_command = "goimports"
+let g:go_autodetect_gopath = 1
+let g:go_auto_sameids = 0
+let g:go_auto_type_info = 0
+"" quickfix list instead of location lists
+let g:go_list_type = "quickfix"
+
+let g:go_highlight_space_tab_error = 0
+let g:go_highlight_array_whitespace_error = 0
+let g:go_highlight_trailing_whitespace_error = 0
+let g:go_highlight_extra_types = 0
+let g:go_highlight_build_constraints = 1
+
+nmap <C-g> :GoDeclsDir<cr>
+imap <C-g> <esc>:<C-u>GoDeclsDir<cr>
 
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
@@ -182,44 +196,63 @@ function! s:build_go_files()
 endfunction
 
 augroup FileType go
-  au!
+  autocmd!
 
-  au FileType go nmap <leader>r <Plug>(go-run)
-  ""au FileType go nmap <leader>b <Plug>(go-build)
-  au FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
-  au FileType go nmap <leader>t <Plug>(go-test)
-  au FileType go nmap <leader>tf <Plug>(go-test-func)
-  au FileType go nmap <leader>c <Plug>(go-coverage)
-  au FileType go nmap <Leader>e <Plug>(go-rename)
-  au FileType go nmap <Leader>i <Plug>(go-info)
+  autocmd FileType go nmap <Leader>v <Plug>(go-def-vertical)
+  autocmd FileType go nmap <Leader>s <Plug>(go-def-split)
 
-"  au FileType go nmap gd <Plug>(go-def)
-  au FileType go nmap <Leader>ds <Plug>(go-def-split)
-  au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
-  au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+  autocmd FileType go nmap <Leader>i <Plug>(go-info)
+  autocmd FileType go nmap <Leader>l <Plug>(go-metalinter)
 
-  au FileType go nmap <Leader>gd <Plug>(go-doc)
-  au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
-  au FileType go nmap <Leader>gb <Plug>(go-doc-browser)
-  au FileType go nmap <Leader>s  <Plug>(go-implements)
+  autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
+  autocmd FileType go nmap <leader>t  <Plug>(go-test)
+  autocmd FileType go nmap <leader>tf <Plug>(go-test-func)
+  autocmd FileType go nmap <Leader>c  <Plug>(go-coverage-toggle)
+  autocmd FileType go nmap <leader>r  <Plug>(go-run)
+
+  autocmd FileType go nmap <Leader>d <Plug>(go-doc)
+
+  autocmd FileType go nmap <Leader>e <Plug>(go-rename)
+  autocmd FileType go nmap <Leader>m <Plug>(go-implements)
+
+  " I like these more!
+  autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+  autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+  autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+  autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 
 augroup END
 
+"*****************************************************************************
+" Completion
+"*****************************************************************************
 " neocomplete like
-set completeopt+=noinsert
+"set completeopt+=noinsert
 " deoplete.nvim recommend
-set completeopt+=noselect
+"set completeopt+=noselect
+set completeopt=menu,menuone
+
+" Completion window max size
+set pumheight=10
 
 " Run deoplete.nvim automatically
 let g:deoplete#enable_at_startup = 1
 " deoplete-go settings
+let g:deoplete#ignore_sources = {}
+let g:deoplete#ignore_sources._ = ['buffer', 'member', 'tag', 'file', 'neosnippet']
 let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
 let g:deoplete#sources#go#package_dot = 1
 let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+let g:deoplete#sources#go#align_class = 1
 let g:deoplete#sources#go#pointer = 1
 let g:deoplete#sources#go#use_cache = 1
 let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
 let g:deoplete#sources#go#cgo = 1
+
+  " Use partial fuzzy matches like YouCompleteMe
+call deoplete#custom#set('_', 'matchers', ['matcher_fuzzy'])
+call deoplete#custom#set('_', 'converters', ['converter_remove_paren'])
+call deoplete#custom#set('_', 'disabled_syntaxes', ['Comment', 'String'])
 
 "*****************************************************************************
 "" Convenience variables
