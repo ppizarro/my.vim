@@ -108,8 +108,10 @@ let g:session_command_aliases = 1
 
 " Path to python interpreter for neovim
 let g:python3_host_prog  = '/usr/bin/python3'
+" To disable Python 2 support
+let g:loaded_python_provider = 1
 " Skip the check of neovim module
-" let g:python3_host_skip_check = 1
+let g:python3_host_skip_check = 1
 
 "*****************************************************************************
 "" Visual Settings
@@ -120,7 +122,9 @@ set number						" Show the line numbers on the left side.
 
 let g:rehash256 = 1
 set background=dark
-colorscheme molokai
+if !exists('g:not_finsh_neobundle')
+  colorscheme molokai
+endif
 
 set nocursorcolumn           	" speed up syntax highlighting
 set nocursorline
@@ -249,10 +253,12 @@ let g:deoplete#sources#go#use_cache = 1
 let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
 let g:deoplete#sources#go#cgo = 1
 
-  " Use partial fuzzy matches like YouCompleteMe
-call deoplete#custom#set('_', 'matchers', ['matcher_fuzzy'])
-call deoplete#custom#set('_', 'converters', ['converter_remove_paren'])
-call deoplete#custom#set('_', 'disabled_syntaxes', ['Comment', 'String'])
+" Use partial fuzzy matches like YouCompleteMe
+if !exists('g:not_finsh_neobundle')
+  call deoplete#custom#set('_', 'matchers', ['matcher_fuzzy'])
+  call deoplete#custom#set('_', 'converters', ['converter_remove_paren'])
+  call deoplete#custom#set('_', 'disabled_syntaxes', ['Comment', 'String'])
+endif
 
 "*****************************************************************************
 "" CtrlP
