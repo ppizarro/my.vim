@@ -20,3 +20,22 @@ Execute ViM and it will install plugins automatically
 vim +NeoBundleInstall +qall
 ```
 
+#Basic Usage
+
+- Press `,b`  to build
+- Press `,t`  to test
+- Press `,tf` to test function on the cursor
+- Press `,c`  to coverage
+- Press `,r`  to run
+- Press `,e`  to rename
+
+- Press `,i`  to see info
+- Press `,d`  to see go doc
+- Press `,i`  to run metalinter
+- Press `,v`  to definitions vertical
+- Press `,s`  to definitions split
+
+- Press `F3`  to open nerd tree
+- Press `F4`  to outliner viewer
+
+- Press `c-p` to find files
