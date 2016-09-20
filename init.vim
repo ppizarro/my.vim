@@ -39,14 +39,22 @@ NeoBundle 'majutsushi/tagbar'
 NeoBundle 'ctrlpvim/ctrlp.vim'
 
 "" Color
-NeoBundle 'tomasr/molokai'
+"NeoBundle 'tomasr/molokai'
+NeoBundle 'fatih/molokai'
 
 "" Go Lang Bundle
 NeoBundle "fatih/vim-go"
 
+NeoBundle 'AndrewRadev/splitjoin.vim'
+
 "" Go Lang Context-sensitive autocompletion
-NeoBundle 'Shougo/deoplete.nvim'
-NeoBundle 'zchee/deoplete-go', {'do': 'make'}
+"NeoBundle 'Shougo/deoplete.nvim'
+"NeoBundle 'zchee/deoplete-go', {'do': 'make'}
+
+NeoBundle 'Shougo/neocomplete'
+
+NeoBundle 'Shougo/neosnippet'
+NeoBundle 'Shougo/neosnippet-snippets'
 
 call neobundle#end()
 
@@ -121,6 +129,7 @@ set ruler						" Show the line and column numbers of the cursor.
 set number						" Show the line numbers on the left side.
 
 let g:rehash256 = 1
+let g:molokai_original = 1
 set background=dark
 if !exists('g:not_finsh_neobundle')
   colorscheme molokai
@@ -173,18 +182,38 @@ nnoremap <leader>a :cclose<CR>
 "" Go Lang
 "*****************************************************************************
 let g:go_fmt_fail_silently = 0
+"let g:go_fmt_autosave = 0
 let g:go_fmt_command = "goimports"
+
 let g:go_autodetect_gopath = 1
 let g:go_auto_sameids = 0
 let g:go_auto_type_info = 0
+
 "" quickfix list instead of location lists
 let g:go_list_type = "quickfix"
 
-let g:go_highlight_space_tab_error = 0
-let g:go_highlight_array_whitespace_error = 0
-let g:go_highlight_trailing_whitespace_error = 0
-let g:go_highlight_extra_types = 0
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_space_tab_error = 1
+let g:go_highlight_array_whitespace_error = 1
+let g:go_highlight_trailing_whitespace_error = 1
 let g:go_highlight_build_constraints = 1
+let g:go_highlight_generate_tags = 1
+
+let g:go_test_timeout = '10s'
+
+let g:go_snippet_case_type = "camelcase"
+
+let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+let g:go_metalinter_autosave = 1
+let g:go_metalinter_autosave_enabled = ['vet', 'golint']
+let g:go_metalinter_deadline = "5s"
+
+"let g:go_textobj_include_function_doc = 0
 
 nmap <C-g> :GoDeclsDir<cr>
 imap <C-g> <esc>:<C-u>GoDeclsDir<cr>
@@ -255,9 +284,9 @@ let g:deoplete#sources#go#cgo = 1
 
 " Use partial fuzzy matches like YouCompleteMe
 if !exists('g:not_finsh_neobundle')
-  call deoplete#custom#set('_', 'matchers', ['matcher_fuzzy'])
-  call deoplete#custom#set('_', 'converters', ['converter_remove_paren'])
-  call deoplete#custom#set('_', 'disabled_syntaxes', ['Comment', 'String'])
+ " call deoplete#custom#set('_', 'matchers', ['matcher_fuzzy'])
+ " call deoplete#custom#set('_', 'converters', ['converter_remove_paren'])
+ " call deoplete#custom#set('_', 'disabled_syntaxes', ['Comment', 'String'])
 endif
 
 "*****************************************************************************
