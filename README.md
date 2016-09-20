@@ -17,7 +17,7 @@ go get -u github.com/nsf/gocode
 
 Execute ViM and it will install plugins automatically
 ```
-vim +NeoBundleInstall +qall
+vim +NeoBundleInstall +GoInstallBinaries +qall
 ```
 
 #Basic Usage
@@ -31,7 +31,7 @@ vim +NeoBundleInstall +qall
 
 - Press `,i`  to see info
 - Press `,d`  to see go doc
-- Press `,i`  to run metalinter
+- Press `,l`  to run metalinter
 - Press `,v`  to definitions vertical
 - Press `,s`  to definitions split
 
