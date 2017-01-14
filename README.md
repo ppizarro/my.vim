@@ -9,7 +9,14 @@ Put your init file into folder $XDG_CONFIG_HOME/nvim/init.vim
 mv ~/Downloads/generate.vim $XDG_CONFIG_HOME/nvim/init.vim
 ```
 
-Install gocode
+Install neovim/python-client
+
+```
+pip2 install --upgrade neovim
+pip3 install --upgrade neovim
+```
+
+Install latest gocode
 
 ```
 go get -u github.com/nsf/gocode
