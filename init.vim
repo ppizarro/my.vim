@@ -48,13 +48,16 @@ NeoBundle "fatih/vim-go"
 NeoBundle 'AndrewRadev/splitjoin.vim'
 
 "" Go Lang Context-sensitive autocompletion
-"NeoBundle 'Shougo/deoplete.nvim'
-"NeoBundle 'zchee/deoplete-go', {'do': 'make'}
+NeoBundle 'nsf/gocode', {'rtp': 'nvim/'}
+NeoBundle 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+NeoBundle 'zchee/deoplete-go', {'build': {'unix': 'make'}}
 
-NeoBundle 'Shougo/neocomplete'
+"NeoBundle 'Shougo/neocomplete'
 
 NeoBundle 'Shougo/neosnippet'
 NeoBundle 'Shougo/neosnippet-snippets'
+
+NeoBundle 'garyburd/go-explorer'
 
 call neobundle#end()
 
@@ -127,6 +130,8 @@ let g:python3_host_skip_check = 1
 "syntax on						" Enable syntax highlighting.
 set ruler						" Show the line and column numbers of the cursor.
 set number						" Show the line numbers on the left side.
+
+set termguicolors
 
 let g:rehash256 = 1
 let g:molokai_original = 1
@@ -260,10 +265,10 @@ augroup END
 " Completion
 "*****************************************************************************
 " neocomplete like
-"set completeopt+=noinsert
+set completeopt+=noinsert
 " deoplete.nvim recommend
-"set completeopt+=noselect
-set completeopt=menu,menuone
+set completeopt+=noselect
+"set completeopt=menu,menuone
 
 " Completion window max size
 set pumheight=10
