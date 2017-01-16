@@ -96,6 +96,10 @@ set incsearch					" Incremental search.
 set ignorecase					" Make searching case insensitive
 set smartcase					" ... unless the query has capital letters.
 
+if exists('&inccommand')
+  set inccommand=split
+endif
+
 "" Encoding
 set bomb
 set binary
