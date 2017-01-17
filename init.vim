@@ -43,7 +43,7 @@ NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'fatih/molokai'
 
 "" Go Lang Bundle
-NeoBundle "fatih/vim-go"
+NeoBundle "fatih/vim-go", { 'do': ':GoInstallBinaries' }
 
 NeoBundle 'AndrewRadev/splitjoin.vim'
 
