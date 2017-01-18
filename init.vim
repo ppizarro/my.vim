@@ -38,27 +38,24 @@ NeoBundle 'majutsushi/tagbar'
 
 NeoBundle 'ctrlpvim/ctrlp.vim'
 
-"" Color
-"NeoBundle 'tomasr/molokai'
-NeoBundle 'fatih/molokai'
-
 "" Go Lang Bundle
-NeoBundle "fatih/vim-go", { 'do': ':GoInstallBinaries' }
+NeoBundle "fatih/vim-go"
+
+" Color
+NeoBundle 'fatih/molokai'
 
 NeoBundle 'AndrewRadev/splitjoin.vim'
 
 "" Go Lang Context-sensitive autocompletion
 NeoBundle 'nsf/gocode', {'rtp': 'nvim/'}
-NeoBundle 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+NeoBundle 'Shougo/deoplete.nvim'
 NeoBundle 'zchee/deoplete-go', {'build': {'unix': 'make'}}
 
-"NeoBundle 'Shougo/neocomplete'
-
-NeoBundle 'Shougo/neosnippet'
-NeoBundle 'Shougo/neosnippet-snippets'
+NeoBundle 'SirVer/ultisnips'
 
 NeoBundle 'garyburd/go-explorer'
 
+"
 call neobundle#end()
 
 " Required:
@@ -135,11 +132,11 @@ let g:python3_host_skip_check = 1
 set ruler						" Show the line and column numbers of the cursor.
 set number						" Show the line numbers on the left side.
 
-set termguicolors
+"set termguicolors
 
 let g:rehash256 = 1
 let g:molokai_original = 1
-set background=dark
+"set background=dark
 if !exists('g:not_finsh_neobundle')
   colorscheme molokai
 endif
@@ -240,6 +237,8 @@ endfunction
 augroup FileType go
   autocmd!
 
+  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+
   autocmd FileType go nmap <Leader>v <Plug>(go-def-vertical)
   autocmd FileType go nmap <Leader>s <Plug>(go-def-split)
 
@@ -272,7 +271,6 @@ augroup END
 set completeopt+=noinsert
 " deoplete.nvim recommend
 set completeopt+=noselect
-"set completeopt=menu,menuone
 
 " Completion window max size
 set pumheight=10
@@ -293,9 +291,9 @@ let g:deoplete#sources#go#cgo = 1
 
 " Use partial fuzzy matches like YouCompleteMe
 if !exists('g:not_finsh_neobundle')
- " call deoplete#custom#set('_', 'matchers', ['matcher_fuzzy'])
- " call deoplete#custom#set('_', 'converters', ['converter_remove_paren'])
- " call deoplete#custom#set('_', 'disabled_syntaxes', ['Comment', 'String'])
+ call deoplete#custom#set('_', 'matchers', ['matcher_fuzzy'])
+ call deoplete#custom#set('_', 'converters', ['converter_remove_paren'])
+ call deoplete#custom#set('_', 'disabled_syntaxes', ['Comment', 'String'])
 endif
 
 "*****************************************************************************
