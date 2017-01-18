@@ -53,20 +53,20 @@ vim +NeoBundleInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 - Press `c-p` to find files
 
 #To select the content of a function enclosure:
- - if - inner function
- - af - a function
+- if - inner function
+- af - a function
 
 #Struct split and join
- - gS - split the struct expression into multiple lines
- - gJ - join field definitions (If your cursor is on the variable)
+- gS - split the struct expression into multiple lines
+- gJ - join field definitions (If your cursor is on the variable)
 
 #Snippets
- - errp -> panic()
- - fn -> fmt.Println()
- - ff -> fmt.Printf()
- - ln -> log.Println()
- - lf -> log.Printf()
- - json -> json tag to the struct field
+- errp -> panic()
+- fn -> fmt.Println()
+- ff -> fmt.Printf()
+- ln -> log.Println()
+- lf -> log.Printf()
+- json -> json tag to the struct field
 
 #Navigate it
 - :GoAlternate - Alternate between xxx.go and xxx_test.go
@@ -75,3 +75,7 @@ vim +NeoBundleInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 - :GoDefPop - to jump to the previous location
 - c-t - to jump back to the previous location
 - c-o - to jump to the previous cursor location
+- ]] -> jump to next function
+- [[ -> jump to previous function
+- GoDecls, GoDeclsDir - jumping between declarations
+
