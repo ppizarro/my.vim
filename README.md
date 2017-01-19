@@ -42,7 +42,7 @@ vim +NeoBundleInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 - Press `,e`  to rename
 
 - Press `,i`  to see info
-- Press `,d`  to see go doc
+- Press `,d` or 'K'  to see go doc
 - Press `,l`  to run metalinter
 - Press `,v`  to definitions vertical
 - Press `,s`  to definitions split
@@ -51,6 +51,7 @@ vim +NeoBundleInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 - Press `F4`  to outliner viewer
 
 - Press `c-p` to find files
+- Press `c-g` to jump between declarations
 
 #To select the content of a function enclosure:
 - if - inner function
@@ -69,7 +70,6 @@ vim +NeoBundleInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 - json -> json tag to the struct field
 
 #Navigate it
-- :GoAlternate - Alternate between xxx.go and xxx_test.go
 - :GoDef - Go to definition
 - gd or c-] - Go to definition
 - :GoDefPop - to jump to the previous location
@@ -78,4 +78,24 @@ vim +NeoBundleInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 - ]] -> jump to next function
 - [[ -> jump to previous function
 - GoDecls, GoDeclsDir - jumping between declarations
+- :GoAlternate - Alternate between xxx.go and xxx_test.go
+- :A, :AV, :AS and :AT - :A works just like :GoAlternate
+
+#Guru
+- :GoReferrers
+- :GoDescribe
+- :GoImplements
+- :GoWhicherrs
+- :GoChannelPeers
+- :GoCallees, :GoCallers, :GoCallstack
+- :GoGuruScope <scope>
+- :GoGuruTags mycustomtag
+- :GoFreevars
+
+#Generate it
+- :GoGenerate to generate
+- :GoImpl to create Method stubs implementing an interface
+
+#Share it
+- :GoPlay
 

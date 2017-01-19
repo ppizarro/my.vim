@@ -192,8 +192,14 @@ let g:go_fmt_fail_silently = 0
 let g:go_fmt_command = "goimports"
 
 let g:go_autodetect_gopath = 1
-let g:go_auto_sameids = 0
-let g:go_auto_type_info = 0
+let g:go_auto_sameids = 1
+let g:go_auto_type_info = 1
+
+"let g:go_def_mode = 'godef'
+"let g:go_decls_includes = "func,type"
+"
+"let g:go_play_open_browser = 0
+"let g:go_play_browser_command = "chrome"
 
 "" quickfix list instead of location lists
 let g:go_list_type = "quickfix"
