@@ -9,11 +9,10 @@ Put your init file into folder $XDG_CONFIG_HOME/nvim/init.vim
 mv ~/Downloads/generate.vim $XDG_CONFIG_HOME/nvim/init.vim
 ```
 
-Install neovim/python-client
+Install neovim and python-client
 
 ```
-pip2 install --upgrade neovim
-pip3 install --upgrade neovim
+sudo pacman -S neovim python2-neovim python-neovim
 ```
 
 Install latest gocode
