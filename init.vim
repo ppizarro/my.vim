@@ -81,6 +81,8 @@ set softtabstop=0
 set shiftwidth=4				" Indentation amount for < and > commands.
 set expandtab					" Insert spaces when TAB is pressed.
 
+set clipboard=unnamedplus
+
 "" Map leader to ,
 let mapleader=','
 
