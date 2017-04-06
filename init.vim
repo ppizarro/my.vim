@@ -194,7 +194,7 @@ let g:go_fmt_fail_silently = 0
 let g:go_fmt_command = "goimports"
 
 let g:go_autodetect_gopath = 1
-let g:go_auto_sameids = 1
+"let g:go_auto_sameids = 1
 "let g:go_auto_type_info = 1
 
 "let g:go_def_mode = 'godef'
@@ -223,8 +223,8 @@ let g:go_test_timeout = '10s'
 let g:go_snippet_case_type = "camelcase"
 
 let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
-let g:go_metalinter_autosave = 1
-let g:go_metalinter_autosave_enabled = ['vet', 'golint']
+let g:go_metalinter_autosave = 0
+let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'errcheck']
 let g:go_metalinter_deadline = "5s"
 
 "let g:go_textobj_include_function_doc = 0
