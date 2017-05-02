@@ -36,7 +36,8 @@ NeoBundle 'vim-airline/vim-airline'
 NeoBundle 'vim-airline/vim-airline-themes'
 NeoBundle 'majutsushi/tagbar'
 
-NeoBundle 'ctrlpvim/ctrlp.vim'
+NeoBundle 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+NeoBundle 'junegunn/fzf.vim'
 
 "" Go Lang Bundle
 NeoBundle "fatih/vim-go"
@@ -305,18 +306,95 @@ if !exists('g:not_finsh_neobundle')
 endif
 
 "*****************************************************************************
-"" CtrlP
+"" FZF
 "*****************************************************************************
-let g:ctrlp_cmd = 'CtrlPMRU'
-let g:ctrlp_working_path_mode = 'ra'
-let g:ctrlp_switch_buffer = 'et'  " jump to a file if it's open already
-let g:ctrlp_mruf_max=450    " number of recently opened files
-let g:ctrlp_max_files=0     " do not limit the number of searchable files
-let g:ctrlp_use_caching = 1
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_cache_dir = $HOME.'/.cache/ctrlp'
-let g:ctrlp_match_window = 'bottom,order:btt,max:10,results:10'
-let g:ctrlp_buftag_types = {'go' : '--language-force=go --golang-types=ftv'}
+" disable statusline overwriting
+let g:fzf_nvim_statusline = 0
+" This is the default extra key bindings
+let g:fzf_action = {
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
+
+" Default fzf layout
+" - down / up / left / right
+let g:fzf_layout = { 'down': '~40%' }
+
+" In Neovim, you can set up fzf window using a Vim command
+"let g:fzf_layout = { 'window': 'enew' }
+"let g:fzf_layout = { 'window': '-tabnew' }
+
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" Enable per-command history.
+" CTRL-N and CTRL-P will be automatically bound to next-history and
+" previous-history instead of down and up. If you don't like the change,
+" explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
+let g:fzf_history_dir = '~/.local/share/fzf-history'
+
+if executable('fzf')
+  " FZF {{{
+  " <C-p> to search files
+  nnoremap <silent> <C-p> :FZF<cr>
+
+  " <M-p> for open buffers
+  nnoremap <silent> <M-p> :Buffers<cr>
+
+  " <M-S-p> for MRU
+  nnoremap <silent> <M-S-p> :History<cr>
+
+  " Better command history with q:
+  command! CmdHist call fzf#vim#command_history({'right': '40'})
+  nnoremap q: :CmdHist<CR>
+
+  " Better search history
+  command! QHist call fzf#vim#search_history({'right': '40'})
+  nnoremap q/ :QHist<CR>
+
+  " Mapping selecting mappings
+  nmap <leader><tab> <plug>(fzf-maps-n)
+  xmap <leader><tab> <plug>(fzf-maps-x)
+  omap <leader><tab> <plug>(fzf-maps-o)
+
+  " Insert mode completion
+  imap <c-x><c-k> <plug>(fzf-complete-word)
+  imap <c-x><c-f> <plug>(fzf-complete-path)
+  imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+  imap <c-x><c-l> <plug>(fzf-complete-line)
+
+  " Advanced customization using autoload functions
+  inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
+
+  fun! s:fzf_root()
+  	let path = finddir(".git", expand("%:p:h").";")
+  	return fnamemodify(substitute(path, ".git", "", ""), ":p:h")
+  endfun
+
+  nnoremap <silent> <Leader>ff :exe 'Files ' . <SID>fzf_root()<CR>
+  nnoremap <silent> <Leader>fc :Colors<CR>
+  nnoremap <silent> <Leader>fh :History<CR>
+  nnoremap <silent> <Leader>bb :Buffers<CR>
+  nnoremap <silent> <Leader>; :Commands<CR>
+  nnoremap <silent> <Leader>h :Helptags<CR>
+  nnoremap <silent> <Leader>ll :Lines<CR>
+  nnoremap <silent> <Leader>lb :BLines<CR>"
+  " }}}
+else
+  " CtrlP fallback
+end
 
 "*****************************************************************************
 "" Convenience variables
