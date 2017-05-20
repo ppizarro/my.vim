@@ -30,8 +30,6 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 "*****************************************************************************
 "" NeoBundle install packages
 "*****************************************************************************
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'jistr/vim-nerdtree-tabs.git'
 NeoBundle 'vim-airline/vim-airline'
 NeoBundle 'vim-airline/vim-airline-themes'
 NeoBundle 'majutsushi/tagbar'
@@ -126,7 +124,9 @@ let g:python3_host_prog  = '/usr/bin/python3'
 " To disable Python 2 support
 let g:loaded_python_provider = 1
 " Skip the check of neovim module
-let g:python3_host_skip_check = 1
+"let g:python3_host_skip_check = 1
+" To disable ruby support
+let g:loaded_ruby_provider = 1
 
 "*****************************************************************************
 "" Visual Settings
@@ -155,20 +155,6 @@ let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
-
-"*****************************************************************************
-"" Abbreviations
-"*****************************************************************************
-
-"" NERDTree configuration
-let g:NERDTreeChDirMode=2
-let g:NERDTreeShowBookmarks=1
-let g:nerdtree_tabs_focus_on_files=1
-let g:NERDTreeMapOpenInTabSilent = '<RightMouse>'
-let g:NERDTreeWinSize = 50
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.pyc
-nnoremap <silent> <F2> :NERDTreeFind<CR>
-noremap <F3> :NERDTreeToggle<CR>
 
 "*****************************************************************************
 "" Mappings

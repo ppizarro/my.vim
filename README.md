@@ -23,8 +23,9 @@ go get -u github.com/nsf/gocode
 
 Install CTags
 
+```
 sudo pacman -S extra/ctags
-
+```
 
 Execute ViM and it will install plugins automatically
 ```
@@ -46,7 +47,6 @@ vim +NeoBundleInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 - Press `,v`  to definitions vertical
 - Press `,s`  to definitions split
 
-- Press `F3`  to open nerd tree
 - Press `F4`  to outliner viewer
 
 - Press `c-p` to find files
@@ -97,4 +97,18 @@ vim +NeoBundleInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 
 #Share it
 - :GoPlay
+
+#Exploring the filesystem
+- :e.		:edit .		at current working directory
+- :sp.	:split .	in split at current working directory
+- :vs.	:vsplit .	in vertical split at current working directory
+- :E		:Explore	at directory of current file
+- :Se		:Sexplore	in split at directory of current file
+- :Vex	:Vexplore	in vertical split at directory of current file
+
+#Manipulating the filesystem
+- %	create a new file
+- d	create a new directory
+- R	rename the file/directory under the cursor
+- D	Delete the file/directory under the cursor
 
