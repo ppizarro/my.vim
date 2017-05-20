@@ -98,12 +98,15 @@ vim +NeoBundleInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 #Share it
 - :GoPlay
 
+#Copy and Paste
+- yo - insert in paste mode
+
 #Exploring the filesystem
-- :e.		:edit .		at current working directory
+- :e.	:edit .		at current working directory
 - :sp.	:split .	in split at current working directory
 - :vs.	:vsplit .	in vertical split at current working directory
-- :E		:Explore	at directory of current file
-- :Se		:Sexplore	in split at directory of current file
+- :E	:Explore	at directory of current file
+- :Se	:Sexplore	in split at directory of current file
 - :Vex	:Vexplore	in vertical split at directory of current file
 
 #Manipulating the filesystem

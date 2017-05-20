@@ -42,6 +42,7 @@ NeoBundle "fatih/vim-go"
 
 " Color
 NeoBundle 'fatih/molokai'
+"NeoBundle 'sjl/badwolf'
 
 NeoBundle 'AndrewRadev/splitjoin.vim'
 
@@ -142,6 +143,7 @@ let g:molokai_original = 1
 "set background=dark
 if !exists('g:not_finsh_neobundle')
   colorscheme molokai
+  "colorscheme badwolf
 endif
 
 set nocursorcolumn           	" speed up syntax highlighting
@@ -159,6 +161,9 @@ let g:airline#extensions#tagbar#enabled = 1
 "*****************************************************************************
 "" Mappings
 "*****************************************************************************
+"" explore current directory in vertical split
+nmap <silent> <F3> :vs.<CR>
+
 "" Tabs
 nnoremap <Tab> gt
 nnoremap <S-Tab> gT
