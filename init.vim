@@ -54,6 +54,8 @@ NeoBundle 'garyburd/go-explorer'
 
 NeoBundle 'mileszs/ack.vim'
 
+NeoBundle 'rbgrouleff/bclose.vim'
+
 "
 call neobundle#end()
 
@@ -145,6 +147,9 @@ let g:loaded_python_provider = 1
 "let g:python3_host_skip_check = 1
 " To disable ruby support
 let g:loaded_ruby_provider = 1
+
+" Close the current buffer (w/o closing the current window)
+map <leader>bd :Bclose<cr>
 
 "*****************************************************************************
 "" Visual Settings
