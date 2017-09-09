@@ -48,8 +48,8 @@ NeoBundle 'AndrewRadev/splitjoin.vim'
 
 "" Go Lang Context-sensitive autocompletion
 NeoBundle 'nsf/gocode', {'rtp': 'nvim/'}
-NeoBundle 'Shougo/deoplete.nvim'
-NeoBundle 'zchee/deoplete-go', {'build': {'unix': 'make'}}
+NeoBundle 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+NeoBundle 'zchee/deoplete-go', { 'do': 'make'}
 
 NeoBundle 'SirVer/ultisnips'
 
@@ -186,8 +186,8 @@ let g:go_fmt_fail_silently = 0
 let g:go_fmt_command = "goimports"
 
 let g:go_autodetect_gopath = 1
-"let g:go_auto_sameids = 1
-"let g:go_auto_type_info = 1
+let g:go_auto_sameids = 1
+let g:go_auto_type_info = 1
 
 "let g:go_def_mode = 'godef'
 "let g:go_decls_includes = "func,type"
@@ -199,6 +199,7 @@ let g:go_autodetect_gopath = 1
 let g:go_list_type = "quickfix"
 
 let g:go_highlight_types = 1
+let g:go_highlight_structs = 1
 let g:go_highlight_fields = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
@@ -212,9 +213,12 @@ let g:go_highlight_generate_tags = 1
 
 let g:go_test_timeout = '10s'
 
+let g:go_snippet_engine = "neosnippet"
 let g:go_snippet_case_type = "camelcase"
 
-let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck']
+let g:go_metalinter_command = ""
+"let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'deadcode', 'gas', 'goconst', 'gocyclo', 'gosimple', 'ineffassign', 'vetshadow']
+let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'vetshadow']
 let g:go_metalinter_autosave = 0
 let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'errcheck']
 let g:go_metalinter_deadline = "5s"
@@ -237,7 +241,7 @@ endfunction
 augroup FileType go
   autocmd!
 
-  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4
+  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
 
   autocmd FileType go nmap <Leader>v <Plug>(go-def-vertical)
   autocmd FileType go nmap <Leader>s <Plug>(go-def-split)
@@ -255,6 +259,8 @@ augroup FileType go
 
   autocmd FileType go nmap <Leader>e <Plug>(go-rename)
   autocmd FileType go nmap <Leader>m <Plug>(go-implements)
+
+  autocmd FileType go nmap <Leader>gt :GoDeclsDir<cr>
 
   " I like these more!
   autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
@@ -295,6 +301,15 @@ if !exists('g:not_finsh_neobundle')
  call deoplete#custom#set('_', 'converters', ['converter_remove_paren'])
  call deoplete#custom#set('_', 'disabled_syntaxes', ['Comment', 'String'])
 endif
+
+" Disable deoplete when in multi cursor mode
+function! Multiple_cursors_before()
+    let b:deoplete_disable_auto_complete = 1
+endfunction
+
+function! Multiple_cursors_after()
+    let b:deoplete_disable_auto_complete = 0
+endfunction
 
 "*****************************************************************************
 "" FZF
