@@ -27,6 +27,12 @@ Install CTags
 sudo pacman -S extra/ctags
 ```
 
+Install ack - is a tool like grep, optimized for programmers
+
+```
+pacman -S community/ack
+```
+
 Execute ViM and it will install plugins automatically
 ```
 vim +NeoBundleInstall +GoInstallBinaries +UpdateRemotePlugins +qall

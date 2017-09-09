@@ -16,8 +16,6 @@ if !filereadable(neobundle_readme)
   silent !mkdir -p ~/.config/nvim/bundle
   silent !git clone https://github.com/Shougo/neobundle.vim ~/.config/nvim/bundle/neobundle.vim/
   let g:not_finsh_neobundle = "yes"
-
-  " Run shell script if exist on custom select language
 endif
 
 " Required:
@@ -42,7 +40,6 @@ NeoBundle "fatih/vim-go"
 
 " Color
 NeoBundle 'fatih/molokai'
-"NeoBundle 'sjl/badwolf'
 
 NeoBundle 'AndrewRadev/splitjoin.vim'
 
@@ -54,6 +51,8 @@ NeoBundle 'zchee/deoplete-go', { 'do': 'make'}
 NeoBundle 'SirVer/ultisnips'
 
 NeoBundle 'garyburd/go-explorer'
+
+NeoBundle 'mileszs/ack.vim'
 
 "
 call neobundle#end()
@@ -68,6 +67,12 @@ NeoBundleCheck
 "*****************************************************************************
 "" Basic Setup
 "*****************************************************************************"
+" let's make sure we are in noncompatble mode
+set nocp
+
+" Sets how many lines of history VIM has to remember
+set history=700
+
 "" Encoding
 set encoding=utf-8
 set fileencoding=utf-8
@@ -114,6 +119,18 @@ set shell=/bin/sh
 " Automatically save before :next, :make etc.
 set autowrite
 
+" Make sure that coursor is always vertically centered on j/k moves
+set so=999
+
+" add vertical lines on columns
+set colorcolumn=80,120
+
+" Highlight current line - allows you to track cursor position more easily
+set cursorline
+
+" Completion options (select longest + show menu even if a single match is found)
+set completeopt=longest,menuone
+
 " session management
 let g:session_directory = "~/.config/nvim/session"
 let g:session_autoload = "no"
@@ -132,7 +149,7 @@ let g:loaded_ruby_provider = 1
 "*****************************************************************************
 "" Visual Settings
 "*****************************************************************************
-"syntax on						" Enable syntax highlighting.
+syntax enable						" Enable syntax highlighting.
 set ruler						" Show the line and column numbers of the cursor.
 set number						" Show the line numbers on the left side.
 
@@ -140,16 +157,17 @@ set number						" Show the line numbers on the left side.
 
 let g:rehash256 = 1
 let g:molokai_original = 1
-"set background=dark
+
 if !exists('g:not_finsh_neobundle')
   colorscheme molokai
-  "colorscheme badwolf
 endif
 
-set nocursorcolumn           	" speed up syntax highlighting
+set background=dark
+
+set nocursorcolumn           	                        " Speed up syntax highlighting
 set nocursorline
 
-set lazyredraw          		" Wait to redraw
+set lazyredraw          		                " Wait to redraw
 
 " vim-airline
 let g:airline_theme = 'powerlineish'
@@ -441,4 +459,10 @@ else
   let g:airline_symbols.readonly = ''
   let g:airline_symbols.linenr = ''
 endif
+
+"*****************************************************************************
+" Ack searching and cope displaying
+"*****************************************************************************
+" Open Ack and put the cursor in the right position
+map <leader>g :Ack<space>
 
