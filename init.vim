@@ -40,6 +40,7 @@ NeoBundle "fatih/vim-go"
 
 " Color
 NeoBundle 'fatih/molokai'
+NeoBundle 'altercation/vim-colors-solarized'
 
 NeoBundle 'AndrewRadev/splitjoin.vim'
 
@@ -122,7 +123,7 @@ set shell=/bin/sh
 set autowrite
 
 " Make sure that coursor is always vertically centered on j/k moves
-set so=999
+"set so=999
 
 " add vertical lines on columns
 set colorcolumn=80,120
@@ -154,7 +155,7 @@ map <leader>bd :Bclose<cr>
 "*****************************************************************************
 "" Visual Settings
 "*****************************************************************************
-syntax enable						" Enable syntax highlighting.
+syntax enable					" Enable syntax highlighting.
 set ruler						" Show the line and column numbers of the cursor.
 set number						" Show the line numbers on the left side.
 
@@ -164,15 +165,17 @@ let g:rehash256 = 1
 let g:molokai_original = 1
 
 if !exists('g:not_finsh_neobundle')
-  colorscheme molokai
+"	colorscheme molokai
+    colorscheme solarized
 endif
 
 set background=dark
+"set background=light
 
-set nocursorcolumn           	                        " Speed up syntax highlighting
-set nocursorline
+set nocursorcolumn				" Speed up syntax highlighting
+"set nocursorline
 
-set lazyredraw          		                " Wait to redraw
+set lazyredraw          		" Wait to redraw
 
 " vim-airline
 let g:airline_theme = 'powerlineish'
