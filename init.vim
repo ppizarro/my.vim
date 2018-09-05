@@ -1,71 +1,80 @@
 "*****************************************************************************
-"" NeoBundle core
+"" Plugin core
 "*****************************************************************************
 if has('vim_starting')
-  set nocompatible               " Be iMproved
+  set nocompatible               " be iMproved, required
+  filetype off                   " required
 
-  " Required:
-  set runtimepath+=~/.config/nvim/bundle/neobundle.vim/
+  " set the runtime path to include Vundle and initialize
+  set rtp+=~/.config/nvim/bundle/Vundle.vim/
 endif
 
-let neobundle_readme=expand('~/.config/nvim/bundle/neobundle.vim/README.md')
+let vundle_readme=expand('~/.config/nvim/bundle/Vundle.vim/README.md')
 
-if !filereadable(neobundle_readme)
-  echo "Installing NeoBundle..."
+if !filereadable(vundle_readme)
+  echo "Installing Vundle..."
   echo ""
   silent !mkdir -p ~/.config/nvim/bundle
-  silent !git clone https://github.com/Shougo/neobundle.vim ~/.config/nvim/bundle/neobundle.vim/
-  let g:not_finsh_neobundle = "yes"
+  silent !git clone https://github.com/VundleVim/Vundle.vim ~/.config/nvim/bundle/Vundle.vim/
+  let g:not_finsh_vundle = "yes"
 endif
 
-" Required:
-call neobundle#begin(expand('~/.config/nvim/bundle/'))
+call vundle#begin('~/.config/nvim/bundle')
 
-" Let NeoBundle manage NeoBundle
-" Required:
-NeoBundleFetch 'Shougo/neobundle.vim'
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
 
 "*****************************************************************************
-"" NeoBundle install packages
+"" Plugin install packages
 "*****************************************************************************
-NeoBundle 'vim-airline/vim-airline'
-NeoBundle 'vim-airline/vim-airline-themes'
-NeoBundle 'majutsushi/tagbar'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'majutsushi/tagbar'
 
-NeoBundle 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-NeoBundle 'junegunn/fzf.vim'
+Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plugin 'junegunn/fzf.vim'
 
 "" Go Lang Bundle
-NeoBundle "fatih/vim-go"
+Plugin 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 
 " Color
-NeoBundle 'fatih/molokai'
-NeoBundle 'altercation/vim-colors-solarized'
+"Plugin 'fatih/molokai'
+Plugin 'altercation/vim-colors-solarized'
 
-NeoBundle 'AndrewRadev/splitjoin.vim'
+Plugin 'AndrewRadev/splitjoin.vim'
 
 "" Go Lang Context-sensitive autocompletion
-NeoBundle 'nsf/gocode', {'rtp': 'nvim/'}
-NeoBundle 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-NeoBundle 'zchee/deoplete-go', { 'do': 'make'}
+Plugin 'mdempsky/gocode', {'rtp': 'nvim/'}
+"Plugin 'nsf/gocode', {'rtp': 'nvim/'}
+"Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"Plugin 'zchee/deoplete-go', {'build': {'unix': 'make'}}
 
-NeoBundle 'SirVer/ultisnips'
+Plugin 'Shougo/neosnippet.vim'
+Plugin 'Shougo/neosnippet-snippets'
+"Plugin 'SirVer/ultisnips'
 
-NeoBundle 'garyburd/go-explorer'
+Plugin 'garyburd/go-explorer'
 
-NeoBundle 'mileszs/ack.vim'
+Plugin 'jodosha/vim-godebug'
 
-NeoBundle 'rbgrouleff/bclose.vim'
+Plugin 'mileszs/ack.vim'
+
+Plugin 'rbgrouleff/bclose.vim'
+
+Plugin 'godlygeek/tabular'
+"Plugin 'plasticboy/vim-markdown'
+
+" All of your Plugins must be added before the following line
+call vundle#end()         " required
+
+filetype plugin indent on " Load plugins according to detected filetype, required
 
 "
-call neobundle#end()
-
-" Required:
-filetype plugin indent on " Load plugins according to detected filetype.
-
-" If there are uninstalled bundles found on startup,
-" this will conveniently prompt you to install them.
-NeoBundleCheck
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
 
 "*****************************************************************************
 "" Basic Setup
@@ -80,6 +89,8 @@ set history=700
 set encoding=utf-8
 set fileencoding=utf-8
 set fileencodings=utf-8
+
+set guifont=Go\ Mono\ for\ Powerline
 
 set backspace=indent,eol,start	" Make backspace work as you would expect.
 
@@ -164,7 +175,7 @@ set number						" Show the line numbers on the left side.
 let g:rehash256 = 1
 let g:molokai_original = 1
 
-if !exists('g:not_finsh_neobundle')
+if !exists('g:not_finsh_vundle')
 "	colorscheme molokai
     colorscheme solarized
 endif
@@ -178,7 +189,10 @@ set nocursorcolumn				" Speed up syntax highlighting
 set lazyredraw          		" Wait to redraw
 
 " vim-airline
+let g:airline_powerline_fonts = 1
 let g:airline_theme = 'powerlineish'
+"let g:airline_theme = 'solarized'
+"let g:airline_solarized_bg='dark'
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
@@ -258,7 +272,7 @@ imap <C-g> <esc>:<C-u>GoDeclsDir<cr>
 function! s:build_go_files()
   let l:file = expand('%')
   if l:file =~# '^\f\+_test\.go$'
-    call go#cmd#Test(0, 1)
+    call go#test#Test(0, 1)
   elseif l:file =~# '^\f\+\.go$'
     call go#cmd#Build(0)
   endif
@@ -300,42 +314,46 @@ augroup END
 " Completion
 "*****************************************************************************
 " neocomplete like
-set completeopt+=noinsert
+"set completeopt+=noinsert
 " deoplete.nvim recommend
-set completeopt+=noselect
+"set completeopt+=noselect
 
 " Completion window max size
 set pumheight=10
 
 " Run deoplete.nvim automatically
-let g:deoplete#enable_at_startup = 1
+"let g:deoplete#enable_at_startup = 1
 " deoplete-go settings
-let g:deoplete#ignore_sources = {}
-let g:deoplete#ignore_sources._ = ['buffer', 'member', 'tag', 'file', 'neosnippet']
-let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-let g:deoplete#sources#go#package_dot = 1
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-let g:deoplete#sources#go#align_class = 1
-let g:deoplete#sources#go#pointer = 1
-let g:deoplete#sources#go#use_cache = 1
-let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
-let g:deoplete#sources#go#cgo = 1
+"let g:deoplete#ignore_sources = {}
+"let g:deoplete#ignore_sources._ = ['buffer', 'member', 'tag', 'file', 'neosnippet']
+"let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+"let g:deoplete#sources#go#package_dot = 1
+"let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+"let g:deoplete#sources#go#align_class = 1
+"let g:deoplete#sources#go#pointer = 1
+"let g:deoplete#sources#go#use_cache = 1
+"let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
+"let g:deoplete#sources#go#cgo = 1
 
 " Use partial fuzzy matches like YouCompleteMe
-if !exists('g:not_finsh_neobundle')
- call deoplete#custom#set('_', 'matchers', ['matcher_fuzzy'])
- call deoplete#custom#set('_', 'converters', ['converter_remove_paren'])
- call deoplete#custom#set('_', 'disabled_syntaxes', ['Comment', 'String'])
-endif
+"if !exists('g:not_finsh_vundle')
+" call deoplete#custom#source('_', 'matchers', ['matcher_fuzzy'])
+" call deoplete#custom#source('_', 'converters', ['converter_remove_paren'])
+" call deoplete#custom#source('_', 'disabled_syntaxes', ['Comment', 'String'])
+"endif
 
 " Disable deoplete when in multi cursor mode
-function! Multiple_cursors_before()
-    let b:deoplete_disable_auto_complete = 1
-endfunction
+"function! Multiple_cursors_before()
+"    let b:deoplete_disable_auto_complete = 1
+"endfunction
 
-function! Multiple_cursors_after()
-    let b:deoplete_disable_auto_complete = 0
-endfunction
+"function! Multiple_cursors_after()
+"    let b:deoplete_disable_auto_complete = 0
+"endfunction
+
+"let g:UltiSnipsExpandTrigger="<tab>"
+"let g:UltiSnipsJumpForwardTrigger="<c-b>"
+"let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 "*****************************************************************************
 "" FZF
@@ -428,44 +446,24 @@ else
   " CtrlP fallback
 end
 
-"*****************************************************************************
-"" Convenience variables
-"*****************************************************************************
+" Plugin key-mappings.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+imap <C-k>     <Plug>(neosnippet_expand_or_jump)
+smap <C-k>     <Plug>(neosnippet_expand_or_jump)
+xmap <C-k>     <Plug>(neosnippet_expand_target)
 
-" vim-airline
-if !exists('g:airline_symbols')
-  let g:airline_symbols = {}
-endif
+" SuperTab like snippets behavior.
+" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
+"imap <expr><TAB>
+" \ pumvisible() ? "\<C-n>" :
+" \ neosnippet#expandable_or_jumpable() ?
+" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
+smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
+\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
 
-if !exists('g:airline_powerline_fonts')
-  let g:airline#extensions#tabline#left_sep = ' '
-  let g:airline#extensions#tabline#left_alt_sep = '|'
-  let g:airline_left_sep          = '▶'
-  let g:airline_left_alt_sep      = '»'
-  let g:airline_right_sep         = '◀'
-  let g:airline_right_alt_sep     = '«'
-  let g:airline#extensions#branch#prefix     = '⤴' "➔, ➥, ⎇
-  let g:airline#extensions#readonly#symbol   = '⊘'
-  let g:airline#extensions#linecolumn#prefix = '¶'
-  let g:airline#extensions#paste#symbol      = 'ρ'
-  let g:airline_symbols.linenr    = '␊'
-  let g:airline_symbols.branch    = '⎇'
-  let g:airline_symbols.paste     = 'ρ'
-  let g:airline_symbols.paste     = 'Þ'
-  let g:airline_symbols.paste     = '∥'
-  let g:airline_symbols.whitespace = 'Ξ'
-else
-  let g:airline#extensions#tabline#left_sep = ''
-  let g:airline#extensions#tabline#left_alt_sep = ''
-
-  " powerline symbols
-  let g:airline_left_sep = ''
-  let g:airline_left_alt_sep = ''
-  let g:airline_right_sep = ''
-  let g:airline_right_alt_sep = ''
-  let g:airline_symbols.branch = ''
-  let g:airline_symbols.readonly = ''
-  let g:airline_symbols.linenr = ''
+" For conceal markers.
+if has('conceal')
+  set conceallevel=2 concealcursor=niv
 endif
 
 "*****************************************************************************

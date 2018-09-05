@@ -18,7 +18,7 @@ sudo pacman -S neovim python2-neovim python-neovim
 Install latest gocode
 
 ```
-go get -u github.com/nsf/gocode
+go get -u github.com/mdempsky/gocode
 ```
 
 Install CTags
@@ -35,7 +35,7 @@ pacman -S community/ack
 
 Execute ViM and it will install plugins automatically
 ```
-vim +NeoBundleInstall +GoInstallBinaries +UpdateRemotePlugins +qall
+vim +PluginInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 ```
 
 #Basic Usage
