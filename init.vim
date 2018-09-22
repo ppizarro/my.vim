@@ -16,7 +16,7 @@ if !filereadable(vundle_readme)
   echo ""
   silent !mkdir -p ~/.config/nvim/bundle
   silent !git clone https://github.com/VundleVim/Vundle.vim ~/.config/nvim/bundle/Vundle.vim/
-  let g:not_finsh_vundle = "yes"
+  let g:not_finish_vundle = "yes"
 endif
 
 call vundle#begin('~/.config/nvim/bundle')
@@ -45,9 +45,8 @@ Plugin 'AndrewRadev/splitjoin.vim'
 
 "" Go Lang Context-sensitive autocompletion
 Plugin 'mdempsky/gocode', {'rtp': 'nvim/'}
-"Plugin 'nsf/gocode', {'rtp': 'nvim/'}
-"Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"Plugin 'zchee/deoplete-go', {'build': {'unix': 'make'}}
+Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plugin 'zchee/deoplete-go', {'build': {'unix': 'make'}}
 
 Plugin 'Shougo/neosnippet.vim'
 Plugin 'Shougo/neosnippet-snippets'
@@ -63,6 +62,8 @@ Plugin 'rbgrouleff/bclose.vim'
 
 Plugin 'godlygeek/tabular'
 "Plugin 'plasticboy/vim-markdown'
+
+Plugin 'uarun/vim-protobuf'
 
 " All of your Plugins must be added before the following line
 call vundle#end()         " required
@@ -175,7 +176,7 @@ set number						" Show the line numbers on the left side.
 let g:rehash256 = 1
 let g:molokai_original = 1
 
-if !exists('g:not_finsh_vundle')
+if !exists('g:not_finish_vundle')
 "	colorscheme molokai
     colorscheme solarized
 endif
@@ -190,9 +191,9 @@ set lazyredraw          		" Wait to redraw
 
 " vim-airline
 let g:airline_powerline_fonts = 1
-let g:airline_theme = 'powerlineish'
-"let g:airline_theme = 'solarized'
-"let g:airline_solarized_bg='dark'
+"let g:airline_theme = 'powerlineish'
+let g:airline_theme = 'solarized'
+let g:airline_solarized_bg='dark'
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
@@ -314,42 +315,37 @@ augroup END
 " Completion
 "*****************************************************************************
 " neocomplete like
-"set completeopt+=noinsert
+set completeopt+=noinsert
 " deoplete.nvim recommend
-"set completeopt+=noselect
+set completeopt+=noselect
 
 " Completion window max size
 set pumheight=10
 
 " Run deoplete.nvim automatically
-"let g:deoplete#enable_at_startup = 1
+let g:deoplete#enable_at_startup = 1
 " deoplete-go settings
-"let g:deoplete#ignore_sources = {}
-"let g:deoplete#ignore_sources._ = ['buffer', 'member', 'tag', 'file', 'neosnippet']
-"let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-"let g:deoplete#sources#go#package_dot = 1
-"let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-"let g:deoplete#sources#go#align_class = 1
-"let g:deoplete#sources#go#pointer = 1
-"let g:deoplete#sources#go#use_cache = 1
-"let g:deoplete#sources#go#json_directory = '~/.cache/deoplete/go/$GOOS_$GOARCH'
+let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+let g:deoplete#sources#go#package_dot = 1
+let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+let g:deoplete#sources#go#pointer = 1
 "let g:deoplete#sources#go#cgo = 1
 
 " Use partial fuzzy matches like YouCompleteMe
-"if !exists('g:not_finsh_vundle')
+"if !exists('g:not_finish_vundle')
 " call deoplete#custom#source('_', 'matchers', ['matcher_fuzzy'])
 " call deoplete#custom#source('_', 'converters', ['converter_remove_paren'])
 " call deoplete#custom#source('_', 'disabled_syntaxes', ['Comment', 'String'])
 "endif
 
 " Disable deoplete when in multi cursor mode
-"function! Multiple_cursors_before()
-"    let b:deoplete_disable_auto_complete = 1
-"endfunction
+function! Multiple_cursors_before()
+    let b:deoplete_disable_auto_complete = 1
+endfunction
 
-"function! Multiple_cursors_after()
-"    let b:deoplete_disable_auto_complete = 0
-"endfunction
+function! Multiple_cursors_after()
+    let b:deoplete_disable_auto_complete = 0
+endfunction
 
 "let g:UltiSnipsExpandTrigger="<tab>"
 "let g:UltiSnipsJumpForwardTrigger="<c-b>"
