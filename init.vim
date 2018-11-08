@@ -33,30 +33,35 @@ Plugin 'majutsushi/tagbar'
 
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'junegunn/fzf.vim'
+Plugin 'mileszs/ack.vim'
 
 "" Go Lang Bundle
 Plugin 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 
 " Color
-"Plugin 'fatih/molokai'
-Plugin 'altercation/vim-colors-solarized'
+Plugin 'fatih/molokai'
+"Plugin 'altercation/vim-colors-solarized'
+"Plugin 'dracula/vim'
+"Plugin 'morhetz/gruvbox'
+"Plugin 'google/vim-colorscheme-primary'
+"Plugin 'NLKNguyen/papercolor-theme'
+"Plugin 'bitfield/vim-gitgo'
+"Plugin 'fxn/vim-monochrome'
+"Plugin 'sjl/badwolf'
 
 Plugin 'AndrewRadev/splitjoin.vim'
 
 "" Go Lang Context-sensitive autocompletion
-Plugin 'mdempsky/gocode', {'rtp': 'nvim/'}
-Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plugin 'zchee/deoplete-go', {'build': {'unix': 'make'}}
+"Plugin 'mdempsky/gocode', {'rtp': 'nvim/'}
+"Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"Plugin 'zchee/deoplete-go', {'build': {'unix': 'make'}}
 
-Plugin 'Shougo/neosnippet.vim'
-Plugin 'Shougo/neosnippet-snippets'
-"Plugin 'SirVer/ultisnips'
-
-Plugin 'garyburd/go-explorer'
+"Plugin 'Shougo/neosnippet.vim'
+"Plugin 'Shougo/neosnippet-snippets'
+Plugin 'SirVer/ultisnips'
+Plugin 'ervandew/supertab'
 
 Plugin 'jodosha/vim-godebug'
-
-Plugin 'mileszs/ack.vim'
 
 Plugin 'rbgrouleff/bclose.vim'
 
@@ -138,13 +143,14 @@ set autowrite
 "set so=999
 
 " add vertical lines on columns
-set colorcolumn=80,120
+"set colorcolumn=80,120
 
 " Highlight current line - allows you to track cursor position more easily
 set cursorline
 
 " Completion options (select longest + show menu even if a single match is found)
-set completeopt=longest,menuone
+"set completeopt=longest,menuone
+set completeopt=menu,menuone
 
 " session management
 let g:session_directory = "~/.config/nvim/session"
@@ -171,14 +177,24 @@ syntax enable					" Enable syntax highlighting.
 set ruler						" Show the line and column numbers of the cursor.
 set number						" Show the line numbers on the left side.
 
-"set termguicolors
+set termguicolors
+"set t_Co=256
 
-let g:rehash256 = 1
-let g:molokai_original = 1
+"let g:rehash256 = 1
+"let g:molokai_original = 1
+"let g:monochrome_italic_comments = 1
+"let g:solarized_termcolors=256
 
 if !exists('g:not_finish_vundle')
-"	colorscheme molokai
-    colorscheme solarized
+  colorscheme molokai
+"  colorscheme solarized
+"  colorscheme primary
+"  colorscheme PaperColor
+"  colorscheme gitgo
+"  color dracula
+"  colorscheme gruvbox
+"  colorscheme monochrome
+"  colorscheme badwolf
 endif
 
 set background=dark
@@ -192,8 +208,12 @@ set lazyredraw          		" Wait to redraw
 " vim-airline
 let g:airline_powerline_fonts = 1
 "let g:airline_theme = 'powerlineish'
-let g:airline_theme = 'solarized'
-let g:airline_solarized_bg='dark'
+let g:airline_theme = 'molokai'
+"let g:airline_theme = 'solarized'
+"let g:airline_solarized_bg='dark'
+"let g:airline_theme = 'base16_google'
+"let g:airline_theme = 'gruvbox'
+"let g:airline_theme = 'monochrome'
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
@@ -467,4 +487,12 @@ endif
 "*****************************************************************************
 " Open Ack and put the cursor in the right position
 map <leader>g :Ack<space>
+
+" ==================== Completion + Snippet ====================
+" Ultisnips has native support for SuperTab. SuperTab does omnicompletion by
+" pressing tab. I like this better than autocompletion, but it's still fast.
+let g:SuperTabDefaultCompletionType = "context"
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"  
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>" 
 
