@@ -1,8 +1,8 @@
-#Introduction
+# Introduction
 
 My vimrc configuration, plugins and some other vim useful stuff (mainly taken from [Practical Vim: Edit Text at the Speed of Thought](http://pragprog.com/book/dnvim/practical-vim)).
 
-#Installation
+# Installation
 
 Put your init file into folder $XDG_CONFIG_HOME/nvim/init.vim
 ```
@@ -38,7 +38,7 @@ Execute ViM and it will install plugins automatically
 vim +PluginInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 ```
 
-#Basic Usage
+# Basic Usage
 
 - Press `,b`  to build
 - Press `,t`  to test
@@ -58,15 +58,15 @@ vim +PluginInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 - Press `c-p` to find files
 - Press `c-g` to jump between declarations
 
-#To select the content of a function enclosure:
+# To select the content of a function enclosure:
 - if - inner function
 - af - a function
 
-#Struct split and join
+# Struct split and join
 - gS - split the struct expression into multiple lines
 - gJ - join field definitions (If your cursor is on the variable)
 
-#Snippets
+# Snippets
 - errp -> panic()
 - fn -> fmt.Println()
 - ff -> fmt.Printf()
@@ -74,7 +74,7 @@ vim +PluginInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 - lf -> log.Printf()
 - json -> json tag to the struct field
 
-#Navigate it
+# Navigate it
 - :GoDef - Go to definition
 - gd or c-] - Go to definition
 - :GoDefPop - to jump to the previous location
@@ -86,7 +86,7 @@ vim +PluginInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 - :GoAlternate - Alternate between xxx.go and xxx_test.go
 - :A, :AV, :AS and :AT - :A works just like :GoAlternate
 
-#Guru
+# Guru
 - :GoReferrers
 - :GoDescribe
 - :GoImplements
@@ -97,17 +97,17 @@ vim +PluginInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 - :GoGuruTags mycustomtag
 - :GoFreevars
 
-#Generate it
+# Generate it
 - :GoGenerate to generate
 - :GoImpl to create Method stubs implementing an interface
 
-#Share it
+# Share it
 - :GoPlay
 
-#Copy and Paste
+# Copy and Paste
 - yo - insert in paste mode
 
-#Exploring the filesystem
+# Exploring the filesystem
 - :e.	:edit .		at current working directory
 - :sp.	:split .	in split at current working directory
 - :vs.	:vsplit .	in vertical split at current working directory
@@ -115,7 +115,7 @@ vim +PluginInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 - :Se	:Sexplore	in split at directory of current file
 - :Vex	:Vexplore	in vertical split at directory of current file
 
-#Manipulating the filesystem
+# Manipulating the filesystem
 - %	create a new file
 - d	create a new directory
 - R	rename the file/directory under the cursor
