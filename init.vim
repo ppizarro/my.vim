@@ -52,22 +52,18 @@ Plugin 'fatih/molokai'
 Plugin 'AndrewRadev/splitjoin.vim'
 
 "" Go Lang Context-sensitive autocompletion
-"Plugin 'mdempsky/gocode', {'rtp': 'nvim/'}
+Plugin 'mdempsky/gocode', {'rtp': 'nvim/'}
 "Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 "Plugin 'zchee/deoplete-go', {'build': {'unix': 'make'}}
 
-"Plugin 'Shougo/neosnippet.vim'
-"Plugin 'Shougo/neosnippet-snippets'
-Plugin 'SirVer/ultisnips'
 Plugin 'ervandew/supertab'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'SirVer/ultisnips'
 
 Plugin 'jodosha/vim-godebug'
-
 Plugin 'rbgrouleff/bclose.vim'
-
 Plugin 'godlygeek/tabular'
 "Plugin 'plasticboy/vim-markdown'
-
 Plugin 'uarun/vim-protobuf'
 
 " All of your Plugins must be added before the following line
@@ -147,10 +143,7 @@ set autowrite
 
 " Highlight current line - allows you to track cursor position more easily
 set cursorline
-
-" Completion options (select longest + show menu even if a single match is found)
-"set completeopt=longest,menuone
-set completeopt=menu,menuone
+set nocursorcolumn				" Speed up syntax highlighting
 
 " session management
 let g:session_directory = "~/.config/nvim/session"
@@ -200,9 +193,6 @@ endif
 set background=dark
 "set background=light
 
-set nocursorcolumn				" Speed up syntax highlighting
-"set nocursorline
-
 set lazyredraw          		" Wait to redraw
 
 " vim-airline
@@ -226,8 +216,8 @@ let g:airline#extensions#tagbar#enabled = 1
 nmap <silent> <F3> :vs.<CR>
 
 "" Tabs
-nnoremap <Tab> gt
-nnoremap <S-Tab> gT
+"nnoremap <Tab> gt
+"nnoremap <S-Tab> gT
 nnoremap <silent> <S-t> :tabnew<CR>
 
 " Tagbar
@@ -273,9 +263,6 @@ let g:go_highlight_build_constraints = 1
 let g:go_highlight_generate_tags = 1
 
 let g:go_test_timeout = '10s'
-
-let g:go_snippet_engine = "neosnippet"
-let g:go_snippet_case_type = "camelcase"
 
 let g:go_metalinter_command = ""
 "let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'deadcode', 'gas', 'goconst', 'gocyclo', 'gosimple', 'ineffassign', 'vetshadow']
@@ -332,23 +319,27 @@ augroup FileType go
 augroup END
 
 "*****************************************************************************
-" Completion
+" Completion + Snippet
 "*****************************************************************************
+" Completion options (select longest + show menu even if a single match is found)
+set completeopt=longest,menuone
+"set completeopt=menu,menuone
+
 " neocomplete like
-set completeopt+=noinsert
+"set completeopt+=noinsert
 " deoplete.nvim recommend
-set completeopt+=noselect
+"set completeopt+=noselect
 
 " Completion window max size
 set pumheight=10
 
 " Run deoplete.nvim automatically
-let g:deoplete#enable_at_startup = 1
+"let g:deoplete#enable_at_startup = 1
 " deoplete-go settings
-let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-let g:deoplete#sources#go#package_dot = 1
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-let g:deoplete#sources#go#pointer = 1
+"let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
+"let g:deoplete#sources#go#package_dot = 1
+"let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+"let g:deoplete#sources#go#pointer = 1
 "let g:deoplete#sources#go#cgo = 1
 
 " Use partial fuzzy matches like YouCompleteMe
@@ -359,17 +350,32 @@ let g:deoplete#sources#go#pointer = 1
 "endif
 
 " Disable deoplete when in multi cursor mode
-function! Multiple_cursors_before()
-    let b:deoplete_disable_auto_complete = 1
-endfunction
+"function! Multiple_cursors_before()
+"    let b:deoplete_disable_auto_complete = 1
+"endfunction
 
-function! Multiple_cursors_after()
-    let b:deoplete_disable_auto_complete = 0
-endfunction
+"function! Multiple_cursors_after()
+"    let b:deoplete_disable_auto_complete = 0
+"endfunction
 
-"let g:UltiSnipsExpandTrigger="<tab>"
-"let g:UltiSnipsJumpForwardTrigger="<c-b>"
-"let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+" make YCM compatible with UltiSnips (using supertab)
+"let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
+"let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
+"let g:SuperTabDefaultCompletionType = '<C-n>'
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:SuperTabDefaultCompletionType = "context"
+let g:UltiSnipsExpandTrigger = "<tab>"
+let g:UltiSnipsJumpForwardTrigger = "<tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+"let g:ycm_key_list_select_completion = ['<c-Space>', '<Down>']
+"let g:ycm_key_list_previous_completion = ['<c-s-Space>', '<Up>']
+"let g:SuperTabDefaultCompletionType = '<c-Space>'
+
+"let g:UltiSnipsExpandTrigger = "<C-l>"
+"let g:UltiSnipsJumpForwardTrigger = "<C-j>"
+"let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
 
 "*****************************************************************************
 "" FZF
@@ -462,21 +468,6 @@ else
   " CtrlP fallback
 end
 
-" Plugin key-mappings.
-" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-imap <C-k>     <Plug>(neosnippet_expand_or_jump)
-smap <C-k>     <Plug>(neosnippet_expand_or_jump)
-xmap <C-k>     <Plug>(neosnippet_expand_target)
-
-" SuperTab like snippets behavior.
-" Note: It must be "imap" and "smap".  It uses <Plug> mappings.
-"imap <expr><TAB>
-" \ pumvisible() ? "\<C-n>" :
-" \ neosnippet#expandable_or_jumpable() ?
-" \    "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-smap <expr><TAB> neosnippet#expandable_or_jumpable() ?
-\ "\<Plug>(neosnippet_expand_or_jump)" : "\<TAB>"
-
 " For conceal markers.
 if has('conceal')
   set conceallevel=2 concealcursor=niv
@@ -487,12 +478,4 @@ endif
 "*****************************************************************************
 " Open Ack and put the cursor in the right position
 map <leader>g :Ack<space>
-
-" ==================== Completion + Snippet ====================
-" Ultisnips has native support for SuperTab. SuperTab does omnicompletion by
-" pressing tab. I like this better than autocompletion, but it's still fast.
-let g:SuperTabDefaultCompletionType = "context"
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"  
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>" 
 
