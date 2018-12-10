@@ -51,20 +51,15 @@ Plugin 'fatih/molokai'
 
 Plugin 'AndrewRadev/splitjoin.vim'
 
-"" Go Lang Context-sensitive autocompletion
-Plugin 'mdempsky/gocode', {'rtp': 'nvim/'}
-"Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-"Plugin 'zchee/deoplete-go', {'build': {'unix': 'make'}}
-
 Plugin 'ervandew/supertab'
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'SirVer/ultisnips'
 
-Plugin 'jodosha/vim-godebug'
-Plugin 'rbgrouleff/bclose.vim'
 Plugin 'godlygeek/tabular'
-"Plugin 'plasticboy/vim-markdown'
 Plugin 'uarun/vim-protobuf'
+
+Plugin 'tpope/vim-fugitive'
+Plugin 'Raimondi/delimitMate'
+Plugin 'scrooloose/nerdtree'
 
 " All of your Plugins must be added before the following line
 call vundle#end()         " required
@@ -81,20 +76,26 @@ filetype plugin indent on " Load plugins according to detected filetype, require
 "*****************************************************************************
 "" Basic Setup
 "*****************************************************************************"
-" let's make sure we are in noncompatble mode
-set nocp
+
+set ttyfast
+
+set laststatus=2
 
 " Sets how many lines of history VIM has to remember
 set history=700
 
 "" Encoding
 set encoding=utf-8
-set fileencoding=utf-8
-set fileencodings=utf-8
 
 set guifont=Go\ Mono\ for\ Powerline
 
+set autoread                    " Automatically reread changed files without asking me anything
+set autoindent                  
 set backspace=indent,eol,start	" Make backspace work as you would expect.
+
+set mouse=a                     "Enable mouse mode
+
+set noerrorbells             " No beeps
 
 "" Tabs. May be overriten by autocmd rules
 set tabstop=4					" Render TABs using this many spaces.
@@ -104,9 +105,6 @@ set expandtab					" Insert spaces when TAB is pressed.
 
 set clipboard=unnamedplus
 
-"" Map leader to ,
-let mapleader=','
-
 "" Enable hidden buffers
 set hidden						" Switch between buffers without having to save first.
 
@@ -115,6 +113,11 @@ set hlsearch					" Highlight search results.
 set incsearch					" Incremental search.
 set ignorecase					" Make searching case insensitive
 set smartcase					" ... unless the query has capital letters.
+set noshowmatch                 " Do not show matching brackets by flickering
+set noshowmode                  " We show the mode with airline or lightline
+
+set splitright                  " Split vertical windows right to the current windows
+set splitbelow                  " Split horizontal windows below to the current windows
 
 if exists('&inccommand')
   set inccommand=split
@@ -145,11 +148,18 @@ set autowrite
 set cursorline
 set nocursorcolumn				" Speed up syntax highlighting
 
-" session management
-let g:session_directory = "~/.config/nvim/session"
-let g:session_autoload = "no"
-let g:session_autosave = "no"
-let g:session_command_aliases = 1
+set updatetime=300
+
+set shortmess+=c   " Shut off completion messages
+set belloff+=ctrlg " If Vim beeps during completion
+
+" increase max memory to show syntax highlighting for large files 
+set maxmempattern=20000
+
+if has('persistent_undo')
+  set undofile
+  set undodir=~/.cache/vim
+endif
 
 " Path to python interpreter for neovim
 let g:python3_host_prog  = '/usr/bin/python3'
@@ -160,21 +170,17 @@ let g:loaded_python_provider = 1
 " To disable ruby support
 let g:loaded_ruby_provider = 1
 
-" Close the current buffer (w/o closing the current window)
-map <leader>bd :Bclose<cr>
-
 "*****************************************************************************
 "" Visual Settings
 "*****************************************************************************
 syntax enable					" Enable syntax highlighting.
-set ruler						" Show the line and column numbers of the cursor.
+"set ruler						" Show the line and column numbers of the cursor.
 set number						" Show the line numbers on the left side.
 
-set termguicolors
-"set t_Co=256
-
-"let g:rehash256 = 1
-"let g:molokai_original = 1
+"set termguicolors
+set t_Co=256
+let g:molokai_original = 1
+let g:rehash256 = 1
 "let g:monochrome_italic_comments = 1
 "let g:solarized_termcolors=256
 
@@ -209,16 +215,46 @@ let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
 
+augroup filetypedetect
+  command! -nargs=* -complete=help Help vertical belowright help <args>
+  autocmd FileType help wincmd L
+  
+  autocmd BufNewFile,BufRead .tmux.conf*,tmux.conf* setf tmux
+  autocmd BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx
+  autocmd BufNewFile,BufRead *.hcl setf conf
+  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 
+
+  autocmd BufRead,BufNewFile *.gotmpl set filetype=gotexttmpl
+  
+  autocmd BufNewFile,BufRead *.ino setlocal noet ts=4 sw=4 sts=4
+  autocmd BufNewFile,BufRead *.txt setlocal noet ts=4 sw=4
+  autocmd BufNewFile,BufRead *.md setlocal noet ts=4 sw=4
+  autocmd BufNewFile,BufRead *.html setlocal noet ts=4 sw=4
+  autocmd BufNewFile,BufRead *.vim setlocal expandtab shiftwidth=2 tabstop=2
+  autocmd BufNewFile,BufRead *.hcl setlocal expandtab shiftwidth=2 tabstop=2
+  autocmd BufNewFile,BufRead *.sh setlocal expandtab shiftwidth=2 tabstop=2
+  autocmd BufNewFile,BufRead *.proto setlocal expandtab shiftwidth=2 tabstop=2
+  
+  autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
+  autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
+augroup END
+
 "*****************************************************************************
 "" Mappings
 "*****************************************************************************
+"" Map leader to ,
+let mapleader=','
+
+" Close the current buffer (w/o closing the current window)
+map <leader>bd :Bclose<cr>
+
 "" explore current directory in vertical split
 nmap <silent> <F3> :vs.<CR>
 
 "" Tabs
 "nnoremap <Tab> gt
 "nnoremap <S-Tab> gT
-nnoremap <silent> <S-t> :tabnew<CR>
+"nnoremap <silent> <S-t> :tabnew<CR>
 
 " Tagbar
 nmap <silent> <F4> :TagbarToggle<CR>
@@ -229,49 +265,83 @@ map <C-n> :cnext<CR>
 map <C-m> :cprevious<CR>
 nnoremap <leader>a :cclose<CR>
 
+" put quickfix window always to the bottom
+augroup quickfix
+    autocmd!
+    autocmd FileType qf wincmd J
+    autocmd FileType qf setlocal wrap
+augroup END
+
+" Enter automatically into the files directory
+autocmd BufEnter * silent! lcd %:p:h
+
+" Automatically resize screens to be equally the same
+" autocmd VimResized * wincmd =
+
+" Fast saving
+nnoremap <leader>w :w!<cr>
+nnoremap <silent> <leader>q :q!<CR>
+
+" Remove search highlight
+" nnoremap <leader><space> :nohlsearch<CR>
+function! s:clear_highlight()
+  let @/ = ""
+  call go#guru#ClearSameIds()
+endfunction
+nnoremap <silent> <leader><space> :<C-u>call <SID>clear_highlight()<CR>
+
+" Close all but the current one
+nnoremap <leader>o :only<CR>
+
+" Print full path
+map <C-f> :echo expand("%:p")<cr>
+
+nnoremap <F6> :setlocal spell! spell?<CR>
+
+" ==================== Fugitive ====================
+vnoremap <leader>gb :Gblame<CR>
+nnoremap <leader>gb :Gblame<CR>
+
 "*****************************************************************************
 "" Go Lang
 "*****************************************************************************
-let g:go_fmt_fail_silently = 0
-"let g:go_fmt_autosave = 0
+let g:go_fmt_fail_silently = 1
 let g:go_fmt_command = "goimports"
+let g:go_fmt_options = {
+  \ 'goimports': '-local do/',
+  \ }
 
-let g:go_autodetect_gopath = 1
-let g:go_auto_sameids = 1
-let g:go_auto_type_info = 1
+let g:go_debug_windows = {
+      \ 'vars':  'leftabove 35vnew',
+      \ 'stack': 'botright 10new',
+\ }
 
-"let g:go_def_mode = 'godef'
-"let g:go_decls_includes = "func,type"
-"
-"let g:go_play_open_browser = 0
-"let g:go_play_browser_command = "chrome"
-
-"" quickfix list instead of location lists
+let g:go_test_prepend_name = 1
 let g:go_list_type = "quickfix"
+let g:go_auto_type_info = 0
+let g:go_auto_sameids = 0
+let g:go_info_mode = "gocode"
 
-let g:go_highlight_types = 1
-let g:go_highlight_structs = 1
-let g:go_highlight_fields = 1
-let g:go_highlight_functions = 1
-let g:go_highlight_methods = 1
-let g:go_highlight_operators = 1
-let g:go_highlight_extra_types = 1
-let g:go_highlight_space_tab_error = 1
-let g:go_highlight_array_whitespace_error = 1
-let g:go_highlight_trailing_whitespace_error = 1
-let g:go_highlight_build_constraints = 1
-let g:go_highlight_generate_tags = 1
-
-let g:go_test_timeout = '10s'
-
-let g:go_metalinter_command = ""
-"let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'deadcode', 'gas', 'goconst', 'gocyclo', 'gosimple', 'ineffassign', 'vetshadow']
-let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'vetshadow']
-let g:go_metalinter_autosave = 0
+let g:go_def_mode = 'godef'
+let g:go_echo_command_info = 1
+let g:go_autodetect_gopath = 1
 let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'errcheck']
-let g:go_metalinter_deadline = "5s"
+let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'vetshadow']
+"let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'deadcode', 'gas', 'goconst', 'gocyclo', 'gosimple', 'ineffassign', 'vetshadow']
 
-"let g:go_textobj_include_function_doc = 0
+let g:go_highlight_space_tab_error = 0
+let g:go_highlight_array_whitespace_error = 0
+let g:go_highlight_trailing_whitespace_error = 0
+let g:go_highlight_extra_types = 0
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_types = 0
+let g:go_highlight_operators = 1
+let g:go_highlight_format_strings = 0
+let g:go_highlight_function_calls = 0
+let g:go_gocode_propose_source = 1
+
+let g:go_modifytags_transform = 'camelcase'
+let g:go_fold_enable = []
 
 nmap <C-g> :GoDeclsDir<cr>
 imap <C-g> <esc>:<C-u>GoDeclsDir<cr>
@@ -289,24 +359,24 @@ endfunction
 augroup FileType go
   autocmd!
 
-  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
+  autocmd FileType go nmap <silent> <Leader>v <Plug>(go-def-vertical)
+  autocmd FileType go nmap <silent> <Leader>s <Plug>(go-def-split)
+  autocmd FileType go nmap <silent> <Leader>d <Plug>(go-def-tab)
 
-  autocmd FileType go nmap <Leader>v <Plug>(go-def-vertical)
-  autocmd FileType go nmap <Leader>s <Plug>(go-def-split)
+  autocmd FileType go nmap <silent> <Leader>x <Plug>(go-doc-vertical)
 
-  autocmd FileType go nmap <Leader>i <Plug>(go-info)
-  autocmd FileType go nmap <Leader>l <Plug>(go-metalinter)
+  autocmd FileType go nmap <silent> <Leader>i <Plug>(go-info)
+  autocmd FileType go nmap <silent> <Leader>l <Plug>(go-metalinter)
 
-  autocmd FileType go nmap <leader>b :<C-u>call <SID>build_go_files()<CR>
-  autocmd FileType go nmap <leader>t  <Plug>(go-test)
-  autocmd FileType go nmap <leader>tf <Plug>(go-test-func)
-  autocmd FileType go nmap <Leader>c  <Plug>(go-coverage-toggle)
-  autocmd FileType go nmap <leader>r  <Plug>(go-run)
+  autocmd FileType go nmap <silent> <leader>b :<C-u>call <SID>build_go_files()<CR>
+  autocmd FileType go nmap <silent> <leader>t  <Plug>(go-test)
+  autocmd FileType go nmap <silent> <leader>tf <Plug>(go-test-func)
+  autocmd FileType go nmap <silent> <leader>r  <Plug>(go-run)
+  autocmd FileType go nmap <silent> <leader>e  <Plug>(go-install)
 
-  autocmd FileType go nmap <Leader>d <Plug>(go-doc)
+  autocmd FileType go nmap <silent> <Leader>c <Plug>(go-coverage-toggle)
 
-  autocmd FileType go nmap <Leader>e <Plug>(go-rename)
-  autocmd FileType go nmap <Leader>m <Plug>(go-implements)
+  autocmd FileType go nmap <silent> <Leader>m <Plug>(go-implements)
 
   autocmd FileType go nmap <Leader>gt :GoDeclsDir<cr>
 
@@ -315,53 +385,24 @@ augroup FileType go
   autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
   autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
   autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
-
 augroup END
+
+" create a go doc comment based on the word under the cursor
+function! s:create_go_doc_comment()
+  norm "zyiw
+  execute ":put! z"
+  execute ":norm I// \<Esc>$"
+endfunction
+nnoremap <leader>ui :<C-u>call <SID>create_go_doc_comment()<CR>
 
 "*****************************************************************************
 " Completion + Snippet
 "*****************************************************************************
 " Completion options (select longest + show menu even if a single match is found)
-set completeopt=longest,menuone
-"set completeopt=menu,menuone
-
-" neocomplete like
-"set completeopt+=noinsert
-" deoplete.nvim recommend
-"set completeopt+=noselect
+set completeopt=menu,menuone
 
 " Completion window max size
 set pumheight=10
-
-" Run deoplete.nvim automatically
-"let g:deoplete#enable_at_startup = 1
-" deoplete-go settings
-"let g:deoplete#sources#go#gocode_binary = $GOPATH.'/bin/gocode'
-"let g:deoplete#sources#go#package_dot = 1
-"let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-"let g:deoplete#sources#go#pointer = 1
-"let g:deoplete#sources#go#cgo = 1
-
-" Use partial fuzzy matches like YouCompleteMe
-"if !exists('g:not_finish_vundle')
-" call deoplete#custom#source('_', 'matchers', ['matcher_fuzzy'])
-" call deoplete#custom#source('_', 'converters', ['converter_remove_paren'])
-" call deoplete#custom#source('_', 'disabled_syntaxes', ['Comment', 'String'])
-"endif
-
-" Disable deoplete when in multi cursor mode
-"function! Multiple_cursors_before()
-"    let b:deoplete_disable_auto_complete = 1
-"endfunction
-
-"function! Multiple_cursors_after()
-"    let b:deoplete_disable_auto_complete = 0
-"endfunction
-
-" make YCM compatible with UltiSnips (using supertab)
-"let g:ycm_key_list_select_completion = ['<C-n>', '<Down>']
-"let g:ycm_key_list_previous_completion = ['<C-p>', '<Up>']
-"let g:SuperTabDefaultCompletionType = '<C-n>'
 
 " better key bindings for UltiSnipsExpandTrigger
 let g:SuperTabDefaultCompletionType = "context"
@@ -369,28 +410,14 @@ let g:UltiSnipsExpandTrigger = "<tab>"
 let g:UltiSnipsJumpForwardTrigger = "<tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
-"let g:ycm_key_list_select_completion = ['<c-Space>', '<Down>']
-"let g:ycm_key_list_previous_completion = ['<c-s-Space>', '<Up>']
-"let g:SuperTabDefaultCompletionType = '<c-Space>'
-
-"let g:UltiSnipsExpandTrigger = "<C-l>"
-"let g:UltiSnipsJumpForwardTrigger = "<C-j>"
-"let g:UltiSnipsJumpBackwardTrigger = "<C-k>"
-
 "*****************************************************************************
 "" FZF
 "*****************************************************************************
+let g:fzf_command_prefix = 'Fzf'
+let g:fzf_layout = { 'down': '~20%' }
+
 " disable statusline overwriting
 let g:fzf_nvim_statusline = 0
-" This is the default extra key bindings
-let g:fzf_action = {
-  \ 'ctrl-t': 'tab split',
-  \ 'ctrl-x': 'split',
-  \ 'ctrl-v': 'vsplit' }
-
-" Default fzf layout
-" - down / up / left / right
-let g:fzf_layout = { 'down': '~40%' }
 
 " In Neovim, you can set up fzf window using a Vim command
 "let g:fzf_layout = { 'window': 'enew' }
@@ -411,62 +438,32 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 
-" Enable per-command history.
-" CTRL-N and CTRL-P will be automatically bound to next-history and
-" previous-history instead of down and up. If you don't like the change,
-" explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
-let g:fzf_history_dir = '~/.local/share/fzf-history'
+"let g:fzf_history_dir = '~/.local/share/fzf-history'
 
-if executable('fzf')
-  " FZF {{{
-  " <C-p> to search files
-  nnoremap <silent> <C-p> :FZF<cr>
+" search 
+nmap <C-p> :FzfHistory<cr>
+imap <C-p> <esc>:<C-u>FzfHistory<cr>
 
-  " <M-p> for open buffers
-  nnoremap <silent> <M-p> :Buffers<cr>
+" search across files in the current directory
+nmap <C-b> :FzfFiles<cr>
+imap <C-b> <esc>:<C-u>FzfFiles<cr>
 
-  " <M-S-p> for MRU
-  nnoremap <silent> <M-S-p> :History<cr>
+" <M-p> for open buffers
+nnoremap <silent> <M-p> :FzfBuffers<cr>
 
-  " Better command history with q:
-  command! CmdHist call fzf#vim#command_history({'right': '40'})
-  nnoremap q: :CmdHist<CR>
+let g:rg_command = '
+  \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
+  \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf}"
+  \ -g "!{.git,node_modules,vendor}/*" '
 
-  " Better search history
-  command! QHist call fzf#vim#search_history({'right': '40'})
-  nnoremap q/ :QHist<CR>
+command! -bang -nargs=* Rg
+  \ call fzf#vim#grep(
+  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
+  \   <bang>0 ? fzf#vim#with_preview('up:60%')
+  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+  \   <bang>0)
 
-  " Mapping selecting mappings
-  nmap <leader><tab> <plug>(fzf-maps-n)
-  xmap <leader><tab> <plug>(fzf-maps-x)
-  omap <leader><tab> <plug>(fzf-maps-o)
-
-  " Insert mode completion
-  imap <c-x><c-k> <plug>(fzf-complete-word)
-  imap <c-x><c-f> <plug>(fzf-complete-path)
-  imap <c-x><c-j> <plug>(fzf-complete-file-ag)
-  imap <c-x><c-l> <plug>(fzf-complete-line)
-
-  " Advanced customization using autoload functions
-  inoremap <expr> <c-x><c-k> fzf#vim#complete#word({'left': '15%'})
-
-  fun! s:fzf_root()
-  	let path = finddir(".git", expand("%:p:h").";")
-  	return fnamemodify(substitute(path, ".git", "", ""), ":p:h")
-  endfun
-
-  nnoremap <silent> <Leader>ff :exe 'Files ' . <SID>fzf_root()<CR>
-  nnoremap <silent> <Leader>fc :Colors<CR>
-  nnoremap <silent> <Leader>fh :History<CR>
-  nnoremap <silent> <Leader>bb :Buffers<CR>
-  nnoremap <silent> <Leader>; :Commands<CR>
-  nnoremap <silent> <Leader>h :Helptags<CR>
-  nnoremap <silent> <Leader>ll :Lines<CR>
-  nnoremap <silent> <Leader>lb :BLines<CR>"
-  " }}}
-else
-  " CtrlP fallback
-end
+command! -bang -nargs=* F call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, <bang>0)
 
 " For conceal markers.
 if has('conceal')
@@ -478,4 +475,20 @@ endif
 "*****************************************************************************
 " Open Ack and put the cursor in the right position
 map <leader>g :Ack<space>
+
+" ==================== delimitMate ====================
+let g:delimitMate_expand_cr = 1   
+let g:delimitMate_expand_space = 1    
+let g:delimitMate_smart_quotes = 1    
+let g:delimitMate_expand_inside_quotes = 0    
+let g:delimitMate_smart_matchpairs = '^\%(\w\|\$\)'   
+
+imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
+
+" ==================== NerdTree ====================
+" For toggling
+noremap <Leader>n :NERDTreeToggle<cr>
+noremap <Leader>f :NERDTreeFind<cr>
+
+let NERDTreeShowHidden=1
 
