@@ -6,31 +6,14 @@ My vimrc configuration, plugins and some other vim useful stuff (mainly taken fr
 
 Put your init file into folder $XDG_CONFIG_HOME/nvim/init.vim
 ```
-mv ~/Downloads/generate.vim $XDG_CONFIG_HOME/nvim/init.vim
+/bin/rm -rf ~/.config/nvim/init.vim
+/bin/ln -fs "$(pwd)/init.vim" ~/.config/nvim
 ```
 
 Install neovim and python-client
 
 ```
-sudo pacman -S neovim python2-neovim python-neovim
-```
-
-Install latest gocode
-
-```
-go get -u github.com/mdempsky/gocode
-```
-
-Install CTags
-
-```
-sudo pacman -S extra/ctags
-```
-
-Install ack - is a tool like grep, optimized for programmers
-
-```
-pacman -S community/ack
+sudo pacman -S neovim python2-neovim python-neovim fzf ack
 ```
 
 Execute ViM and it will install plugins automatically
@@ -45,17 +28,18 @@ vim +PluginInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 - Press `,tf` to test function on the cursor
 - Press `,c`  to coverage
 - Press `,r`  to run
-- Press `,e`  to rename
+- Press `,e`  to install
 
 - Press `,i`  to see info
-- Press `,d` or 'K'  to see go doc
 - Press `,l`  to run metalinter
+- Press `,x`  to see go doc
 - Press `,v`  to definitions vertical
 - Press `,s`  to definitions split
 
 - Press `F4`  to outliner viewer
 
-- Press `c-p` to find files
+- Press `c-p` to search in the history
+- Press `c-b` to search across files in the current directory
 - Press `c-g` to jump between declarations
 
 # To select the content of a function enclosure:
