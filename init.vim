@@ -343,8 +343,8 @@ let g:go_gocode_propose_source = 1
 let g:go_modifytags_transform = 'camelcase'
 let g:go_fold_enable = []
 
-nmap <C-g> :GoDeclsDir<cr>
-imap <C-g> <esc>:<C-u>GoDeclsDir<cr>
+nmap <C-d> :GoDeclsDir<cr>
+imap <C-d> <esc>:<C-u>GoDeclsDir<cr>
 
 " run :GoBuild or :GoTestCompile based on the go file
 function! s:build_go_files()
@@ -438,7 +438,7 @@ let g:fzf_colors =
   \ 'spinner': ['fg', 'Label'],
   \ 'header':  ['fg', 'Comment'] }
 
-"let g:fzf_history_dir = '~/.local/share/fzf-history'
+let g:fzf_history_dir = '~/.local/share/fzf-history'
 
 " search 
 nmap <C-p> :FzfHistory<cr>
@@ -462,14 +462,9 @@ let g:rg_command = '
   \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf}"
   \ -g "!{.git,node_modules,vendor}/*" '
 
-command! -bang -nargs=* Rg
-  \ call fzf#vim#grep(
-  \   'rg --column --line-number --no-heading --color=always '.shellescape(<q-args>), 1,
-  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-  \   <bang>0)
-
 command! -bang -nargs=* F call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, <bang>0)
+
+nnoremap <C-g> :F<Cr>
 
 " For conceal markers.
 if has('conceal')

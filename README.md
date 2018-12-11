@@ -13,7 +13,7 @@ Put your init file into folder $XDG_CONFIG_HOME/nvim/init.vim
 Install neovim and python-client
 
 ```
-sudo pacman -S neovim python2-neovim python-neovim fzf ack
+sudo pacman -S neovim python2-neovim python-neovim fzf ripgrep
 ```
 
 Execute ViM and it will install plugins automatically
