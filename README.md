@@ -105,3 +105,12 @@ vim +PluginInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 - R	rename the file/directory under the cursor
 - D	Delete the file/directory under the cursor
 
+# Buffer
+- :ls          returns information about each buffer
+- :bn          switch to the next buffer
+- :bp          switch to the previous buffer
+- :b<number>   switch to buffer number <number>
+- :badd <file> open file in a hidden buffer
+- :bd <number> delete the buffer - also takes buffer numbers as arguments
+- :ball        open all buffers into windows
+
