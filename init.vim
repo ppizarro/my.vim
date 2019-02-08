@@ -245,17 +245,6 @@ augroup END
 "" Map leader to ,
 let mapleader=','
 
-" Close the current buffer (w/o closing the current window)
-map <leader>bd :Bclose<cr>
-
-"" explore current directory in vertical split
-nmap <silent> <F3> :vs.<CR>
-
-"" Tabs
-"nnoremap <Tab> gt
-"nnoremap <S-Tab> gT
-"nnoremap <silent> <S-t> :tabnew<CR>
-
 " Tagbar
 nmap <silent> <F4> :TagbarToggle<CR>
 let g:tagbar_autofocus = 1
