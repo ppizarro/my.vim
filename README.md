@@ -38,8 +38,9 @@ vim +PluginInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 
 - Press `F4`  to outliner viewer
 
-- Press `c-p` to search in the history
-- Press `c-b` to search across files in the current directory
+- Press `c-p` to search across files in the current directory
+- Press `a-p` to search in the buffers
+- Press `c-b` to search in the history
 - Press `c-g` to jump between declarations
 
 # To select the content of a function enclosure:
@@ -111,6 +112,8 @@ vim +PluginInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 - :bp          switch to the previous buffer
 - :b<number>   switch to buffer number <number>
 - :badd <file> open file in a hidden buffer
+- :e <file>    open file in a new buffer and do it current
 - :bd <number> delete the buffer - also takes buffer numbers as arguments
 - :ball        open all buffers into windows
+- c-6          switch to alternate buffer
 

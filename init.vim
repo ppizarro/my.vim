@@ -93,6 +93,8 @@ set autoread                    " Automatically reread changed files without ask
 set autoindent                  
 set backspace=indent,eol,start	" Make backspace work as you would expect.
 
+set noautochdir
+
 set mouse=a                     "Enable mouse mode
 
 set noerrorbells             " No beeps
@@ -261,9 +263,6 @@ augroup quickfix
     autocmd FileType qf setlocal wrap
 augroup END
 
-" Enter automatically into the files directory
-autocmd BufEnter * silent! lcd %:p:h
-
 " Automatically resize screens to be equally the same
 " autocmd VimResized * wincmd =
 
@@ -429,16 +428,16 @@ let g:fzf_colors =
 
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
-" search 
-nmap <C-p> :FzfHistory<cr>
-imap <C-p> <esc>:<C-u>FzfHistory<cr>
-
 " search across files in the current directory
-nmap <C-b> :FzfFiles<cr>
-imap <C-b> <esc>:<C-u>FzfFiles<cr>
+nmap <C-p> :FzfFiles<cr>
+imap <C-p> <esc>:<C-u>FzfFiles<cr>
 
 " <M-p> for open buffers
 nnoremap <silent> <M-p> :FzfBuffers<cr>
+
+" search in history
+nmap <C-b> :FzfHistory<cr>
+imap <C-b> <esc>:<C-u>FzfHistory<cr>
 
 " Insert mode completion
 imap <c-x><c-k> <plug>(fzf-complete-word)
