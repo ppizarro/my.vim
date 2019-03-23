@@ -43,6 +43,8 @@ vim +PluginInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 - Press `c-b` to search in the history
 - Press `c-g` to jump between declarations
 
+- Press `,n`  to open nerd tree
+
 # To select the content of a function enclosure:
 - if - inner function
 - af - a function
