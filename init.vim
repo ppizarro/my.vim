@@ -29,17 +29,18 @@ Plugin 'VundleVim/Vundle.vim'
 "*****************************************************************************
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-Plugin 'majutsushi/tagbar'
 
 Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plugin 'junegunn/fzf.vim'
 Plugin 'mileszs/ack.vim'
 
+Plugin 'majutsushi/tagbar'
+
 "" Go Lang Bundle
-Plugin 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+Plugin 'fatih/vim-go', { 'tag': 'v1.22', 'do': ':GoInstallBinaries' }
 
 " Color
-Plugin 'fatih/molokai'
+"Plugin 'fatih/molokai'
 "Plugin 'altercation/vim-colors-solarized'
 "Plugin 'dracula/vim'
 "Plugin 'morhetz/gruvbox'
@@ -48,18 +49,24 @@ Plugin 'fatih/molokai'
 "Plugin 'bitfield/vim-gitgo'
 "Plugin 'fxn/vim-monochrome'
 "Plugin 'sjl/badwolf'
+Plugin 'nanotech/jellybeans.vim', { 'tag': 'v1.7' }
+
+Plugin 'ervandew/supertab'
 
 Plugin 'AndrewRadev/splitjoin.vim'
 
-Plugin 'ervandew/supertab'
 Plugin 'SirVer/ultisnips'
 
 Plugin 'godlygeek/tabular'
 Plugin 'uarun/vim-protobuf'
 
-Plugin 'tpope/vim-fugitive'
-Plugin 'Raimondi/delimitMate'
 Plugin 'scrooloose/nerdtree'
+Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'Raimondi/delimitMate'
+
+Plugin 'scrooloose/vim-slumlord'
+Plugin 'aklt/plantuml-syntax'
 
 " All of your Plugins must be added before the following line
 call vundle#end()         " required
@@ -76,6 +83,7 @@ filetype plugin indent on " Load plugins according to detected filetype, require
 "*****************************************************************************
 "" Basic Setup
 "*****************************************************************************"
+set nocompatible
 
 set ttyfast
 
@@ -90,31 +98,34 @@ set encoding=utf-8
 set guifont=Go\ Mono\ for\ Powerline
 
 set autoread                    " Automatically reread changed files without asking me anything
+
 set autoindent                  
 set backspace=indent,eol,start	" Make backspace work as you would expect.
+set smartindent
+filetype indent on
 
 set noautochdir
 
 set mouse=a                     "Enable mouse mode
 
-set noerrorbells             " No beeps
+set noerrorbells                " No beeps
 
 "" Tabs. May be overriten by autocmd rules
-set tabstop=4					" Render TABs using this many spaces.
+set tabstop=4					          " Render TABs using this many spaces.
 set softtabstop=0
-set shiftwidth=4				" Indentation amount for < and > commands.
-set expandtab					" Insert spaces when TAB is pressed.
+set shiftwidth=4				        " Indentation amount for < and > commands.
+set expandtab					          " Insert spaces when TAB is pressed.
 
 set clipboard=unnamedplus
 
 "" Enable hidden buffers
-set hidden						" Switch between buffers without having to save first.
+set hidden						          " Switch between buffers without having to save first.
 
 "" Searching
-set hlsearch					" Highlight search results.
-set incsearch					" Incremental search.
-set ignorecase					" Make searching case insensitive
-set smartcase					" ... unless the query has capital letters.
+set hlsearch					          " Highlight search results.
+set incsearch					          " Incremental search.
+set ignorecase					        " Make searching case insensitive
+set smartcase					          " ... unless the query has capital letters.
 set noshowmatch                 " Do not show matching brackets by flickering
 set noshowmode                  " We show the mode with airline or lightline
 
@@ -132,6 +143,7 @@ set binary
 "" Directories for swp files
 set nobackup
 set noswapfile
+set nowritebackup
 
 set fileformats=unix,dos,mac
 set showcmd 					" Show (partial) command in status line.
@@ -172,6 +184,10 @@ let g:loaded_python_provider = 1
 " To disable ruby support
 let g:loaded_ruby_provider = 1
 
+" Turn on the sign column so you can see error marks on lines
+" where there are quickfix errors.
+set signcolumn=auto
+
 "*****************************************************************************
 "" Visual Settings
 "*****************************************************************************
@@ -180,14 +196,16 @@ syntax enable					" Enable syntax highlighting.
 set number						" Show the line numbers on the left side.
 
 "set termguicolors
-set t_Co=256
-let g:molokai_original = 1
-let g:rehash256 = 1
+if !has('gui_running')
+  set t_Co=256
+endif
+"let g:molokai_original = 1
+"let g:rehash256 = 1
 "let g:monochrome_italic_comments = 1
 "let g:solarized_termcolors=256
 
 if !exists('g:not_finish_vundle')
-  colorscheme molokai
+"  colorscheme molokai
 "  colorscheme solarized
 "  colorscheme primary
 "  colorscheme PaperColor
@@ -196,6 +214,7 @@ if !exists('g:not_finish_vundle')
 "  colorscheme gruvbox
 "  colorscheme monochrome
 "  colorscheme badwolf
+   :colorscheme jellybeans
 endif
 
 set background=dark
@@ -224,9 +243,10 @@ augroup filetypedetect
   autocmd BufNewFile,BufRead .tmux.conf*,tmux.conf* setf tmux
   autocmd BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx
   autocmd BufNewFile,BufRead *.hcl setf conf
-  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 
 
+  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 
   autocmd BufRead,BufNewFile *.gotmpl set filetype=gotexttmpl
+  autocmd BufNewFile,BufRead *.gohtml set filetype=gohtmltmpl
   
   autocmd BufNewFile,BufRead *.ino setlocal noet ts=4 sw=4 sts=4
   autocmd BufNewFile,BufRead *.txt setlocal noet ts=4 sw=4
@@ -293,43 +313,60 @@ nnoremap <leader>gb :Gblame<CR>
 "*****************************************************************************
 "" Go Lang
 "*****************************************************************************
-let g:go_fmt_fail_silently = 1
+let g:go_def_mode = 'gopls'
+let g:go_info_mode = 'gopls'
+
 let g:go_fmt_command = "goimports"
 let g:go_fmt_options = {
   \ 'goimports': '-local do/',
   \ }
+let g:go_fmt_fail_silently = 1
 
-let g:go_debug_windows = {
-      \ 'vars':  'leftabove 35vnew',
-      \ 'stack': 'botright 10new',
-\ }
+"let g:go_debug=['shell-commands']
+"let g:go_debug_windows = {
+"      \ 'vars':  'leftabove 35vnew',
+"      \ 'stack': 'botright 10new',
+"\ }
 
 let g:go_test_prepend_name = 1
 let g:go_list_type = "quickfix"
 let g:go_auto_type_info = 0
-let g:go_auto_sameids = 0
-let g:go_info_mode = "gocode"
+let g:go_auto_sameids = 1
 
-let g:go_def_mode = 'gopls'
 let g:go_echo_command_info = 1
 let g:go_autodetect_gopath = 1
-let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'errcheck']
+
+let go_textobj_include_function_doc = 1
+
+let g:go_metalinter_command = 'golangci-lint'
 let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'vetshadow']
 "let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'deadcode', 'gas', 'goconst', 'gocyclo', 'gosimple', 'ineffassign', 'vetshadow']
+let g:go_metalinter_autosave = 1
+"let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'errcheck']
+let g:go_metalinter_autosave_enabled = ['vet','errcheck']
+"let g:go_metalinter_deadline = "5s"
 
 let g:go_highlight_space_tab_error = 0
 let g:go_highlight_array_whitespace_error = 0
 let g:go_highlight_trailing_whitespace_error = 0
+let g:go_highlight_types = 0
+let g:go_highlight_fields = 0
+let g:go_highlight_functions = 0
+let g:go_highlight_function_calls = 0
+let g:go_highlight_operators = 0
 let g:go_highlight_extra_types = 0
 let g:go_highlight_build_constraints = 1
-let g:go_highlight_types = 0
-let g:go_highlight_operators = 1
+let g:go_highlight_generate_tags = 1
 let g:go_highlight_format_strings = 0
-let g:go_highlight_function_calls = 0
 let g:go_gocode_propose_source = 1
 
 let g:go_modifytags_transform = 'camelcase'
 let g:go_fold_enable = []
+
+let g:go_play_open_browser = 0
+let g:go_play_browser_command = "chrome"
+
+let g:go_decls_includes = "func,type"
 
 nmap <C-d> :GoDeclsDir<cr>
 imap <C-d> <esc>:<C-u>GoDeclsDir<cr>
@@ -386,6 +423,8 @@ nnoremap <leader>ui :<C-u>call <SID>create_go_doc_comment()<CR>
 "*****************************************************************************
 " Completion + Snippet
 "*****************************************************************************
+let g:deoplete#enable_at_startup = 1
+
 " Completion options (select longest + show menu even if a single match is found)
 set completeopt=menu,menuone
 
@@ -480,4 +519,17 @@ noremap <Leader>n :NERDTreeToggle<cr>
 noremap <Leader>f :NERDTreeFind<cr>
 
 let NERDTreeShowHidden=1
+let NERDTreeQuitOnOpen=1
+let NERDTreeAutoDeleteBuffer=1
+let NERDTreeMinimalUI=1
+let NERDTreeDirArrows=1
+
+" ==================== PlantUML ====================
+let g:plantuml_executable_script='/usr/bin/plantuml'
+
+"nnoremap <F5> :w<CR> :silent make<CR>
+"inoremap <F5> <Esc>:w<CR>:silent make<CR>
+"vnoremap <F5> :<C-U>:w<CR>:silent make<CR
+
+"nnoremap <F5> :w<CR> :make<CR>
 
