@@ -37,7 +37,7 @@ Plugin 'mileszs/ack.vim'
 Plugin 'majutsushi/tagbar'
 
 "" Go Lang Bundle
-Plugin 'fatih/vim-go', { 'tag': 'v1.22', 'do': ':GoInstallBinaries' }
+Plugin 'fatih/vim-go', { 'tag': 'v1.23', 'do': ':GoInstallBinaries' }
 
 " Color
 "Plugin 'fatih/molokai'
@@ -313,22 +313,10 @@ nnoremap <leader>gb :Gblame<CR>
 "*****************************************************************************
 "" Go Lang
 "*****************************************************************************
-let g:go_def_mode = 'gopls'
-let g:go_info_mode = 'gopls'
-
-let g:go_fmt_command = "goimports"
-let g:go_fmt_options = {
-  \ 'goimports': '-local do/',
-  \ }
+let g:go_fmt_command = "gopls"
 let g:go_fmt_fail_silently = 1
+let g:go_imports_autosave = 1
 
-"let g:go_debug=['shell-commands']
-"let g:go_debug_windows = {
-"      \ 'vars':  'leftabove 35vnew',
-"      \ 'stack': 'botright 10new',
-"\ }
-
-let g:go_test_prepend_name = 1
 let g:go_list_type = "quickfix"
 let g:go_auto_type_info = 0
 let g:go_auto_sameids = 1
@@ -338,7 +326,6 @@ let g:go_autodetect_gopath = 1
 
 let go_textobj_include_function_doc = 1
 
-let g:go_metalinter_command = 'golangci-lint'
 let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'vetshadow']
 "let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'deadcode', 'gas', 'goconst', 'gocyclo', 'gosimple', 'ineffassign', 'vetshadow']
 let g:go_metalinter_autosave = 1
@@ -358,7 +345,6 @@ let g:go_highlight_extra_types = 0
 let g:go_highlight_build_constraints = 1
 let g:go_highlight_generate_tags = 1
 let g:go_highlight_format_strings = 0
-let g:go_gocode_propose_source = 1
 
 let g:go_modifytags_transform = 'camelcase'
 let g:go_fold_enable = []
