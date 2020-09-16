@@ -1,85 +1,72 @@
 "*****************************************************************************
 "" Plugin core
 "*****************************************************************************
-if has('vim_starting')
-  set nocompatible               " be iMproved, required
-  filetype off                   " required
-
-  " set the runtime path to include Vundle and initialize
-  set rtp+=~/.config/nvim/bundle/Vundle.vim/
-endif
-
-let vundle_readme=expand('~/.config/nvim/bundle/Vundle.vim/README.md')
-
-if !filereadable(vundle_readme)
-  echo "Installing Vundle..."
+if empty(glob('~/.vim/autoload/plug.vim'))
+  echo "Installing vim-plug..."
   echo ""
-  silent !mkdir -p ~/.config/nvim/bundle
-  silent !git clone https://github.com/VundleVim/Vundle.vim ~/.config/nvim/bundle/Vundle.vim/
-  let g:not_finish_vundle = "yes"
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall
 endif
 
-call vundle#begin('~/.config/nvim/bundle')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+" Plugins will be downloaded under the specified directory.
+call plug#begin('~/.vim/plugged')
 
 "*****************************************************************************
 "" Plugin install packages
 "*****************************************************************************
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
-Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plugin 'junegunn/fzf.vim'
-Plugin 'mileszs/ack.vim'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+Plug 'mileszs/ack.vim'
 
-Plugin 'majutsushi/tagbar'
+"Plug 'terryma/vim-multiple-cursors'
 
-"" Go Lang Bundle
-"Plugin 'fatih/vim-go', { 'tag': 'v1.24', 'do': ':GoInstallBinaries' }
-Plugin 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+Plug 'majutsushi/tagbar'
+
+"Plug 'myitcv/govim'
+Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 
 " Color
-"Plugin 'fatih/molokai'
-"Plugin 'altercation/vim-colors-solarized'
-"Plugin 'dracula/vim'
-"Plugin 'morhetz/gruvbox'
-"Plugin 'google/vim-colorscheme-primary'
-"Plugin 'NLKNguyen/papercolor-theme'
-"Plugin 'bitfield/vim-gitgo'
-"Plugin 'fxn/vim-monochrome'
-"Plugin 'sjl/badwolf'
-Plugin 'nanotech/jellybeans.vim', { 'tag': 'v1.7' }
+"Plug 'fatih/molokai'
+"Plug 'dracula/vim'
+"Plug 'morhetz/gruvbox'
+"Plug 'NLKNguyen/papercolor-theme'
+"Plug 'bitfield/vim-gitgo'
+"Plug 'fxn/vim-monochrome'
+"Plug 'sjl/badwolf'
+Plug 'nanotech/jellybeans.vim', { 'tag': 'v1.7' }
 
-Plugin 'ervandew/supertab'
+Plug 'ervandew/supertab'
 
-Plugin 'AndrewRadev/splitjoin.vim'
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tpope/vim-fugitive'
+"Plug 'airblade/vim-gitgutter'
 
-Plugin 'SirVer/ultisnips'
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
 
-Plugin 'godlygeek/tabular'
-Plugin 'uarun/vim-protobuf'
+Plug 'scrooloose/vim-slumlord'
+Plug 'aklt/plantuml-syntax'
 
-Plugin 'scrooloose/nerdtree'
-Plugin 'tpope/vim-fugitive'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'Raimondi/delimitMate'
-
-Plugin 'scrooloose/vim-slumlord'
-Plugin 'aklt/plantuml-syntax'
-
-" All of your Plugins must be added before the following line
-call vundle#end()         " required
+" List ends here. Plugins become visible to Vim after this call.
+call plug#end()
 
 filetype plugin indent on " Load plugins according to detected filetype, required
 
 "
 " Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+" :PlugInstall [name ...] [#threads]	- Install plugins
+" :PlugUpdate [name ...] [#threads]		- Install or update plugins
+" :PlugClean[!]							- Remove unlisted plugins (bang version will clean without prompt)
+" :PlugUpgrade							- Upgrade vim-plug itself
+" :PlugStatus							- Check the status of plugins
+" :PlugDiff								- Examine changes from the previous update and the pending changes
+" :PlugSnapshot[!] [output path]		- Generate script for restoring the current snapshot of the plugins
 
 "*****************************************************************************
 "" Basic Setup
@@ -112,23 +99,23 @@ set mouse=a                     "Enable mouse mode
 set noerrorbells                " No beeps
 
 "" Tabs. May be overriten by autocmd rules
-set tabstop=4					          " Render TABs using this many spaces.
+set tabstop=4					" Render TABs using this many spaces.
 set softtabstop=0
-set shiftwidth=4				        " Indentation amount for < and > commands.
-set expandtab					          " Insert spaces when TAB is pressed.
+set shiftwidth=4				" Indentation amount for < and > commands.
+set expandtab					" Insert spaces when TAB is pressed.
 
-set clipboard=unnamedplus
+"set clipboard=unnamedplus
 
 "" Enable hidden buffers
-set hidden						          " Switch between buffers without having to save first.
+set hidden						" Switch between buffers without having to save first.
 
 "" Searching
-set hlsearch					          " Highlight search results.
-set incsearch					          " Incremental search.
-set ignorecase					        " Make searching case insensitive
-set smartcase					          " ... unless the query has capital letters.
+set hlsearch					" Highlight search results.
+set incsearch					" Incremental search.
+set ignorecase					" Make searching case insensitive
+set smartcase					" ... unless the query has capital letters.
 set noshowmatch                 " Do not show matching brackets by flickering
-set noshowmode                  " We show the mode with airline or lightline
+set noshowmode                  " We show the mode with airline
 
 set splitright                  " Split vertical windows right to the current windows
 set splitbelow                  " Split horizontal windows below to the current windows
@@ -163,8 +150,6 @@ set autowrite
 set cursorline
 set nocursorcolumn				" Speed up syntax highlighting
 
-set updatetime=300
-
 set shortmess+=c   " Shut off completion messages
 set belloff+=ctrlg " If Vim beeps during completion
 
@@ -177,17 +162,39 @@ if has('persistent_undo')
 endif
 
 " Path to python interpreter for neovim
-let g:python3_host_prog  = '/usr/bin/python3'
+"let g:python3_host_prog  = '/usr/bin/python3'
 " To disable Python 2 support
-let g:loaded_python_provider = 1
+"let g:loaded_python_provider = 1
 " Skip the check of neovim module
 "let g:python3_host_skip_check = 1
 " To disable ruby support
-let g:loaded_ruby_provider = 1
+"let g:loaded_ruby_provider = 1
 
-" Turn on the sign column so you can see error marks on lines
-" where there are quickfix errors.
-set signcolumn=auto
+" To get hover working in the terminal we need to set ttymouse. See
+"
+" :help ttymouse
+"
+" for the appropriate setting for your terminal. Note that despite the
+" automated tests using xterm as the terminal, a setting of ttymouse=xterm
+" does not work correctly beyond a certain column number (citation needed)
+" hence we use ttymouse=sgr
+set ttymouse=sgr
+
+" Suggestion: By default, govim populates the quickfix window with diagnostics
+" reported by gopls after a period of inactivity, the time period being
+" defined by updatetime (help updatetime). Here we suggest a short updatetime
+" time in order that govim/Vim are more responsive/IDE-like
+set updatetime=500
+
+" Suggestion: To make govim/Vim more responsive/IDE-like, we suggest a short
+" balloondelay
+set balloondelay=250
+
+" Suggestion: Turn on the sign column so you can see error marks on lines
+" where there are quickfix errors. Some users who already show line number
+" might prefer to instead have the signs shown in the number column; in which
+" case set signcolumn=number (requires Vim >= v8.1.1564)
+set signcolumn=yes
 
 "*****************************************************************************
 "" Visual Settings
@@ -205,18 +212,14 @@ endif
 "let g:monochrome_italic_comments = 1
 "let g:solarized_termcolors=256
 
-if !exists('g:not_finish_vundle')
-"  colorscheme molokai
-"  colorscheme solarized
-"  colorscheme primary
-"  colorscheme PaperColor
-"  colorscheme gitgo
-"  color dracula
-"  colorscheme gruvbox
-"  colorscheme monochrome
-"  colorscheme badwolf
-   :colorscheme jellybeans
-endif
+"colorscheme molokai
+"colorscheme PaperColor
+"colorscheme gitgo
+"color dracula
+"colorscheme gruvbox
+"colorscheme monochrome
+"colorscheme badwolf
+:colorscheme jellybeans
 
 set background=dark
 "set background=light
@@ -244,10 +247,9 @@ augroup filetypedetect
   autocmd BufNewFile,BufRead .tmux.conf*,tmux.conf* setf tmux
   autocmd BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx
   autocmd BufNewFile,BufRead *.hcl setf conf
-
   autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 
+
   autocmd BufRead,BufNewFile *.gotmpl set filetype=gotexttmpl
-  autocmd BufNewFile,BufRead *.gohtml set filetype=gohtmltmpl
   
   autocmd BufNewFile,BufRead *.ino setlocal noet ts=4 sw=4 sts=4
   autocmd BufNewFile,BufRead *.txt setlocal noet ts=4 sw=4
@@ -272,17 +274,17 @@ let mapleader=','
 nmap <silent> <F4> :TagbarToggle<CR>
 let g:tagbar_autofocus = 1
 
-"" Next/Previous error
+" Some useful quickfix shortcuts for quickfix
 map <C-n> :cnext<CR>
 map <C-m> :cprevious<CR>
 nnoremap <leader>a :cclose<CR>
 
 " put quickfix window always to the bottom
-augroup quickfix
-    autocmd!
-    autocmd FileType qf wincmd J
-    autocmd FileType qf setlocal wrap
-augroup END
+"augroup quickfix
+"    autocmd!
+"    autocmd FileType qf wincmd J
+"    autocmd FileType qf setlocal wrap
+"augroup END
 
 " Automatically resize screens to be equally the same
 " autocmd VimResized * wincmd =
@@ -314,46 +316,57 @@ nnoremap <leader>gb :Gblame<CR>
 "*****************************************************************************
 "" Go Lang
 "*****************************************************************************
-let g:go_fmt_command = "gopls"
-let g:go_fmt_fail_silently = 1
-let g:go_imports_autosave = 1
+"call govim#config#Set("FormatOnSave", "goimports")
 
+"augroup FileType go
+"	autocmd FileType go nmap <silent> <buffer> <Leader>r :GOVIMRename<CR>
+"	autocmd FileType go nmap <silent> <buffer> <Leader>m :GOVIMReferences<CR>
+"	autocmd FileType go nmap <silent> <buffer> <Leader>i : <C-u>call GOVIMHover()<CR>
+"augroup END
+
+let g:go_def_mode = 'gopls'
+let g:go_info_mode = 'gopls'
+
+let g:go_fmt_command = 'goimports'
+let g:go_fmt_options = {
+  \ 'goimports': '-local do/',
+  \ }
+"let g:go_fmt_fail_silently = 1
+
+"let g:go_debug=['shell-commands']
+"let g:go_debug_windows = {
+"      \ 'vars':  'leftabove 35vnew',
+"      \ 'stack': 'botright 10new',
+"	  \ }
+
+let g:go_test_prepend_name = 1
 let g:go_list_type = "quickfix"
 let g:go_auto_type_info = 0
-let g:go_auto_sameids = 1
+let g:go_auto_sameids = 0
 
 let g:go_echo_command_info = 1
 let g:go_autodetect_gopath = 1
 
-let go_textobj_include_function_doc = 1
-
+let g:go_metalinter_command = 'golangci-lint'
 let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'vetshadow']
 "let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'deadcode', 'gas', 'goconst', 'gocyclo', 'gosimple', 'ineffassign', 'vetshadow']
 let g:go_metalinter_autosave = 1
-"let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'errcheck']
-let g:go_metalinter_autosave_enabled = ['vet','errcheck']
-"let g:go_metalinter_deadline = "5s"
+let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'errcheck']
+let g:go_metalinter_deadline = "5s"
 
 let g:go_highlight_space_tab_error = 0
 let g:go_highlight_array_whitespace_error = 0
 let g:go_highlight_trailing_whitespace_error = 0
-let g:go_highlight_types = 0
-let g:go_highlight_fields = 0
-let g:go_highlight_functions = 0
-let g:go_highlight_function_calls = 0
-let g:go_highlight_operators = 0
 let g:go_highlight_extra_types = 0
 let g:go_highlight_build_constraints = 1
-let g:go_highlight_generate_tags = 1
+let g:go_highlight_types = 0
+let g:go_highlight_operators = 1
 let g:go_highlight_format_strings = 0
+let g:go_highlight_function_calls = 0
+let g:go_gocode_propose_source = 1
 
 let g:go_modifytags_transform = 'camelcase'
 let g:go_fold_enable = []
-
-let g:go_play_open_browser = 0
-let g:go_play_browser_command = "chrome"
-
-let g:go_decls_includes = "func,type"
 
 nmap <C-d> :GoDeclsDir<cr>
 imap <C-d> <esc>:<C-u>GoDeclsDir<cr>
@@ -412,6 +425,11 @@ nnoremap <leader>ui :<C-u>call <SID>create_go_doc_comment()<CR>
 "*****************************************************************************
 let g:deoplete#enable_at_startup = 1
 
+"if has("patch-8.1.1904")
+"  set completeopt+=popup
+"  set completepopup=align:menu,border:off,highlight:Pmenu
+"endif
+
 " Completion options (select longest + show menu even if a single match is found)
 set completeopt=menu,menuone
 
@@ -420,9 +438,9 @@ set pumheight=10
 
 " better key bindings for UltiSnipsExpandTrigger
 let g:SuperTabDefaultCompletionType = "context"
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+"let g:UltiSnipsExpandTrigger = "<tab>"
+"let g:UltiSnipsJumpForwardTrigger = "<tab>"
+"let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
 
 "*****************************************************************************
 "" FZF
@@ -459,7 +477,7 @@ nmap <C-p> :FzfFiles<cr>
 imap <C-p> <esc>:<C-u>FzfFiles<cr>
 
 " <M-p> for open buffers
-nnoremap <silent> <M-p> :FzfBuffers<cr>
+nnoremap <silent> <esc>p :FzfBuffers<cr>
 
 " search in history
 nmap <C-b> :FzfHistory<cr>
@@ -492,13 +510,13 @@ endif
 map <leader>g :Ack<space>
 
 " ==================== delimitMate ====================
-let g:delimitMate_expand_cr = 1   
-let g:delimitMate_expand_space = 1    
-let g:delimitMate_smart_quotes = 1    
-let g:delimitMate_expand_inside_quotes = 0    
-let g:delimitMate_smart_matchpairs = '^\%(\w\|\$\)'   
+"let g:delimitMate_expand_cr = 1   
+"let g:delimitMate_expand_space = 1    
+"let g:delimitMate_smart_quotes = 1    
+"let g:delimitMate_expand_inside_quotes = 0    
+"let g:delimitMate_smart_matchpairs = '^\%(\w\|\$\)'   
 
-imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
+"imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
 
 " ==================== NerdTree ====================
 " For toggling
@@ -506,10 +524,6 @@ noremap <Leader>n :NERDTreeToggle<cr>
 noremap <Leader>f :NERDTreeFind<cr>
 
 let NERDTreeShowHidden=1
-let NERDTreeQuitOnOpen=1
-let NERDTreeAutoDeleteBuffer=1
-let NERDTreeMinimalUI=1
-let NERDTreeDirArrows=1
 
 " ==================== PlantUML ====================
 let g:plantuml_executable_script='/usr/bin/plantuml'
@@ -519,4 +533,8 @@ let g:plantuml_executable_script='/usr/bin/plantuml'
 "vnoremap <F5> :<C-U>:w<CR>:silent make<CR
 
 "nnoremap <F5> :w<CR> :make<CR>
+
+"set rtp+=~/go/src/golang.org/x/lint/misc/vim
+"autocmd BufWritePost,FileWritePost *.go execute 'Lint' | cwindow
+"autocmd FileType go nmap <silent> <Leader>l :Lint<cr>
 

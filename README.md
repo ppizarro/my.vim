@@ -18,7 +18,7 @@ sudo pacman -S neovim python2-neovim python-neovim fzf ripgrep
 
 Execute ViM and it will install plugins automatically
 ```
-vim +PluginInstall +GoInstallBinaries +UpdateRemotePlugins +qall
+nvim +PluginInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 ```
 
 # Basic Usage
