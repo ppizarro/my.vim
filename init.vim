@@ -27,6 +27,15 @@ Plugin 'VundleVim/Vundle.vim'
 "*****************************************************************************
 "" Plugin install packages
 "*****************************************************************************
+" Collection of common configurations for the Nvim LSP client
+Plugin 'neovim/nvim-lspconfig'
+
+" Extentions to built-in LSP, for example, providing type inlay hints
+"Plugin 'tjdevries/lsp_extensions.nvim'
+
+" Autocompletion framework for built-in LSP
+Plugin 'nvim-lua/completion-nvim'
+
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
@@ -38,22 +47,18 @@ Plugin 'majutsushi/tagbar'
 
 "" Go Lang Bundle
 "Plugin 'fatih/vim-go', { 'tag': 'v1.24', 'do': ':GoInstallBinaries' }
-Plugin 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
+"Plugin 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 
 " Color
 "Plugin 'fatih/molokai'
 "Plugin 'altercation/vim-colors-solarized'
 "Plugin 'dracula/vim'
-"Plugin 'morhetz/gruvbox'
-"Plugin 'google/vim-colorscheme-primary'
-"Plugin 'NLKNguyen/papercolor-theme'
-"Plugin 'bitfield/vim-gitgo'
-"Plugin 'fxn/vim-monochrome'
-"Plugin 'sjl/badwolf'
-Plugin 'nanotech/jellybeans.vim', { 'tag': 'v1.7' }
+"Plugin 'nanotech/jellybeans.vim', { 'tag': 'v1.7' }
+Plugin 'arcticicestudio/nord-vim'
 
-Plugin 'ervandew/supertab'
+"Plugin 'ervandew/supertab'
 
+"to split a one-liner into multiple lines'
 Plugin 'AndrewRadev/splitjoin.vim'
 
 Plugin 'SirVer/ultisnips'
@@ -62,7 +67,6 @@ Plugin 'godlygeek/tabular'
 Plugin 'uarun/vim-protobuf'
 
 Plugin 'scrooloose/nerdtree'
-Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'Raimondi/delimitMate'
 
@@ -163,11 +167,6 @@ set autowrite
 set cursorline
 set nocursorcolumn				" Speed up syntax highlighting
 
-set updatetime=300
-
-set shortmess+=c   " Shut off completion messages
-set belloff+=ctrlg " If Vim beeps during completion
-
 " increase max memory to show syntax highlighting for large files 
 set maxmempattern=20000
 
@@ -187,35 +186,22 @@ let g:loaded_ruby_provider = 1
 
 " Turn on the sign column so you can see error marks on lines
 " where there are quickfix errors.
-set signcolumn=auto
+set signcolumn=yes
+
+" Set updatetime for CursorHold
+" 300ms of no cursor movement to trigger CursorHold
+set updatetime=300
 
 "*****************************************************************************
 "" Visual Settings
 "*****************************************************************************
 syntax enable					" Enable syntax highlighting.
-"set ruler						" Show the line and column numbers of the cursor.
+set ruler						  " Show the line and column numbers of the cursor.
 set number						" Show the line numbers on the left side.
 
-"set termguicolors
-if !has('gui_running')
-  set t_Co=256
-endif
-"let g:molokai_original = 1
-"let g:rehash256 = 1
-"let g:monochrome_italic_comments = 1
-"let g:solarized_termcolors=256
-
 if !exists('g:not_finish_vundle')
-"  colorscheme molokai
-"  colorscheme solarized
-"  colorscheme primary
-"  colorscheme PaperColor
-"  colorscheme gitgo
-"  color dracula
-"  colorscheme gruvbox
-"  colorscheme monochrome
-"  colorscheme badwolf
-   :colorscheme jellybeans
+"  colorscheme jellybeans
+  colorscheme nord
 endif
 
 set background=dark
@@ -225,17 +211,23 @@ set lazyredraw          		" Wait to redraw
 
 " vim-airline
 let g:airline_powerline_fonts = 1
-"let g:airline_theme = 'powerlineish'
-let g:airline_theme = 'molokai'
-"let g:airline_theme = 'solarized'
 "let g:airline_solarized_bg='dark'
-"let g:airline_theme = 'base16_google'
-"let g:airline_theme = 'gruvbox'
-"let g:airline_theme = 'monochrome'
+"let g:airline_theme = 'jellybeans'
+let g:airline_theme = 'nord'
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tagbar#enabled = 1
+
+if !has('gui_running')
+  set t_Co=256
+endif
+"let g:molokai_original = 1
+"let g:rehash256 = 1
+"let g:monochrome_italic_comments = 1
+"let g:solarized_termcolors=256
+
+set termguicolors
 
 augroup filetypedetect
   command! -nargs=* -complete=help Help vertical belowright help <args>
@@ -307,122 +299,134 @@ map <C-f> :echo expand("%:p")<cr>
 
 nnoremap <F6> :setlocal spell! spell?<CR>
 
-" ==================== Fugitive ====================
-vnoremap <leader>gb :Gblame<CR>
-nnoremap <leader>gb :Gblame<CR>
+"*****************************************************************************
+" Configure lsp
+"*****************************************************************************
+" https://github.com/neovim/nvim-lspconfig#gopls
+lua <<EOF
+local nvim_lsp = require'lspconfig'
+
+function goimports(timeoutms)
+    local context = { source = { organizeImports = true } }
+    vim.validate { context = { context, "t", true } }
+
+    local params = vim.lsp.util.make_range_params()
+    params.context = context
+
+    local method = "textDocument/codeAction"
+    local resp = vim.lsp.buf_request_sync(0, method, params, timeoutms)
+    if resp and resp[1] then
+      local result = resp[1].result
+      if result and result[1] then
+        local edit = result[1].edit
+        vim.lsp.util.apply_workspace_edit(edit)
+      end
+    end
+
+    vim.lsp.buf.formatting()
+end
+
+-- function to attach completion when setting up lsp
+local on_attach = function(client)
+    require'completion'.on_attach(client)
+end
+
+-- enable gopls
+nvim_lsp.gopls.setup {
+  cmd = {"gopls", "serve"},
+  settings = {
+    gopls = {
+      analyses = {
+        unusedparams = true,
+      },
+      staticcheck = true,
+    },
+  },
+  on_attach=on_attach,
+}
+
+-- Enable rust_analyzer
+nvim_lsp.rust_analyzer.setup({ on_attach=on_attach })
+
+-- Enable diagnostics
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    virtual_text = false,
+    signs = true,
+    update_in_insert = true,
+  }
+)
+EOF
+
+autocmd BufWritePre *.go lua goimports(1000)
+autocmd FileType go setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
 "*****************************************************************************
-"" Go Lang
+" Code navigation shortcuts
+" as found in :help lsp
 "*****************************************************************************
-let g:go_fmt_command = "gopls"
-let g:go_fmt_fail_silently = 1
-let g:go_imports_autosave = 1
+nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+"nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> gi    <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+"nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> gy    <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+" gopls and rust-analyzer does not yet support goto declaration
+"nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
 
-let g:go_list_type = "quickfix"
-let g:go_auto_type_info = 0
-let g:go_auto_sameids = 1
+" Show diagnostic popup on cursor hover
+autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
 
-let g:go_echo_command_info = 1
-let g:go_autodetect_gopath = 1
+" Goto previous/next diagnostic warning/error
+nnoremap <silent> g[ <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+nnoremap <silent> g] <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 
-let go_textobj_include_function_doc = 1
+nnoremap <silent> ga <cmd>lua vim.lsp.buf.code_action()<CR>
 
-let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'vetshadow']
-"let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'deadcode', 'gas', 'goconst', 'gocyclo', 'gosimple', 'ineffassign', 'vetshadow']
-let g:go_metalinter_autosave = 1
-"let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'errcheck']
-let g:go_metalinter_autosave_enabled = ['vet','errcheck']
-"let g:go_metalinter_deadline = "5s"
+let g:gitgutter_sign_allow_clobber = 0
+let g:gitgutter_sign_priority = 0
 
-let g:go_highlight_space_tab_error = 0
-let g:go_highlight_array_whitespace_error = 0
-let g:go_highlight_trailing_whitespace_error = 0
-let g:go_highlight_types = 0
-let g:go_highlight_fields = 0
-let g:go_highlight_functions = 0
-let g:go_highlight_function_calls = 0
-let g:go_highlight_operators = 0
-let g:go_highlight_extra_types = 0
-let g:go_highlight_build_constraints = 1
-let g:go_highlight_generate_tags = 1
-let g:go_highlight_format_strings = 0
+" Enable type inlay hints
+"autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
+""\ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment" }
 
-let g:go_modifytags_transform = 'camelcase'
-let g:go_fold_enable = []
-
-let g:go_play_open_browser = 0
-let g:go_play_browser_command = "chrome"
-
-let g:go_decls_includes = "func,type"
-
-nmap <C-d> :GoDeclsDir<cr>
-imap <C-d> <esc>:<C-u>GoDeclsDir<cr>
-
-" run :GoBuild or :GoTestCompile based on the go file
-function! s:build_go_files()
-  let l:file = expand('%')
-  if l:file =~# '^\f\+_test\.go$'
-    call go#test#Test(0, 1)
-  elseif l:file =~# '^\f\+\.go$'
-    call go#cmd#Build(0)
-  endif
-endfunction
-
-augroup FileType go
-  autocmd!
-
-  autocmd FileType go nmap <silent> <Leader>v <Plug>(go-def-vertical)
-  autocmd FileType go nmap <silent> <Leader>s <Plug>(go-def-split)
-  autocmd FileType go nmap <silent> <Leader>d <Plug>(go-def-tab)
-
-  autocmd FileType go nmap <silent> <Leader>x <Plug>(go-doc-vertical)
-
-  autocmd FileType go nmap <silent> <Leader>i <Plug>(go-info)
-  autocmd FileType go nmap <silent> <Leader>l <Plug>(go-metalinter)
-
-  autocmd FileType go nmap <silent> <leader>b :<C-u>call <SID>build_go_files()<CR>
-  autocmd FileType go nmap <silent> <leader>t  <Plug>(go-test)
-  autocmd FileType go nmap <silent> <leader>tf <Plug>(go-test-func)
-  autocmd FileType go nmap <silent> <leader>r  <Plug>(go-run)
-  autocmd FileType go nmap <silent> <leader>e  <Plug>(go-install)
-
-  autocmd FileType go nmap <silent> <Leader>c <Plug>(go-coverage-toggle)
-
-  autocmd FileType go nmap <silent> <Leader>m <Plug>(go-implements)
-
-  autocmd FileType go nmap <Leader>gt :GoDeclsDir<cr>
-
-  " I like these more!
-  autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
-  autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
-  autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
-  autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
-augroup END
-
-" create a go doc comment based on the word under the cursor
-function! s:create_go_doc_comment()
-  norm "zyiw
-  execute ":put! z"
-  execute ":norm I// \<Esc>$"
-endfunction
-nnoremap <leader>ui :<C-u>call <SID>create_go_doc_comment()<CR>
+"nnoremap <Leader>T :lua require'lsp_extensions'.inlay_hints()
 
 "*****************************************************************************
 " Completion + Snippet
 "*****************************************************************************
-let g:deoplete#enable_at_startup = 1
+set shortmess+=c          " Avoid showing extra messages when using completion
+set belloff+=ctrlg        " If Vim beeps during completion
 
 " Completion options (select longest + show menu even if a single match is found)
-set completeopt=menu,menuone
+" set completeopt=menu,menuone
+set completeopt=menuone,noinsert,noselect
 
 " Completion window max size
 set pumheight=10
 
 " better key bindings for UltiSnipsExpandTrigger
-let g:SuperTabDefaultCompletionType = "context"
-let g:UltiSnipsExpandTrigger = "<tab>"
-let g:UltiSnipsJumpForwardTrigger = "<tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+" let g:SuperTabDefaultCompletionType = "context"
+"let g:UltiSnipsExpandTrigger = "<tab>"
+"let g:UltiSnipsJumpForwardTrigger = "<tab>"
+"let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
+
+" Trigger completion with <tab>
+" found in :help completion
+" Use <Tab> and <S-Tab> to navigate through popup menu
+inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+
+" use <Tab> as trigger keys
+imap <Tab> <Plug>(completion_smart_tab)
+imap <S-Tab> <Plug>(completion_smart_s_tab)
+
+let g:completion_enable_snippet = 'UltiSnips'
 
 "*****************************************************************************
 "" FZF
@@ -520,3 +524,104 @@ let g:plantuml_executable_script='/usr/bin/plantuml'
 
 "nnoremap <F5> :w<CR> :make<CR>
 
+"*****************************************************************************
+"" Go Lang
+"*****************************************************************************
+"let g:go_def_mode='gopls'
+"let g:go_info_mode='gopls'
+"let g:go_fmt_command = "gopls"
+"let g:go_fmt_fail_silently = 1
+"let g:go_imports_autosave = 1
+"
+"let g:go_list_type = "quickfix"
+"let g:go_auto_type_info = 0
+"let g:go_auto_sameids = 1
+"
+"let g:go_echo_command_info = 1
+"let g:go_autodetect_gopath = 1
+"
+"let go_textobj_include_function_doc = 1
+"
+"let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'vetshadow']
+""let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'deadcode', 'gas', 'goconst', 'gocyclo', 'gosimple', 'ineffassign', 'vetshadow']
+"let g:go_metalinter_autosave = 1
+""let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'errcheck']
+"let g:go_metalinter_autosave_enabled = ['vet','errcheck']
+""let g:go_metalinter_deadline = "5s"
+"
+"let g:go_highlight_space_tab_error = 0
+"let g:go_highlight_array_whitespace_error = 0
+"let g:go_highlight_trailing_whitespace_error = 0
+"let g:go_highlight_types = 0
+"let g:go_highlight_fields = 0
+"let g:go_highlight_functions = 0
+"let g:go_highlight_function_calls = 0
+"let g:go_highlight_operators = 0
+"let g:go_highlight_extra_types = 0
+"let g:go_highlight_build_constraints = 1
+"let g:go_highlight_generate_tags = 1
+"let g:go_highlight_format_strings = 0
+"
+"let g:go_modifytags_transform = 'camelcase'
+"let g:go_fold_enable = []
+"
+"let g:go_play_open_browser = 0
+"let g:go_play_browser_command = "chrome"
+"
+"let g:go_decls_includes = "func,type"
+"
+"nmap <C-d> :GoDeclsDir<cr>
+"imap <C-d> <esc>:<C-u>GoDeclsDir<cr>
+
+"" run :GoBuild or :GoTestCompile based on the go file
+"function! s:build_go_files()
+"  let l:file = expand('%')
+"  if l:file =~# '^\f\+_test\.go$'
+"    call go#test#Test(0, 1)
+"  elseif l:file =~# '^\f\+\.go$'
+"    call go#cmd#Build(0)
+"  endif
+"endfunction
+"
+"augroup FileType go
+"  autocmd!
+"
+"  autocmd FileType go nmap <silent> <Leader>v <Plug>(go-def-vertical)
+"  autocmd FileType go nmap <silent> <Leader>s <Plug>(go-def-split)
+"  autocmd FileType go nmap <silent> <Leader>d <Plug>(go-def-tab)
+"
+"  autocmd FileType go nmap <silent> <Leader>x <Plug>(go-doc-vertical)
+"
+"  autocmd FileType go nmap <silent> <Leader>i <Plug>(go-info)
+"  autocmd FileType go nmap <silent> <Leader>l <Plug>(go-metalinter)
+"
+"  autocmd FileType go nmap <silent> <leader>b :<C-u>call <SID>build_go_files()<CR>
+"  autocmd FileType go nmap <silent> <leader>t  <Plug>(go-test)
+"  autocmd FileType go nmap <silent> <leader>tf <Plug>(go-test-func)
+"  autocmd FileType go nmap <silent> <leader>r  <Plug>(go-run)
+"  autocmd FileType go nmap <silent> <leader>e  <Plug>(go-install)
+"
+"  autocmd FileType go nmap <silent> <Leader>c <Plug>(go-coverage-toggle)
+"
+"  autocmd FileType go nmap <silent> <Leader>m <Plug>(go-implements)
+"
+"  autocmd FileType go nmap <Leader>gt :GoDeclsDir<cr>
+"
+"  " I like these more!
+"  autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+"  autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+"  autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+"  autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+"augroup END
+"
+"" create a go doc comment based on the word under the cursor
+"function! s:create_go_doc_comment()
+"  norm "zyiw
+"  execute ":put! z"
+"  execute ":norm I// \<Esc>$"
+"endfunction
+"nnoremap <leader>ui :<C-u>call <SID>create_go_doc_comment()<CR>
+
+" disable vim-go :GoDef short cut (gd)
+" this is handled by LanguageClient [LC]
+"let g:go_def_mapping_enabled = 0
