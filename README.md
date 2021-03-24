@@ -119,3 +119,12 @@ nvim +PluginInstall +GoInstallBinaries +UpdateRemotePlugins +qall
 - :ball        open all buffers into windows
 - c-6          switch to alternate buffer
 
+
+- gg	go to begin of filed
+- vG    select to end of file
+- gv    select last select block
+- >>    ident right
+- <<	ident left
+- =		auto ident
+- vi}   select inner object until }
+- =i}   auto ident inner object until }
