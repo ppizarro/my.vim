@@ -36,6 +36,11 @@ Plugin 'neovim/nvim-lspconfig'
 " Autocompletion framework for built-in LSP
 Plugin 'nvim-lua/completion-nvim'
 
+" Snippets support
+"Plugin 'norcalli/snippets.nvim'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
+
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
@@ -60,8 +65,6 @@ Plugin 'arcticicestudio/nord-vim'
 
 "to split a one-liner into multiple lines'
 Plugin 'AndrewRadev/splitjoin.vim'
-
-Plugin 'SirVer/ultisnips'
 
 Plugin 'godlygeek/tabular'
 Plugin 'uarun/vim-protobuf'
@@ -115,11 +118,8 @@ set mouse=a                     "Enable mouse mode
 
 set noerrorbells                " No beeps
 
-"" Tabs. May be overriten by autocmd rules
-set tabstop=4					          " Render TABs using this many spaces.
-set softtabstop=0
-set shiftwidth=4				        " Indentation amount for < and > commands.
-set expandtab					          " Insert spaces when TAB is pressed.
+"" default indentation: 4 spaces
+set tabstop=4	softtabstop=4 shiftwidth=4 expandtab
 
 set clipboard=unnamedplus
 
@@ -200,7 +200,7 @@ set ruler						  " Show the line and column numbers of the cursor.
 set number						" Show the line numbers on the left side.
 
 if !exists('g:not_finish_vundle')
-"  colorscheme jellybeans
+  "  colorscheme jellybeans
   colorscheme nord
 endif
 
@@ -232,15 +232,15 @@ set termguicolors
 augroup filetypedetect
   command! -nargs=* -complete=help Help vertical belowright help <args>
   autocmd FileType help wincmd L
-  
+
   autocmd BufNewFile,BufRead .tmux.conf*,tmux.conf* setf tmux
   autocmd BufNewFile,BufRead .nginx.conf*,nginx.conf* setf nginx
   autocmd BufNewFile,BufRead *.hcl setf conf
 
-  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 
+  autocmd BufNewFile,BufRead *.go setlocal noexpandtab tabstop=4 shiftwidth=4 softtabstop=4
   autocmd BufRead,BufNewFile *.gotmpl set filetype=gotexttmpl
   autocmd BufNewFile,BufRead *.gohtml set filetype=gohtmltmpl
-  
+
   autocmd BufNewFile,BufRead *.ino setlocal noet ts=4 sw=4 sts=4
   autocmd BufNewFile,BufRead *.txt setlocal noet ts=4 sw=4
   autocmd BufNewFile,BufRead *.md setlocal noet ts=4 sw=4
@@ -249,7 +249,7 @@ augroup filetypedetect
   autocmd BufNewFile,BufRead *.hcl setlocal expandtab shiftwidth=2 tabstop=2
   autocmd BufNewFile,BufRead *.sh setlocal expandtab shiftwidth=2 tabstop=2
   autocmd BufNewFile,BufRead *.proto setlocal expandtab shiftwidth=2 tabstop=2
-  
+
   autocmd FileType json setlocal expandtab shiftwidth=2 tabstop=2
   autocmd FileType ruby setlocal expandtab shiftwidth=2 tabstop=2
 augroup END
@@ -271,9 +271,9 @@ nnoremap <leader>a :cclose<CR>
 
 " put quickfix window always to the bottom
 augroup quickfix
-    autocmd!
-    autocmd FileType qf wincmd J
-    autocmd FileType qf setlocal wrap
+  autocmd!
+  autocmd FileType qf wincmd J
+  autocmd FileType qf setlocal wrap
 augroup END
 
 " Automatically resize screens to be equally the same
@@ -307,28 +307,89 @@ lua <<EOF
 local nvim_lsp = require'lspconfig'
 
 function goimports(timeoutms)
-    local context = { source = { organizeImports = true } }
-    vim.validate { context = { context, "t", true } }
+  local context = { source = { organizeImports = true } }
+  vim.validate { context = { context, "t", true } }
 
-    local params = vim.lsp.util.make_range_params()
-    params.context = context
+  local params = vim.lsp.util.make_range_params()
+  params.context = context
 
-    local method = "textDocument/codeAction"
-    local resp = vim.lsp.buf_request_sync(0, method, params, timeoutms)
-    if resp and resp[1] then
-      local result = resp[1].result
-      if result and result[1] then
-        local edit = result[1].edit
-        vim.lsp.util.apply_workspace_edit(edit)
-      end
+  -- See the implementation of the textDocument/codeAction callback
+  -- (lua/vim/lsp/handler.lua) for how to do this properly.
+  local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout_ms)
+  if not result or next(result) == nil then return end
+  local actions = result[1].result
+  if not actions then return end
+  local action = actions[1]
+
+  -- textDocument/codeAction can return either Command[] or CodeAction[]. If it
+  -- is a CodeAction, it can have either an edit, a command or both. Edits
+  -- should be executed first.
+  if action.edit or type(action.command) == "table" then
+    if action.edit then
+      vim.lsp.util.apply_workspace_edit(action.edit)
     end
-
-    vim.lsp.buf.formatting()
+    if type(action.command) == "table" then
+      vim.lsp.buf.execute_command(action.command)
+    end
+  else
+    vim.lsp.buf.execute_command(action)
+  end
 end
 
 -- function to attach completion when setting up lsp
 local on_attach = function(client)
-    require'completion'.on_attach(client)
+  require'completion'.on_attach(client)
+
+  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+
+  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+
+  -- Mappings.
+  local opts = { noremap=true, silent=true }
+
+  -- gopls and rust-analyzer does not yet support goto declaration
+  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
+  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>', opts)
+  buf_set_keymap('n', 'gt', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
+  buf_set_keymap('n', 'gr', '<Cmd>lua vim.lsp.buf.references()<CR>', opts)
+  buf_set_keymap('n', 'gS', '<Cmd>lua vim.lsp.buf.document_symbol()<CR>', opts)
+  buf_set_keymap('n', 'gW', '<Cmd>lua vim.lsp.buf.workspace_symbol()<CR>', opts)
+  -- Goto previous/next diagnostic warning/error
+  buf_set_keymap('n', 'g[', '<Cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
+  buf_set_keymap('n', 'g]', '<Cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
+
+  buf_set_keymap('n', '<c-]>', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
+  buf_set_keymap('n', '<c-k>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
+
+  buf_set_keymap('n', '<space>rn', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+
+  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
+
+  -- Show diagnostic popup on cursor hover
+  --buf_set_keymap('n', '<space>e', '<Cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>', opts)
+
+  -- Set some keybinds conditional on server capabilities
+  if client.resolved_capabilities.document_formatting then
+    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+  elseif client.resolved_capabilities.document_range_formatting then
+    buf_set_keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+  end
+
+  -- Set autocommands conditional on server_capabilities
+  if client.resolved_capabilities.document_highlight then
+    vim.api.nvim_exec([[
+      hi LspReferenceRead cterm=bold ctermbg=red guibg=SlateBlue
+      hi LspReferenceText cterm=bold ctermbg=red guibg=SlateBlue
+      hi LspReferenceWrite cterm=bold ctermbg=red guibg=SlateBlue
+      augroup lsp_document_highlight
+        autocmd! * <buffer>
+        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+      augroup END
+    ]], false)
+  end
 end
 
 -- enable gopls
@@ -338,11 +399,15 @@ nvim_lsp.gopls.setup {
     gopls = {
       analyses = {
         unusedparams = true,
+        nilness = true,
+        shadow = true,
+        unusedwrite = true,
       },
       staticcheck = true,
+      buildFlags = { "-tags=integration" },
     },
   },
-  on_attach=on_attach,
+  on_attach = on_attach,
 }
 
 -- Enable rust_analyzer
@@ -359,34 +424,36 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 EOF
 
 autocmd BufWritePre *.go lua goimports(1000)
-autocmd FileType go setlocal omnifunc=v:lua.vim.lsp.omnifunc
+"autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync(nil, 1000)
+"autocmd FileType go setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
 "*****************************************************************************
 " Code navigation shortcuts
 " as found in :help lsp
 "*****************************************************************************
-nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-"nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> gi    <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
-"nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> gy    <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
-nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-" gopls and rust-analyzer does not yet support goto declaration
-"nnoremap <silent> gd    <cmd>lua vim.lsp.buf.declaration()<CR>
+"" gopls and rust-analyzer does not yet support goto declaration
+""nnoremap <silent> gD    <cmd>lua vim.lsp.buf.declaration()<CR>
+"nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
+"nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
+"nnoremap <silent> gi    <cmd>lua vim.lsp.buf.implementation()<CR>
+"nnoremap <silent> gt    <cmd>lua vim.lsp.buf.type_definition()<CR>
+"nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+"nnoremap <silent> gS    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+"nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+"" Goto previous/next diagnostic warning/error
+"nnoremap <silent> g[ <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
+"nnoremap <silent> g] <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+"
+"nnoremap <silent> ga <cmd>lua vim.lsp.buf.code_action()<CR>
+"
+"nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+"nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+"nnoremap <space>rn      <cmd>lua vim.lsp.buf.rename()<CR>
+""nnoremap <space>f       <cmd>lua vim.lsp.buf.formatting()<CR>
 
 " Show diagnostic popup on cursor hover
+"nnoremap <space>e       <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
 autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
-
-" Goto previous/next diagnostic warning/error
-nnoremap <silent> g[ <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
-nnoremap <silent> g] <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
-
-nnoremap <silent> ga <cmd>lua vim.lsp.buf.code_action()<CR>
 
 let g:gitgutter_sign_allow_clobber = 0
 let g:gitgutter_sign_priority = 0
@@ -400,31 +467,40 @@ let g:gitgutter_sign_priority = 0
 "*****************************************************************************
 " Completion + Snippet
 "*****************************************************************************
-set shortmess+=c          " Avoid showing extra messages when using completion
-set belloff+=ctrlg        " If Vim beeps during completion
-
-" Completion options (select longest + show menu even if a single match is found)
-" set completeopt=menu,menuone
-set completeopt=menuone,noinsert,noselect
-
-" Completion window max size
-set pumheight=10
-
-" better key bindings for UltiSnipsExpandTrigger
-" let g:SuperTabDefaultCompletionType = "context"
-"let g:UltiSnipsExpandTrigger = "<tab>"
-"let g:UltiSnipsJumpForwardTrigger = "<tab>"
-"let g:UltiSnipsJumpBackwardTrigger = "<s-tab>"
-
 " Trigger completion with <tab>
-" found in :help completion
 " Use <Tab> and <S-Tab> to navigate through popup menu
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
-" use <Tab> as trigger keys
-imap <Tab> <Plug>(completion_smart_tab)
-imap <S-Tab> <Plug>(completion_smart_s_tab)
+" Set completeopt to have a better completion experience
+set completeopt=menuone,noinsert,noselect
+
+" Avoid showing message extra message when using completion
+set shortmess+=c
+
+" If Vim beeps during completion
+set belloff+=ctrlg
+
+" Completion window max size
+"set pumheight=10
+
+" By default auto popup is enabled, turn it off by
+"let g:completion_enable_auto_popup = 0
+
+" By default LSP's hover is automatically called and displays in a floating window 
+"let g:completion_enable_auto_hover = 0
+
+" By default signature help opens automatically whenever it's available
+"let g:completion_enable_auto_signature = 0
+
+" Use <Tab> as trigger keys
+imap <tab> <Plug>(completion_smart_tab)
+imap <s-tab> <Plug>(completion_smart_s_tab)
+
+" better key bindings for UltiSnipsExpandTrigger
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
 let g:completion_enable_snippet = 'UltiSnips'
 
@@ -443,18 +519,18 @@ let g:fzf_nvim_statusline = 0
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
+      \ { 'fg':      ['fg', 'Normal'],
+      \ 'bg':      ['bg', 'Normal'],
+      \ 'hl':      ['fg', 'Comment'],
+      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+      \ 'hl+':     ['fg', 'Statement'],
+      \ 'info':    ['fg', 'PreProc'],
+      \ 'prompt':  ['fg', 'Conditional'],
+      \ 'pointer': ['fg', 'Exception'],
+      \ 'marker':  ['fg', 'Keyword'],
+      \ 'spinner': ['fg', 'Label'],
+      \ 'header':  ['fg', 'Comment'] }
 
 let g:fzf_history_dir = '~/.local/share/fzf-history'
 
@@ -476,9 +552,9 @@ imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 imap <c-x><c-l> <plug>(fzf-complete-line)
 
 let g:rg_command = '
-  \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
-  \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf}"
-  \ -g "!{.git,node_modules,vendor}/*" '
+      \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
+      \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf}"
+      \ -g "!{.git,node_modules,vendor}/*" '
 
 command! -bang -nargs=* F call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, <bang>0)
 
@@ -525,103 +601,107 @@ let g:plantuml_executable_script='/usr/bin/plantuml'
 "nnoremap <F5> :w<CR> :make<CR>
 
 "*****************************************************************************
-"" Go Lang
+"" Go Lang - vim-go
 "*****************************************************************************
+"" disable vim-go :GoDef short cut (gd)
+"" this is handled by LSP
+"let g:go_def_mapping_enabled = 0
+"let g:go_fmt_autosave = 0
+"let g:go_imports_autosave = 0
+"let g:go_mod_fmt_autosave = 0
+"let g:go_metalinter_autosave = 0
+"let g:go_asmfmt_autosave = 0
+
 "let g:go_def_mode='gopls'
 "let g:go_info_mode='gopls'
 "let g:go_fmt_command = "gopls"
-"let g:go_fmt_fail_silently = 1
-"let g:go_imports_autosave = 1
+""let g:go_fmt_fail_silently = 1
+""
+""let g:go_list_type = "quickfix"
+""let g:go_auto_type_info = 0
+""let g:go_auto_sameids = 1
+""
+""let g:go_echo_command_info = 1
+""let g:go_autodetect_gopath = 1
+""
+""let go_textobj_include_function_doc = 1
+""
+""let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'vetshadow']
+"""let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'deadcode', 'gas', 'goconst', 'gocyclo', 'gosimple', 'ineffassign', 'vetshadow']
+""let g:go_metalinter_autosave = 1
+"""let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'errcheck']
+""let g:go_metalinter_autosave_enabled = ['vet','errcheck']
+"""let g:go_metalinter_deadline = "5s"
+""
+""let g:go_highlight_space_tab_error = 0
+""let g:go_highlight_array_whitespace_error = 0
+""let g:go_highlight_trailing_whitespace_error = 0
+""let g:go_highlight_types = 0
+""let g:go_highlight_fields = 0
+""let g:go_highlight_functions = 0
+""let g:go_highlight_function_calls = 0
+""let g:go_highlight_operators = 0
+""let g:go_highlight_extra_types = 0
+""let g:go_highlight_build_constraints = 1
+""let g:go_highlight_generate_tags = 1
+""let g:go_highlight_format_strings = 0
+""
+""let g:go_modifytags_transform = 'camelcase'
+""let g:go_fold_enable = []
+""
+""let g:go_play_open_browser = 0
+""let g:go_play_browser_command = "chrome"
+""
+""let g:go_decls_includes = "func,type"
+""
+""nmap <C-d> :GoDeclsDir<cr>
+""imap <C-d> <esc>:<C-u>GoDeclsDir<cr>
 "
-"let g:go_list_type = "quickfix"
-"let g:go_auto_type_info = 0
-"let g:go_auto_sameids = 1
-"
-"let g:go_echo_command_info = 1
-"let g:go_autodetect_gopath = 1
-"
-"let go_textobj_include_function_doc = 1
-"
-"let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'vetshadow']
-""let g:go_metalinter_enabled = ['vet', 'golint', 'errcheck', 'deadcode', 'gas', 'goconst', 'gocyclo', 'gosimple', 'ineffassign', 'vetshadow']
-"let g:go_metalinter_autosave = 1
-""let g:go_metalinter_autosave_enabled = ['vet', 'golint', 'errcheck']
-"let g:go_metalinter_autosave_enabled = ['vet','errcheck']
-""let g:go_metalinter_deadline = "5s"
-"
-"let g:go_highlight_space_tab_error = 0
-"let g:go_highlight_array_whitespace_error = 0
-"let g:go_highlight_trailing_whitespace_error = 0
-"let g:go_highlight_types = 0
-"let g:go_highlight_fields = 0
-"let g:go_highlight_functions = 0
-"let g:go_highlight_function_calls = 0
-"let g:go_highlight_operators = 0
-"let g:go_highlight_extra_types = 0
-"let g:go_highlight_build_constraints = 1
-"let g:go_highlight_generate_tags = 1
-"let g:go_highlight_format_strings = 0
-"
-"let g:go_modifytags_transform = 'camelcase'
-"let g:go_fold_enable = []
-"
-"let g:go_play_open_browser = 0
-"let g:go_play_browser_command = "chrome"
-"
-"let g:go_decls_includes = "func,type"
-"
-"nmap <C-d> :GoDeclsDir<cr>
-"imap <C-d> <esc>:<C-u>GoDeclsDir<cr>
-
-"" run :GoBuild or :GoTestCompile based on the go file
-"function! s:build_go_files()
-"  let l:file = expand('%')
-"  if l:file =~# '^\f\+_test\.go$'
-"    call go#test#Test(0, 1)
-"  elseif l:file =~# '^\f\+\.go$'
-"    call go#cmd#Build(0)
-"  endif
-"endfunction
-"
+""" run :GoBuild or :GoTestCompile based on the go file
+""function! s:build_go_files()
+""  let l:file = expand('%')
+""  if l:file =~# '^\f\+_test\.go$'
+""    call go#test#Test(0, 1)
+""  elseif l:file =~# '^\f\+\.go$'
+""    call go#cmd#Build(0)
+""  endif
+""endfunction
+""
 "augroup FileType go
 "  autocmd!
-"
-"  autocmd FileType go nmap <silent> <Leader>v <Plug>(go-def-vertical)
-"  autocmd FileType go nmap <silent> <Leader>s <Plug>(go-def-split)
-"  autocmd FileType go nmap <silent> <Leader>d <Plug>(go-def-tab)
-"
-"  autocmd FileType go nmap <silent> <Leader>x <Plug>(go-doc-vertical)
-"
-"  autocmd FileType go nmap <silent> <Leader>i <Plug>(go-info)
-"  autocmd FileType go nmap <silent> <Leader>l <Plug>(go-metalinter)
-"
-"  autocmd FileType go nmap <silent> <leader>b :<C-u>call <SID>build_go_files()<CR>
+"  "
+"  "  autocmd FileType go nmap <silent> <Leader>v <Plug>(go-def-vertical)
+"  "  autocmd FileType go nmap <silent> <Leader>s <Plug>(go-def-split)
+"  "  autocmd FileType go nmap <silent> <Leader>d <Plug>(go-def-tab)
+"  "
+"  "  autocmd FileType go nmap <silent> <Leader>x <Plug>(go-doc-vertical)
+"  "
+"  "  autocmd FileType go nmap <silent> <Leader>i <Plug>(go-info)
+"  "  autocmd FileType go nmap <silent> <Leader>l <Plug>(go-metalinter)
+"  "
+"  "  autocmd FileType go nmap <silent> <leader>b :<C-u>call <SID>build_go_files()<CR>
 "  autocmd FileType go nmap <silent> <leader>t  <Plug>(go-test)
-"  autocmd FileType go nmap <silent> <leader>tf <Plug>(go-test-func)
-"  autocmd FileType go nmap <silent> <leader>r  <Plug>(go-run)
-"  autocmd FileType go nmap <silent> <leader>e  <Plug>(go-install)
-"
+"  "  autocmd FileType go nmap <silent> <leader>tf <Plug>(go-test-func)
+"  "  autocmd FileType go nmap <silent> <leader>r  <Plug>(go-run)
+"  "  autocmd FileType go nmap <silent> <leader>e  <Plug>(go-install)
+"  "
 "  autocmd FileType go nmap <silent> <Leader>c <Plug>(go-coverage-toggle)
-"
-"  autocmd FileType go nmap <silent> <Leader>m <Plug>(go-implements)
-"
-"  autocmd FileType go nmap <Leader>gt :GoDeclsDir<cr>
-"
-"  " I like these more!
-"  autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
-"  autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
-"  autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
-"  autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
+"  "
+"  "  autocmd FileType go nmap <silent> <Leader>m <Plug>(go-implements)
+"  "
+"  "  autocmd FileType go nmap <Leader>gt :GoDeclsDir<cr>
+"  "
+"  "  " I like these more!
+"  "  autocmd Filetype go command! -bang A call go#alternate#Switch(<bang>0, 'edit')
+"  "  autocmd Filetype go command! -bang AV call go#alternate#Switch(<bang>0, 'vsplit')
+"  "  autocmd Filetype go command! -bang AS call go#alternate#Switch(<bang>0, 'split')
+"  "  autocmd Filetype go command! -bang AT call go#alternate#Switch(<bang>0, 'tabe')
 "augroup END
-"
-"" create a go doc comment based on the word under the cursor
-"function! s:create_go_doc_comment()
-"  norm "zyiw
-"  execute ":put! z"
-"  execute ":norm I// \<Esc>$"
-"endfunction
-"nnoremap <leader>ui :<C-u>call <SID>create_go_doc_comment()<CR>
-
-" disable vim-go :GoDef short cut (gd)
-" this is handled by LanguageClient [LC]
-"let g:go_def_mapping_enabled = 0
+""
+""" create a go doc comment based on the word under the cursor
+""function! s:create_go_doc_comment()
+""  norm "zyiw
+""  execute ":put! z"
+""  execute ":norm I// \<Esc>$"
+""endfunction
+""nnoremap <leader>ui :<C-u>call <SID>create_go_doc_comment()<CR>
