@@ -52,7 +52,7 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 - gg	go to begin of filed
 - vG    select to end of file
 - gv    select last select block
-- >>    ident right
+- \>\>    ident right
 - <<	ident left
 - =		auto ident
 - vi}   select inner object until }
