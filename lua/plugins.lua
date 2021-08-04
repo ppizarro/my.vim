@@ -65,4 +65,7 @@ return require("packer").startup(function(use)
         "nvim-lua/plenary.nvim",
     },
   }
+
+  -- lua dev
+  use {"folke/lua-dev.nvim"}
 end)
