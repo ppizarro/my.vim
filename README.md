@@ -5,7 +5,7 @@ My init.vim configuration, plugins and some other vim useful stuff (mainly taken
 # Installation
 
 - neovim >= 0.5
-- npm: some lsp servers use node
+- npm: required by some lsp servers
 
 ```bash
 sudo pacman -S neovim npm
@@ -14,7 +14,7 @@ sudo pacman -S neovim npm
 Clone the project in $XDG_CONFIG_HOME/nvim folder, usually `~/.config/nvim`:
 
 ```bash
-git clone https://github.com/ellisonleao/neovimfiles ~/.config/nvim
+git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 ```
 
 # Plugins
