@@ -27,28 +27,34 @@ Plugin 'VundleVim/Vundle.vim'
 "*****************************************************************************
 "" Plugin install packages
 "*****************************************************************************
+" treesitter-based highlighting
+"Plugin 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+"Plugin 'nvim-treesitter/playground'
+
 " Collection of common configurations for the Nvim LSP client
 Plugin 'neovim/nvim-lspconfig'
 
-" Extentions to built-in LSP, for example, providing type inlay hints
-"Plugin 'tjdevries/lsp_extensions.nvim'
-
 " Autocompletion framework for built-in LSP
-Plugin 'nvim-lua/completion-nvim'
+"Plugin 'nvim-lua/completion-nvim'
+Plugin 'hrsh7th/nvim-compe'
+Plugin 'ray-x/lsp_signature.nvim'
 
 " Snippets support
-"Plugin 'norcalli/snippets.nvim'
+Plugin 'hrsh7th/vim-vsnip'
 Plugin 'SirVer/ultisnips'
+Plugin 'norcalli/snippets.nvim'
 Plugin 'honza/vim-snippets'
+
+" dependencies
+Plugin 'nvim-lua/popup.nvim'
+Plugin 'nvim-lua/plenary.nvim'
+Plugin 'kyazdani42/nvim-web-devicons'
+
+" telescope
+Plugin 'nvim-telescope/telescope.nvim'
 
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
-
-Plugin 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plugin 'junegunn/fzf.vim'
-Plugin 'mileszs/ack.vim'
-
-Plugin 'majutsushi/tagbar'
 
 "" Go Lang Bundle
 "Plugin 'fatih/vim-go', { 'tag': 'v1.24', 'do': ':GoInstallBinaries' }
@@ -59,22 +65,26 @@ Plugin 'majutsushi/tagbar'
 "Plugin 'altercation/vim-colors-solarized'
 "Plugin 'dracula/vim'
 "Plugin 'nanotech/jellybeans.vim', { 'tag': 'v1.7' }
-Plugin 'arcticicestudio/nord-vim'
+"Plugin 'arcticicestudio/nord-vim'
+Plugin 'fenetikm/falcon'
 
 "Plugin 'ervandew/supertab'
 
 "to split a one-liner into multiple lines'
-Plugin 'AndrewRadev/splitjoin.vim'
+"Plugin 'AndrewRadev/splitjoin.vim'
 
 Plugin 'godlygeek/tabular'
-Plugin 'uarun/vim-protobuf'
+"Plugin 'uarun/vim-protobuf'
+
+"Plugin 'lewis6991/gitsigns.nvim'
+Plugin 'airblade/vim-gitgutter'
+
 
 Plugin 'scrooloose/nerdtree'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'Raimondi/delimitMate'
+"Plugin 'Raimondi/delimitMate'
 
-Plugin 'scrooloose/vim-slumlord'
-Plugin 'aklt/plantuml-syntax'
+"Plugin 'scrooloose/vim-slumlord'
+"Plugin 'aklt/plantuml-syntax'
 
 " All of your Plugins must be added before the following line
 call vundle#end()         " required
@@ -178,11 +188,15 @@ endif
 " Path to python interpreter for neovim
 let g:python3_host_prog  = '/usr/bin/python3'
 " To disable Python 2 support
-let g:loaded_python_provider = 1
+let g:loaded_python_provider = 0
 " Skip the check of neovim module
 "let g:python3_host_skip_check = 1
 " To disable ruby support
-let g:loaded_ruby_provider = 1
+let g:loaded_ruby_provider = 0
+" To disable node support
+let g:loaded_node_provider = 0
+" To disable perl support
+let g:loaded_perl_provider = 0
 
 " Turn on the sign column so you can see error marks on lines
 " where there are quickfix errors.
@@ -199,9 +213,13 @@ syntax enable					" Enable syntax highlighting.
 set ruler						  " Show the line and column numbers of the cursor.
 set number						" Show the line numbers on the left side.
 
+let g:falcon_background = 0
+let g:falcon_inactive = 1
+
 if !exists('g:not_finish_vundle')
-  "  colorscheme jellybeans
-  colorscheme nord
+  "colorscheme jellybeans
+  "colorscheme nord
+  colorscheme falcon
 endif
 
 set background=dark
@@ -210,10 +228,12 @@ set background=dark
 set lazyredraw          		" Wait to redraw
 
 " vim-airline
+let g:falcon_airline = 1
 let g:airline_powerline_fonts = 1
 "let g:airline_solarized_bg='dark'
 "let g:airline_theme = 'jellybeans'
-let g:airline_theme = 'nord'
+"let g:airline_theme = 'nord'
+let g:airline_theme = 'falcon'
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#branch#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
@@ -255,55 +275,23 @@ augroup filetypedetect
 augroup END
 
 "*****************************************************************************
-"" Mappings
+" Lua Config
 "*****************************************************************************
-"" Map leader to ,
-let mapleader=','
-
-" Tagbar
-nmap <silent> <F4> :TagbarToggle<CR>
-let g:tagbar_autofocus = 1
-
-"" Next/Previous error
-map <C-n> :cnext<CR>
-map <C-m> :cprevious<CR>
-nnoremap <leader>a :cclose<CR>
-
-" put quickfix window always to the bottom
-augroup quickfix
-  autocmd!
-  autocmd FileType qf wincmd J
-  autocmd FileType qf setlocal wrap
-augroup END
-
-" Automatically resize screens to be equally the same
-" autocmd VimResized * wincmd =
-
-" Fast saving
-nnoremap <leader>w :w!<cr>
-nnoremap <silent> <leader>q :q!<CR>
-
-" Remove search highlight
-" nnoremap <leader><space> :nohlsearch<CR>
-function! s:clear_highlight()
-  let @/ = ""
-  call go#guru#ClearSameIds()
-endfunction
-nnoremap <silent> <leader><space> :<C-u>call <SID>clear_highlight()<CR>
-
-" Close all but the current one
-nnoremap <leader>o :only<CR>
-
-" Print full path
-map <C-f> :echo expand("%:p")<cr>
-
-nnoremap <F6> :setlocal spell! spell?<CR>
-
-"*****************************************************************************
-" Configure lsp
-"*****************************************************************************
-" https://github.com/neovim/nvim-lspconfig#gopls
 lua <<EOF
+
+--local ts = require 'nvim-treesitter.configs'
+-- ts.setup {
+--  --ensure_installed = 'maintained',
+--  ensure_installed = 'go',
+--  highlight = {enable = true},
+--}
+
+--require('telescope').setup()
+
+--require('gitsigns').setup()
+
+-- Configure lsp
+-- https://github.com/neovim/nvim-lspconfig#gopls
 local nvim_lsp = require'lspconfig'
 
 function goimports(timeoutms)
@@ -338,12 +326,14 @@ end
 
 -- function to attach completion when setting up lsp
 local on_attach = function(client)
-  require'completion'.on_attach(client)
+  --require'completion'.on_attach(client)
+
+  require "lsp_signature".on_attach()
 
   local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+  --local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  --buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
   local opts = { noremap=true, silent=true }
@@ -378,19 +368,29 @@ local on_attach = function(client)
   end
 
   -- Set autocommands conditional on server_capabilities
-  if client.resolved_capabilities.document_highlight then
-    vim.api.nvim_exec([[
-      hi LspReferenceRead cterm=bold ctermbg=red guibg=SlateBlue
-      hi LspReferenceText cterm=bold ctermbg=red guibg=SlateBlue
-      hi LspReferenceWrite cterm=bold ctermbg=red guibg=SlateBlue
-      augroup lsp_document_highlight
-        autocmd! * <buffer>
-        autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-        autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-      augroup END
-    ]], false)
-  end
+  -- if client.resolved_capabilities.document_highlight then
+  --   vim.api.nvim_exec([[
+  --     hi LspReferenceRead cterm=bold ctermbg=red guibg=SlateBlue
+  --     hi LspReferenceText cterm=bold ctermbg=red guibg=SlateBlue
+  --     hi LspReferenceWrite cterm=bold ctermbg=red guibg=SlateBlue
+  --     augroup lsp_document_highlight
+  --       autocmd! * <buffer>
+  --       autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+  --       autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+  --     augroup END
+  --   ]], false)
+  -- end
 end
+
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+capabilities.textDocument.completion.completionItem.resolveSupport = {
+  properties = {
+    'documentation',
+    'detail',
+    'additionalTextEdits',
+  }
+}
 
 -- enable gopls
 nvim_lsp.gopls.setup {
@@ -408,72 +408,107 @@ nvim_lsp.gopls.setup {
     },
   },
   on_attach = on_attach,
+  capabilities = capabilities,
 }
 
 -- Enable rust_analyzer
-nvim_lsp.rust_analyzer.setup({ on_attach=on_attach })
+nvim_lsp.rust_analyzer.setup {
+  on_attach=on_attach,
+  capabilities = capabilities,
+}
 
 -- Enable diagnostics
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = false,
-    signs = true,
-    update_in_insert = true,
-  }
-)
+--vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+--  vim.lsp.diagnostic.on_publish_diagnostics, {
+--    virtual_text = false,
+--    signs = true,
+--    update_in_insert = true,
+--  }
+--)
+
+require'compe'.setup {
+  enabled = true;
+  autocomplete = true;
+  debug = false;
+  min_length = 1;
+  preselect = 'enable';
+  throttle_time = 80;
+  source_timeout = 200;
+  incomplete_delay = 400;
+  max_abbr_width = 100;
+  max_kind_width = 100;
+  max_menu_width = 100;
+  documentation = true;
+
+  source = {
+    path = true;
+    buffer = true;
+    calc = true;
+    nvim_lsp = true;
+    nvim_lua = true;
+    vsnip = true;
+    ultisnips = true;
+  };
+}
 EOF
+
+"*****************************************************************************
+"" Mappings
+"*****************************************************************************
+"" Map leader to ,
+let mapleader=','
+
+"" Next/Previous error
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
+
+" put quickfix window always to the bottom
+augroup quickfix
+  autocmd!
+  autocmd FileType qf wincmd J
+  autocmd FileType qf setlocal wrap
+augroup END
+
+" Fast saving
+nnoremap <leader>w :w!<cr>
+nnoremap <silent> <leader>q :q!<CR>
+
+" Remove search highlight
+nnoremap <leader><space> :nohlsearch<CR>
+
+" Close all but the current one
+nnoremap <leader>o :only<CR>
+
+" Print full path
+map <C-f> :echo expand("%:p")<cr>
+
+nnoremap <F6> :setlocal spell! spell?<CR>
+
+"highlight link CompeDocumentation NormalFloat
 
 autocmd BufWritePre *.go lua goimports(1000)
 "autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync(nil, 1000)
 "autocmd FileType go setlocal omnifunc=v:lua.vim.lsp.omnifunc
 
-"*****************************************************************************
-" Code navigation shortcuts
-" as found in :help lsp
-"*****************************************************************************
-"" gopls and rust-analyzer does not yet support goto declaration
-""nnoremap <silent> gD    <cmd>lua vim.lsp.buf.declaration()<CR>
-"nnoremap <silent> <c-]> <cmd>lua vim.lsp.buf.definition()<CR>
-"nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
-"nnoremap <silent> gi    <cmd>lua vim.lsp.buf.implementation()<CR>
-"nnoremap <silent> gt    <cmd>lua vim.lsp.buf.type_definition()<CR>
-"nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
-"nnoremap <silent> gS    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-"nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-"" Goto previous/next diagnostic warning/error
-"nnoremap <silent> g[ <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
-"nnoremap <silent> g] <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
-"
-"nnoremap <silent> ga <cmd>lua vim.lsp.buf.code_action()<CR>
-"
-"nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-"nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
-"nnoremap <space>rn      <cmd>lua vim.lsp.buf.rename()<CR>
-""nnoremap <space>f       <cmd>lua vim.lsp.buf.formatting()<CR>
-
 " Show diagnostic popup on cursor hover
 "nnoremap <space>e       <cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>
-autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
+"autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
 
 let g:gitgutter_sign_allow_clobber = 0
 let g:gitgutter_sign_priority = 0
-
-" Enable type inlay hints
-"autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
-""\ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment" }
-
-"nnoremap <Leader>T :lua require'lsp_extensions'.inlay_hints()
 
 "*****************************************************************************
 " Completion + Snippet
 "*****************************************************************************
 " Trigger completion with <tab>
 " Use <Tab> and <S-Tab> to navigate through popup menu
-inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
-inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
+"inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+"inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 
 " Set completeopt to have a better completion experience
 set completeopt=menuone,noinsert,noselect
+"set completeopt=menuone,noselect
 
 " Avoid showing message extra message when using completion
 set shortmess+=c
@@ -487,98 +522,53 @@ set belloff+=ctrlg
 " By default auto popup is enabled, turn it off by
 "let g:completion_enable_auto_popup = 0
 
-" By default LSP's hover is automatically called and displays in a floating window 
+" By default LSP's hover is automatically called and displays in a floating window
 "let g:completion_enable_auto_hover = 0
 
 " By default signature help opens automatically whenever it's available
 "let g:completion_enable_auto_signature = 0
 
 " Use <Tab> as trigger keys
-imap <tab> <Plug>(completion_smart_tab)
-imap <s-tab> <Plug>(completion_smart_s_tab)
+"imap <tab> <Plug>(completion_smart_tab)
+"imap <s-tab> <Plug>(completion_smart_s_tab)
 
 " better key bindings for UltiSnipsExpandTrigger
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+"let g:UltiSnipsExpandTrigger="<tab>"
+"let g:UltiSnipsJumpForwardTrigger="<c-b>"
+"let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
-let g:completion_enable_snippet = 'UltiSnips'
+"let g:completion_enable_snippet = 'UltiSnips'
 
-"*****************************************************************************
-"" FZF
-"*****************************************************************************
-let g:fzf_command_prefix = 'Fzf'
-let g:fzf_layout = { 'down': '~20%' }
-
-" disable statusline overwriting
-let g:fzf_nvim_statusline = 0
-
-" In Neovim, you can set up fzf window using a Vim command
-"let g:fzf_layout = { 'window': 'enew' }
-"let g:fzf_layout = { 'window': '-tabnew' }
-
-" Customize fzf colors to match your color scheme
-let g:fzf_colors =
-      \ { 'fg':      ['fg', 'Normal'],
-      \ 'bg':      ['bg', 'Normal'],
-      \ 'hl':      ['fg', 'Comment'],
-      \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-      \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-      \ 'hl+':     ['fg', 'Statement'],
-      \ 'info':    ['fg', 'PreProc'],
-      \ 'prompt':  ['fg', 'Conditional'],
-      \ 'pointer': ['fg', 'Exception'],
-      \ 'marker':  ['fg', 'Keyword'],
-      \ 'spinner': ['fg', 'Label'],
-      \ 'header':  ['fg', 'Comment'] }
-
-let g:fzf_history_dir = '~/.local/share/fzf-history'
-
-" search across files in the current directory
-nmap <C-p> :FzfFiles<cr>
-imap <C-p> <esc>:<C-u>FzfFiles<cr>
-
-" <M-p> for open buffers
-nnoremap <silent> <M-p> :FzfBuffers<cr>
-
-" search in history
-nmap <C-b> :FzfHistory<cr>
-imap <C-b> <esc>:<C-u>FzfHistory<cr>
-
-" Insert mode completion
-imap <c-x><c-k> <plug>(fzf-complete-word)
-imap <c-x><c-f> <plug>(fzf-complete-path)
-imap <c-x><c-j> <plug>(fzf-complete-file-ag)
-imap <c-x><c-l> <plug>(fzf-complete-line)
-
-let g:rg_command = '
-      \ rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color "always"
-      \ -g "*.{js,json,php,md,styl,jade,html,config,py,cpp,c,go,hs,rb,conf}"
-      \ -g "!{.git,node_modules,vendor}/*" '
-
-command! -bang -nargs=* F call fzf#vim#grep(g:rg_command .shellescape(<q-args>), 1, <bang>0)
-
-nnoremap <C-g> :F<Cr>
-
-" For conceal markers.
-if has('conceal')
-  set conceallevel=2 concealcursor=niv
-endif
+inoremap <silent><expr> <C-Space> compe#complete()
+inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
 
 "*****************************************************************************
-" Ack searching and cope displaying
+"" Telescope
 "*****************************************************************************
-" Open Ack and put the cursor in the right position
-map <leader>g :Ack<space>
+" Find files using Telescope command-line sugar.
+nmap <C-p> <cmd>Telescope find_files<cr>
+nmap <C-g> <cmd>Telescope live_grep<cr>
+nnoremap <silent> <M-p> <cmd>Telescope buffers<cr>
+nmap <C-h> <cmd>Telescope help_tags<cr>
+
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+nnoremap <leader><tab> :b#<cr>
 
 " ==================== delimitMate ====================
-let g:delimitMate_expand_cr = 1   
-let g:delimitMate_expand_space = 1    
-let g:delimitMate_smart_quotes = 1    
-let g:delimitMate_expand_inside_quotes = 0    
-let g:delimitMate_smart_matchpairs = '^\%(\w\|\$\)'   
+"let g:delimitMate_expand_cr = 1   
+"let g:delimitMate_expand_space = 1    
+"let g:delimitMate_smart_quotes = 1    
+"let g:delimitMate_expand_inside_quotes = 0    
+"let g:delimitMate_smart_matchpairs = '^\%(\w\|\$\)'   
 
-imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
+"imap <expr> <CR> pumvisible() ? "\<c-y>" : "<Plug>delimitMateCR"
 
 " ==================== NerdTree ====================
 " For toggling
@@ -592,7 +582,7 @@ let NERDTreeMinimalUI=1
 let NERDTreeDirArrows=1
 
 " ==================== PlantUML ====================
-let g:plantuml_executable_script='/usr/bin/plantuml'
+"let g:plantuml_executable_script='/usr/bin/plantuml'
 
 "nnoremap <F5> :w<CR> :silent make<CR>
 "inoremap <F5> <Esc>:w<CR>:silent make<CR>
