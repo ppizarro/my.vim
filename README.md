@@ -27,8 +27,9 @@ git clone https://github.com/ellisonleao/neovimfiles ~/.config/nvim
 
 - [telescope.nvim](https://github.com/nvim-lua/telescope.nvim) - Find, filter, preview and pick using a nice UI
 
-- [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) - Easy default configs for the builtin LSP client
 - [nvim-lspinstall](https://github.com/kabouzeid/nvim-lspinstall) - Easy install LSP servers
+- [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) - Easy default configs for the builtin LSP client
+- [lspsaga.nvim](https://github.com/glepnir/lspsaga.nvim) - Better UI for LSP outputs (docs, rename, errors)
 - [nvim-compe](https://github.com/hrsh7th/nvim-compe) - One of the best autocomplete plugins for Neovim
 - [vim-vsnip](https://github.com/hrsh7th/vim-vsnip), [vim-vsnip-integ](https://github.com/hrsh7th/vim-vsnip-integ) - Snippet engine
 - [friendly-snippets](https://github.com/rafamadriz/friendly-snippets) - Preconfigured snippets for multiple languages

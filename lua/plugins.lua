@@ -29,6 +29,12 @@ return require("packer").startup(function(use)
   -- lsp, completion, linting and snippets
   use {"rafamadriz/friendly-snippets"}
   use {
+    "glepnir/lspsaga.nvim",
+    config = function()
+      require("config.lspsaga")
+    end,
+  }
+  use {
     "neovim/nvim-lspconfig",
     config = function()
       require("config.lsp")
