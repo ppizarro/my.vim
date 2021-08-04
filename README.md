@@ -34,6 +34,8 @@ git clone https://github.com/ellisonleao/neovimfiles ~/.config/nvim
 - [vim-vsnip](https://github.com/hrsh7th/vim-vsnip), [vim-vsnip-integ](https://github.com/hrsh7th/vim-vsnip-integ) - Snippet engine
 - [friendly-snippets](https://github.com/rafamadriz/friendly-snippets) - Preconfigured snippets for multiple languages
 
+- [lua-dev.nvim](https://github.com/folke/lua-dev.nvim) - Lua development plugin
+
 # Basic Usage
 
 ## Buffer
