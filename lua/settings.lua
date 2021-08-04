@@ -3,7 +3,7 @@ local opt = vim.opt
 
 -- Skip some remote provider loading
 g.loaded_python_provider = 0                                -- disable Python 2 support
-g.loaded_ruby_provider = 0                                  -- disable ruby support 
+g.loaded_ruby_provider = 0                                  -- disable ruby support
 g.loaded_node_provider = 0                                  -- disable node support
 g.loaded_perl_provider = 0                                  -- disable perl support
 g.python3_host_prog = '/usr/bin/python'                     -- path to python interpreter for neovim
@@ -62,7 +62,7 @@ opt.showmatch = false                    -- do not show matching brackets by fli
 opt.showmode = false                     -- we show the mode with airline or lightline
 opt.splitright = true                    -- split vertical windows right to the current windows
 opt.splitbelow = true                    -- split horizontal windows below to the current windows
-opt.updatetime = 500                     -- 500ms of no cursor movement to trigger CursorHold 
+opt.updatetime = 500                     -- 500ms of no cursor movement to trigger CursorHold
 opt.autoindent = true
 opt.errorbells = false
 opt.cursorline = true                    -- highlight current line - allows you to track cursor position more easily
@@ -77,10 +77,11 @@ opt.backup = false                       -- do not create backup files
 opt.swapfile = false                     -- do not create swap files
 opt.writebackup = false
 
-os.execute("mkdir -p ~/.local/share/nvim/undo/")
-opt.undofile = true                                           -- maintain undo history between sessions
-opt.undodir = "~/.local/share/nvim/undo/"                     -- set undo dir (required for mundo-- )
-opt.listchars = [[eol:$,tab:>-,trail:~,extends:>,precedes:<]] -- textmate-style tabstops/EOLs
+--os.execute("mkdir -p ~/.local/share/nvim/undo/")
+--opt.undofile = true                                           -- maintain undo history between sessions
+--opt.undodir = "~/.local/share/nvim/undo/"                     -- set undo dir (required for mundo-- )
+
+--opt.listchars = [[eol:$,tab:>-,trail:~,extends:>,precedes:<]] -- textmate-style tabstops/EOLs
 
 -- colorscheme configs
 local color_scheme = function()

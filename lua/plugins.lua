@@ -2,7 +2,7 @@ vim.cmd([[autocmd BufWritePost plugins.lua source <afile> | PackerCompile]])
 
 return require("packer").startup(function(use)
   use "wbthomason/packer.nvim"
-  
+
   -- visual
   use {"folke/tokyonight.nvim"}
   -- use {"arcticicestudio/nord-vim", disable = true }
@@ -37,7 +37,7 @@ return require("packer").startup(function(use)
       "ray-x/lsp_signature.nvim",
       "hrsh7th/vim-vsnip",
       "hrsh7th/vim-vsnip-integ",
-      --"kabouzeid/nvim-lspinstall",
+      "kabouzeid/nvim-lspinstall",
     },
   }
 

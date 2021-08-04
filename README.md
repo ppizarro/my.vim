@@ -4,10 +4,11 @@ My init.vim configuration, plugins and some other vim useful stuff (mainly taken
 
 # Installation
 
-Install neovim >= 0.5:
+- neovim >= 0.5
+- npm: some lsp servers use node
 
 ```bash
-sudo pacman -S neovim
+sudo pacman -S neovim npm
 ```
 
 Clone the project in $XDG_CONFIG_HOME/nvim folder, usually `~/.config/nvim`:

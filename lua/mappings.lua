@@ -42,35 +42,9 @@ local function set_trouble_mappings()
   keymap('n', 'gR',         '<cmd>Trouble lsp_references<cr>', opts)
 end
 
--- lsp
-local function set_lsp_mappings()
-  -- gopls and rust-analyzer does not yet support goto declaration
-  keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-  keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  keymap('n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  keymap('n', 'gt', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  keymap('n', 'gr', '<Cmd>lua vim.lsp.buf.references()<CR>', opts)
-  keymap('n', 'gS', '<Cmd>lua vim.lsp.buf.document_symbol()<CR>', opts)
-  keymap('n', 'gW', '<Cmd>lua vim.lsp.buf.workspace_symbol()<CR>', opts)
-
-  -- Goto previous/next diagnostic warning/error
-  keymap('n', 'g[', '<Cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  keymap('n', 'g]', '<Cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-
-  keymap('n', '<c-]>', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  keymap('n', '<c-k>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-
-  keymap('n', '<space>rn', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-  keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-
-  --keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
-  keymap("n", "<space>f", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
-end
-
 g.mapleader = ","
 g.maplocalleader = ","
 
 set_system_mappings()
 set_telescope_mappings()
 set_trouble_mappings()
-set_lsp_mappings()
