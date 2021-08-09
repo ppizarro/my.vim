@@ -30,6 +30,14 @@ local function set_telescope_mappings()
   keymap('n', '<C-h>', '<cmd>Telescope help_tags<CR>')
 end
 
+-- vim-tree
+local function set_vim_tree_mappings()
+  --keymap('n', '<C-n>', '<cmd>NvimTreeFindFile<cr>')
+  keymap('n', '<leader>n', '<cmd>NvimTreeToggle<CR>')
+  --keymap('n', '<leader>r', '<cmd>NvimTreeRefresh<CR>')
+  --  NvimTreeOpen and NvimTreeClose are also available if you need them
+end
+
 -- trouble
 local function set_trouble_mappings()
   local opts = { noremap=true, silent=true }
@@ -47,4 +55,5 @@ g.maplocalleader = ","
 
 set_system_mappings()
 set_telescope_mappings()
+set_vim_tree_mappings()
 set_trouble_mappings()

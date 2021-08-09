@@ -25,6 +25,15 @@ return require("packer").startup(function(use)
         "nvim-lua/plenary.nvim",
     },
   }
+  use {
+    "kyazdani42/nvim-tree.lua",
+    config = function()
+      require("config.nvim-tree")
+    end,
+    requires = {
+        "kyazdani42/nvim-web-devicons",
+    }
+  }
 
   -- lsp, completion, linting and snippets
   use {"rafamadriz/friendly-snippets"}
