@@ -1,6 +1,6 @@
 # Introduction
 
-My init.vim configuration, plugins and some other vim useful stuff (mainly taken from [Practical Vim: Edit Text at the Speed of Thought](http://pragprog.com/book/dnvim/practical-vim)).
+My init.vim configuration, plugins and some other vim useful stuff.
 
 # Installation
 
