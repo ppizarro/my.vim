@@ -8,10 +8,8 @@ end
 
 -- system
 local function set_system_mappings()
-  keymap('c', 'w!!', 'w !sudo tee % >/dev/null<CR>:e!<CR><CR>')        -- write file as root
-  keymap('', '<leader>sl', '<cmd>set list!<CR>')                       -- show hidden characters
-  keymap('', '<C-j>', '<cmd>:bnext<CR>')                               -- buffer cycle like a vim acolyte
-  keymap('', '<C-k>', '<cmd>:bprevious<CR>')                           -- buffer cycle like a vim acolyte
+  keymap('', '<C-j>', '<cmd>:bnext<CR>')                               -- buffer cycle
+  keymap('', '<C-k>', '<cmd>:bprevious<CR>')                           -- buffer cycle
   keymap('n', '<C-l>', '<cmd>nohlsearch<CR>')                          -- clear search highlights
   keymap('v', 'J', ":m '>+1<CR>gv=gv")                                 -- visual block movement (up)
   keymap('v', 'K', ":m '<-2<CR>gv=gv")                                 -- visual block movement (down)
@@ -19,6 +17,9 @@ local function set_system_mappings()
   keymap('n', 'J', 'mzJ`z')                                            -- join lines, but keep cursor stationary
   keymap('n', 'S', 'i<cr><esc>^mwgk:silent! s/\v +$//<cr>:noh<cr>`w')  -- split lines (reciprocal of join, J)
 
+  -- quickfix shortcuts
+  keymap('', '<C-n>', '<cmd>:cnext<CR>')
+  keymap('', '<C-m>', '<cmd>:cprevious<CR>')
   keymap('n', '<leader>a', '<cmd>cclose<CR>')
 end
 
@@ -32,10 +33,7 @@ end
 
 -- vim-tree
 local function set_vim_tree_mappings()
-  --keymap('n', '<C-n>', '<cmd>NvimTreeFindFile<cr>')
   keymap('n', '<leader>n', '<cmd>NvimTreeToggle<CR>')
-  --keymap('n', '<leader>r', '<cmd>NvimTreeRefresh<CR>')
-  --  NvimTreeOpen and NvimTreeClose are also available if you need them
 end
 
 -- trouble
