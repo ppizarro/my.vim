@@ -42,7 +42,7 @@ opt.number = true                        -- show line numbers
 opt.relativenumber = false               -- show relative line numbers
 opt.ruler = true                         -- show the line and column numbers of the cursor
 
-opt.guifont = "Go Mono for Powerline"
+opt.guifont = "Hack Nerd Font"
 opt.clipboard = "unnamedplus"            -- use system copy/paste
 opt.hlsearch = true                      -- highlight search results
 opt.incsearch = true                     -- show search matches as you type
