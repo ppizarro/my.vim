@@ -18,11 +18,17 @@ return require("packer").startup(function(use)
   }
 
   -- navigation
+  use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
   use {
     "nvim-telescope/telescope.nvim",
+    config = function()
+      require("config.telescope")
+    end,
     requires = {
         "nvim-lua/popup.nvim",
         "nvim-lua/plenary.nvim",
+        "kyazdani42/nvim-web-devicons",
+
     },
   }
   use {
