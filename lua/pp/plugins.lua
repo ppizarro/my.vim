@@ -2,13 +2,15 @@ vim.cmd([[autocmd BufWritePost plugins.lua source <afile> | PackerCompile]])
 
 return require("packer").startup(function(use)
   use "wbthomason/packer.nvim"
+  use "lewis6991/impatient.nvim"
 
   -- visual
-  use {"folke/tokyonight.nvim"}
-  -- use {"arcticicestudio/nord-vim", disable = true }
-  -- use {"fenetikm/falcon", disable = true }
-  -- use {"nanotech/jellybeans.vim", tag = "v1.7", disable = true }
-  -- use {"fatih/molokai", disable = true }
+  use {
+    "folke/tokyonight.nvim",
+    config = function()
+      require("pp.colors")
+    end,
+  }
   use {"kyazdani42/nvim-web-devicons"}
   use {
     "hoob3rt/lualine.nvim",
@@ -42,25 +44,21 @@ return require("packer").startup(function(use)
   }
 
   -- lsp, linting and snippets
-  use {"rafamadriz/friendly-snippets"}
-  use {
-    "glepnir/lspsaga.nvim",
-    config = function()
-      require("pp.lspsaga")
-    end,
-  }
   use {
     "neovim/nvim-lspconfig",
     config = function()
       require("pp.lsp")
     end,
     requires = {
-      "ray-x/lsp_signature.nvim",
       "kabouzeid/nvim-lspinstall",
+      "glepnir/lspsaga.nvim",
+      "ray-x/lsp_signature.nvim",
     },
   }
+  --use {"wbthomason/lsp-status.nvim"}
 
   -- completion
+  use {"rafamadriz/friendly-snippets"}
   use {
     'hrsh7th/nvim-cmp',
     config = function()

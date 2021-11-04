@@ -4,6 +4,11 @@
 local lspinstall = require("lspinstall")
 local lspconfig = require("lspconfig")
 
+require("lspsaga").init_lsp_saga({
+  error_sign = "✗",
+  warn_sign = "⚠",
+})
+
 local on_attach = function(client, bufnr)
   require "lsp_signature".on_attach()
 
