@@ -1,5 +1,14 @@
 local bootstrap = {}
 
+-- Leader key -> ","
+--
+-- In general, it's a good idea to set this early in your config, because otherwise
+-- if you have any mappings you set BEFORE doing this, they will be set to the OLD
+-- leader.
+local set_leader_key = function()
+  vim.g.mapleader = ","
+end
+
 local download_packer = function()
   print("Downloading packer...")
   local install_path = vim.fn.stdpath('data')..'/site/pack/packer/start/packer.nvim'
@@ -14,11 +23,15 @@ local install_plugins = function()
 end
 
 bootstrap.init = function()
+  set_leader_key()
+
   if not pcall(require, "packer") then
     download_packer()
     install_plugins()
     return true
   end
+
+  require "impatient"
   return false
 end
 

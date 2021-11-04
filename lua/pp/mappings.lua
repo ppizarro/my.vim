@@ -1,4 +1,4 @@
-local api, g = vim.api, vim.g
+local api = vim.api
 
 local function keymap(mode, lhs, rhs, opts)
   local options = {noremap = true}
@@ -25,10 +25,10 @@ end
 
 -- telescope
 local function set_telescope_mappings()
---  keymap('n', '<C-p>', '<cmd>Telescope find_files<CR>')
---  keymap('n', '<C-g>', '<cmd>Telescope live_grep prompt_prefix=🔍<CR>')
---  keymap('n', '<C-b>', '<cmd>Telescope buffers<CR>')
---  keymap('n', '<C-h>', '<cmd>Telescope help_tags<CR>')
+  keymap('n', '<C-p>', '<cmd>Telescope find_files<CR>')
+  keymap('n', '<C-g>', '<cmd>Telescope live_grep prompt_prefix=🔍<CR>')
+  keymap('n', '<C-b>', '<cmd>Telescope buffers<CR>')
+  keymap('n', '<C-h>', '<cmd>Telescope help_tags<CR>')
 end
 
 -- vim-tree
@@ -49,9 +49,6 @@ local function set_trouble_mappings()
   keymap('n', 'gR',         '<cmd>Trouble lsp_references<cr>', opts)
 end
 --]]
-
-g.mapleader = ","
-g.maplocalleader = ","
 
 set_system_mappings()
 set_telescope_mappings()

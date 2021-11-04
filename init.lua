@@ -1,7 +1,7 @@
 if require('pp.bootstrap').init() then
-    return
+  return
 end
 
-require("pp.plugins")
 require('pp.settings')
+require("pp.plugins")
 require('pp.mappings')

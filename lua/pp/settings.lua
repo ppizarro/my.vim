@@ -11,15 +11,23 @@ g.python3_host_prog = '/usr/bin/python'                     -- path to python in
 -- Disable some built-in plugins we don't want
 local disabled_built_ins = {
   'gzip',
-  'man',
-  'matchit',
-  'matchparen',
-  'shada_plugin',
-  'tarPlugin',
-  'tar',
   'zipPlugin',
   'zip',
+  'tar',
+  'tarPlugin',
+  'getscript',
+  'getscriptPlugin',
+  'vimball',
+  'vimballPlugin',
+  '2html_plugin',
+  'matchit',
+  'matchparen',
+  'logiPat',
+  'rrhelper',
+  'netrw',
   'netrwPlugin',
+  'netrwSettings',
+  'man',
 }
 
 for i = 1, 10 do
@@ -35,7 +43,7 @@ opt.softtabstop = indent                 -- number of spaces tabs count for
 opt.smartindent = true                   -- insert indents automatically
 opt.textwidth = width                    -- maximum width of text
 
--- opt.colorcolumn = tostring(width)        -- line length marker
+--opt.colorcolumn = tostring(width)        -- line length marker
 opt.list = false                         -- do not show invisible characters by default
 opt.signcolumn = "yes"                   -- show sign column
 opt.number = true                        -- show line numbers
@@ -82,25 +90,3 @@ opt.writebackup = false
 --opt.undodir = "~/.local/share/nvim/undo/"                     -- set undo dir (required for mundo-- )
 
 --opt.listchars = [[eol:$,tab:>-,trail:~,extends:>,precedes:<]] -- textmate-style tabstops/EOLs
-
--- colorscheme configs
-local color_scheme = function()
-  opt.termguicolors = true                 -- true color support
-  opt.background = "dark"
-
-  -- vim.cmd("colorscheme nord")
-
-  -- vim.g.falcon_background = 0
-  -- vim.g.falcon_inactive = 1
-  -- vim.cmd("colorscheme falcon")
-
-  -- vim.cmd("colorscheme jellybeans")
-
-  -- vim.g.molokai_original = 1
-  -- vim.cmd("colorscheme molokai")
-
-  vim.g.tokyonight_style = "night"
-  vim.cmd("colorscheme tokyonight")
-end
-
-color_scheme()
