@@ -52,7 +52,7 @@ opt.inccommand = "nosplit"
 opt.hidden = true                        -- enable modified buffers in background
 opt.joinspaces = false                   -- no double spaces with join after a dot
 opt.shiftround = true                    -- move in multiples of shiftwidth with < and >
-opt.wildmode = "list:longest"            -- command-line completion mode
+--opt.wildmode = "list:longest"            -- command-line completion mode
 opt.mouse = "a"                          -- allow mouse actions
 opt.autochdir = false                    -- change dirs to the file in the current buff
 opt.autoread = true                      -- automatically reread changed files without asking me anything
@@ -70,7 +70,7 @@ opt.cursorcolumn = false
 opt.maxmempattern = 20000                -- increase max memory to show syntax highlighting for large files
 opt.lazyredraw = true                    -- wait to redraw
 
-opt.completeopt = "menu,menuone,noselect" -- required for nvim-compe completion
+opt.completeopt = "menu,menuone,noselect" -- required for nvim-cmp completion
 opt.shortmess = vim.o.shortmess .. "c"
 
 opt.backup = false                       -- do not create backup files

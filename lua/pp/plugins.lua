@@ -13,7 +13,7 @@ return require("packer").startup(function(use)
   use {
     "hoob3rt/lualine.nvim",
     config = function()
-      require("config.lualine")
+      require("pp.lualine")
     end,
   }
 
@@ -22,7 +22,7 @@ return require("packer").startup(function(use)
   use {
     "nvim-telescope/telescope.nvim",
     config = function()
-      require("config.telescope")
+      require("pp.telescope")
     end,
     requires = {
         "nvim-lua/popup.nvim",
@@ -34,40 +34,48 @@ return require("packer").startup(function(use)
   use {
     "kyazdani42/nvim-tree.lua",
     config = function()
-      require("config.nvim-tree")
+      require("pp.nvim-tree")
     end,
     requires = {
         "kyazdani42/nvim-web-devicons",
     }
   }
 
-  -- lsp, completion, linting and snippets
+  -- lsp, linting and snippets
   use {"rafamadriz/friendly-snippets"}
   use {
     "glepnir/lspsaga.nvim",
     config = function()
-      require("config.lspsaga")
+      require("pp.lspsaga")
     end,
   }
   use {
     "neovim/nvim-lspconfig",
     config = function()
-      require("config.lsp")
+      require("pp.lsp")
     end,
     requires = {
       "ray-x/lsp_signature.nvim",
-      "hrsh7th/vim-vsnip",
-      "hrsh7th/vim-vsnip-integ",
       "kabouzeid/nvim-lspinstall",
     },
   }
 
+  -- completion
   use {
-    "hrsh7th/nvim-compe",
+    'hrsh7th/nvim-cmp',
     config = function()
-      require("config.compe")
+      require("pp.completion")
     end,
-    event = "InsertEnter *",
+    requires = {
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-nvim-lua",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-cmdline",
+      "hrsh7th/cmp-vsnip",
+      "hrsh7th/vim-vsnip",
+      "onsails/lspkind-nvim",
+    },
   }
 
   -- git

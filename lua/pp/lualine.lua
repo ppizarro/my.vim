@@ -16,5 +16,6 @@ require("lualine").setup {
     lualine_y = {},
     lualine_z = {},
   },
-  extensions = {"fugitive", "quickfix"},
+  --extensions = {"fugitive", "quickfix"},
+  extensions = {"quickfix"},
 }

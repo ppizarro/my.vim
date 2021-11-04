@@ -8,7 +8,7 @@ local download_packer = function()
 end
 
 local install_plugins = function()
-  require("plugins")
+  require("pp.plugins")
   vim.cmd("PackerSync")
   vim.cmd([[autocmd User PackerComplete source init.lua]])
 end
