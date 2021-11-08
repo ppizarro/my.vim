@@ -30,7 +30,6 @@ return require("packer").startup(function(use)
         "nvim-lua/popup.nvim",
         "nvim-lua/plenary.nvim",
         "kyazdani42/nvim-web-devicons",
-
     },
   }
   use {
@@ -57,22 +56,16 @@ return require("packer").startup(function(use)
   }
   --use {"wbthomason/lsp-status.nvim"}
 
-  -- completion
-  use {"rafamadriz/friendly-snippets"}
+  -- lsp
   use {
-    'hrsh7th/nvim-cmp',
+    "neovim/nvim-lspconfig",
     config = function()
-      require("pp.completion")
+      require("pp.lsp")
     end,
     requires = {
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-nvim-lua",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      "hrsh7th/cmp-cmdline",
-      "hrsh7th/cmp-vsnip",
-      "hrsh7th/vim-vsnip",
-      "onsails/lspkind-nvim",
+      "williamboman/nvim-lsp-installer",
+      --"glepnir/lspsaga.nvim",
+      "ray-x/lsp_signature.nvim",
     },
   }
 
