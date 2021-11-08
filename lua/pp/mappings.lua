@@ -19,16 +19,16 @@ local function set_system_mappings()
 
   -- quickfix shortcuts
   keymap('', '<C-n>', '<cmd>:cnext<CR>')
-  keymap('', '<C-m>', '<cmd>:cprevious<CR>')
+  keymap('', '<C-p>', '<cmd>:cprevious<CR>')
   keymap('n', '<leader>a', '<cmd>cclose<CR>')
 end
 
 -- telescope
 local function set_telescope_mappings()
-  keymap('n', '<C-p>', '<cmd>Telescope find_files<CR>')
-  keymap('n', '<C-g>', '<cmd>Telescope live_grep prompt_prefix=🔍<CR>')
-  keymap('n', '<C-b>', '<cmd>Telescope buffers<CR>')
-  keymap('n', '<C-h>', '<cmd>Telescope help_tags<CR>')
+  keymap('n', '<space>ff', '<cmd>Telescope find_files<CR>')
+  keymap('n', '<space>fg', '<cmd>Telescope live_grep prompt_prefix=🔍<CR>')
+  keymap('n', '<space>fb', '<cmd>Telescope buffers<CR>')
+  keymap('n', '<space>fh', '<cmd>Telescope help_tags<CR>')
 end
 
 -- vim-tree
