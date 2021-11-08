@@ -42,19 +42,25 @@ return require("packer").startup(function(use)
     }
   }
 
-  -- lsp, linting and snippets
+  -- completion and snippets
+  use {"rafamadriz/friendly-snippets"}
   use {
-    "neovim/nvim-lspconfig",
+    'hrsh7th/nvim-cmp',
     config = function()
-      require("pp.lsp")
+      require("pp.cmp")
     end,
     requires = {
-      "kabouzeid/nvim-lspinstall",
-      "glepnir/lspsaga.nvim",
-      "ray-x/lsp_signature.nvim",
+      "hrsh7th/cmp-vsnip",
+      "hrsh7th/vim-vsnip",
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-nvim-lsp-document-symbol",
+      "hrsh7th/cmp-cmdline",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-nvim-lua",
+      "onsails/lspkind-nvim",
     },
   }
-  --use {"wbthomason/lsp-status.nvim"}
 
   -- lsp
   use {

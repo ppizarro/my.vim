@@ -78,9 +78,6 @@ opt.cursorcolumn = false
 opt.maxmempattern = 20000                -- increase max memory to show syntax highlighting for large files
 opt.lazyredraw = true                    -- wait to redraw
 
-opt.completeopt = "menu,menuone,noselect" -- required for nvim-cmp completion
-opt.shortmess = vim.o.shortmess .. "c"
-
 opt.backup = false                       -- do not create backup files
 opt.swapfile = false                     -- do not create swap files
 opt.writebackup = false

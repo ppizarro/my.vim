@@ -30,7 +30,6 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
 
   buf_set_keymap('n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  --telescope_mapper.apply_keymap(bufnr, 'gI', '<Cmd>lua vim.lsp.buf.implementation()<CR>', nil, true)
   buf_set_keymap('n', 'gt', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
   buf_set_keymap('n', 'gr', '<Cmd>lua vim.lsp.buf.references()<CR>', opts)
   buf_set_keymap('n', 'gS', '<Cmd>lua vim.lsp.buf.document_symbol()<CR>', opts)
@@ -43,7 +42,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('i', '<c-s>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
 
   -- rename
-  buf_set_keymap('n', '<space>cr', '<Cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  buf_set_keymap('n', '<space>rn', '<Cmd>lua vim.lsp.buf.rename()<CR>', opts)
 
   -- code action
   buf_set_keymap('n', '<space>ca', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
@@ -125,7 +124,7 @@ local go_settings = {
         analyses = {
             unusedparams = true,
             nilness = true,
-            shadow = true,
+            --shadow = true,
             unusedwrite = true,
         },
         staticcheck = true,
