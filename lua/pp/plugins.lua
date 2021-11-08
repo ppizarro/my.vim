@@ -69,6 +69,15 @@ return require("packer").startup(function(use)
     },
   }
 
+  -- treesitter
+  use({
+    "nvim-treesitter/nvim-treesitter",
+    config = function()
+      require("pp.treesitter")
+    end,
+  })
+  --use({ "nvim-treesitter/playground" })
+
   -- git
   use {
     "lewis6991/gitsigns.nvim",
