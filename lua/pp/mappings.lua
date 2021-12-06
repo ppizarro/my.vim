@@ -25,10 +25,12 @@ end
 
 -- telescope
 local function set_telescope_mappings()
-  keymap('n', '<space>ff', '<cmd>Telescope find_files<CR>')
-  keymap('n', '<space>fg', '<cmd>Telescope live_grep prompt_prefix=🔍<CR>')
-  keymap('n', '<space>fb', '<cmd>Telescope buffers<CR>')
-  keymap('n', '<space>fh', '<cmd>Telescope help_tags<CR>')
+  keymap('n', '<leader>ff', '<cmd>Telescope find_files<CR>')
+  keymap('n', '<leader>fb', '<cmd>Telescope file_browser<CR>')
+  keymap('n', '<leader>lg', '<cmd>Telescope live_grep prompt_prefix=🔍<CR>')
+  keymap('n', '<leader>b',  '<cmd>Telescope buffers<CR>')
+  keymap('n', '<leader>ht', '<cmd>Telescope help_tags<CR>')
+  keymap('n', '<leader>gc', '<cmd>Telescope git_commits<CR>')
 end
 
 -- vim-tree
