@@ -95,6 +95,14 @@ return require("packer").startup(function(use)
     },
   }
 
+  -- comments
+  use({
+      "numToStr/Comment.nvim",
+      config = function()
+        require("Comment").setup()
+      end,
+  })
+
   -- lua dev
   use {"folke/lua-dev.nvim"}
 end)
