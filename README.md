@@ -71,7 +71,7 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 ```help
 `<leader>ff` find_files
 `<leader>fb` file_browser
-`<leader>l`	 live_grep
+`<leader>l`  live_grep
 `<leader>b`  buffers
 `<leader>ht` help_tags
 `<leader>gc` git_commits
@@ -94,9 +94,9 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 
 ## jump diagnostic
 ```help
-`[e`, go to previous diagnostic warning/error
-`]e`, go to previous diagnostic warning/error
-`<leader>e`, quick fix list with warnings/errors
+`[e`        go to previous diagnostic warning/error
+`]e`        go to previous diagnostic warning/error
+`<leader>e` quick fix list with warnings/errors
 ```
 
 ## signature
@@ -110,7 +110,7 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 `<leader>n` tree toggle
 ```
 
-# completion
+# Completion
 ```help
 `<C-d>`     scroll down
 `<C-f>`     scroll up
