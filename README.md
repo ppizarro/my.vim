@@ -4,7 +4,7 @@ My init.vim configuration, plugins and some other vim useful stuff.
 
 # Installation
 
-- neovim >= 0.5
+- neovim >= 0.6
 - npm: required by some lsp servers
 
 ```bash
