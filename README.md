@@ -34,13 +34,14 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 - [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) - A completion engine plugin for neovim written in Lua
 - [vim-vsnip](https://github.com/hrsh7th/vim-vsnip), [vim-vsnip-integ](https://github.com/hrsh7th/vim-vsnip-integ) - Snippet engine
 - [friendly-snippets](https://github.com/rafamadriz/friendly-snippets) - Preconfigured snippets for multiple languages
-- [Comment.nvim]("https://github.com/numToStr/Comment.nvim") - Smart and powerful comment plugin for neovim
+- [Comment.nvim](https://github.com/numToStr/Comment.nvim) - Smart and powerful comment plugin for neovim
 
 - [lua-dev.nvim](https://github.com/folke/lua-dev.nvim) - Lua development plugin
 
 # Basic Usage
 
 ## Buffer
+```help
 `:ls`          returns information about each buffer
 `<C-j>`        :bnext
 `<C-k>`        :bprevious
@@ -52,24 +53,32 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 `:bd <number>` delete the buffer - also takes buffer numbers as arguments
 `:ball`        open all buffers into windows
 `c-6`          switch to alternate buffer
+```
 
 ## Search
+```help
 `<C-l>` :nohlsearch -- clear search highlights
+```
 
 ## Quickfix
+```help
 `<C-n>`     :cnext
 `<C-p>`     :cprevious
 `<leader>a` :cclose
+```
 
 # Telescope
+```help
 `<leader>ff` find_files
 `<leader>fb` file_browser
 `<leader>l`	 live_grep
 `<leader>b`  buffers
 `<leader>ht` help_tags
 `<leader>gc` git_commits
+```
 
 # LSP
+```help
 `<c-]>` go to definition
 `gd`    go to definition
 `gD`    go to declaration
@@ -81,20 +90,28 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 
 `<leader>rn` rename
 `<leader>ca` code action
+```
 
 ## jump diagnostic
+```help
 `[e`, go to previous diagnostic warning/error
 `]e`, go to previous diagnostic warning/error
 `<leader>e`, quick fix list with warnings/errors
+```
 
 ## signature
+```help
 `K`     hover
 `<c-s>` signature (insert mode)
+```
 
 # nvim-tree
+```help
 `<leader>n` tree toggle
+```
 
 # completion
+```help
 `<C-d>`     scroll down
 `<C-f>`     scroll up
 `<C-Space>` complete
@@ -103,10 +120,12 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 `<CR>`      confirm
 `<Tab>`     next
 `<S-Tab>`   previous
+```
 
 # Comment.nvim
  - normal mode
 
+```help
 `gcc` - Toggles the current line using linewise comment
 `gbc` - Toggles the current line using blockwise comment
 `[count]gcc` - Toggles the number of line given as a prefix-count using linewise
@@ -116,7 +135,10 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 `gco` - Insert comment to the next line and enters INSERT mode
 `gcO` - Insert comment to the previous line and enters INSERT mode
 `gcA` - Insert comment to end of the current line and enters INSERT mode
+```
 
  - visual mode
+```help
 `gc` - Toggles the region using linewise comment
 `gb` - Toggles the region using blockwise comment
+```
