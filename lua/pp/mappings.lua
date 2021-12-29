@@ -11,11 +11,6 @@ local function set_system_mappings()
   keymap('', '<C-j>', '<cmd>:bnext<CR>')                               -- buffer cycle
   keymap('', '<C-k>', '<cmd>:bprevious<CR>')                           -- buffer cycle
   keymap('n', '<C-l>', '<cmd>nohlsearch<CR>')                          -- clear search highlights
-  keymap('v', 'J', ":m '>+1<CR>gv=gv")                                 -- visual block movement (up)
-  keymap('v', 'K', ":m '<-2<CR>gv=gv")                                 -- visual block movement (down)
-  keymap('n', 'gV', '`[v`]')                                           -- reselect the last visual block
-  keymap('n', 'J', 'mzJ`z')                                            -- join lines, but keep cursor stationary
-  keymap('n', 'S', 'i<cr><esc>^mwgk:silent! s/\v +$//<cr>:noh<cr>`w')  -- split lines (reciprocal of join, J)
 
   -- quickfix shortcuts
   keymap('', '<C-n>', '<cmd>:cnext<CR>')
