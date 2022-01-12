@@ -1,5 +1,4 @@
 
-vim.g.nvim_tree_gitignore = 1 -- 0 by default
 vim.g.nvim_tree_quit_on_open = 1 -- 0 by default, closes the tree when you open a file
 vim.g.nvim_tree_indent_markers = 1 -- 0 by default, this option shows indent markers when folders are open
 vim.g.nvim_tree_git_hl = 1 -- 0 by default, will enable file highlight for git attributes (can be used without the icons).
@@ -122,11 +121,21 @@ require'nvim-tree'.setup {
       error = "",
     }
   },
-  view = {
+  filters = {
+    dotfiles = false,
+    custom = {}
+  },
+  git = {
+    enable = true,
+    ignore = true,
+    timeout = 500,
+  },
+   view = {
     -- width of the window, can be either a number (columns) or a string in `%`
     width = 40,
     -- side of the tree, can be one of 'left' | 'right' | 'top' | 'bottom'
     side = 'right',
+    hide_root_folder = false,
     -- if true the tree will resize itself after opening a file
     auto_resize = false,
     mappings = {
@@ -135,6 +144,13 @@ require'nvim-tree'.setup {
       custom_only = false,
       -- list of mappings to set on the tree manually
       list = {}
-    }
+    },
+    number = false,
+    relativenumber = false,
+    signcolumn = "yes"
+  },
+  trash = {
+    cmd = "trash",
+    require_confirm = true
   }
 }
