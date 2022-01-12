@@ -111,7 +111,7 @@ require'nvim-tree'.setup {
     -- the command arguments as a list
     args = {}
   },
-  -- show lsp diagnostics in the signcolumn
+  -- show diagnostics in the signcolumn
   diagnostics = {
     enable = false,
     icons = {
