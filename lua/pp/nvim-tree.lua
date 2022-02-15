@@ -1,5 +1,3 @@
-
-vim.g.nvim_tree_quit_on_open = 1 -- 0 by default, closes the tree when you open a file
 vim.g.nvim_tree_indent_markers = 1 -- 0 by default, this option shows indent markers when folders are open
 vim.g.nvim_tree_git_hl = 1 -- 0 by default, will enable file highlight for git attributes (can be used without the icons).
 vim.g.nvim_tree_highlight_opened_files = 1 -- 0 by default, will enable folder and file icon highlight for opened files/directories.
@@ -16,7 +14,6 @@ vim.g.nvim_tree_symlink_arrow = ' >> ' --  defaults to ' ➛ '. used as a separa
 vim.g.nvim_tree_respect_buf_cwd = 1 -- 0 by default, will change cwd of nvim-tree to that of new buffer's when opening nvim-tree.
 
 vim.g.nvim_tree_create_in_closed_folder = 0 -- 1 by default, When creating files, sets the path of a file when cursor is on a closed folder to the parent folder when 0, and inside the folder when 1.
-vim.g.nvim_tree_refresh_wait = 500 -- 1000 by default, control how often the tree can be refreshed, 1000 means the tree can be refresh once per 1000ms.
 
 vim.g.nvim_tree_window_picker_exclude = {
     filetype = {
@@ -33,9 +30,9 @@ vim.g.nvim_tree_window_picker_exclude = {
 --  selectable.
 --  List of filenames that gets highlighted with NvimTreeSpecialFile
 vim.g.nvim_tree_special_files = {
-    ['README.md'] = true,
-    ['Makefile'] = true,
-    ['MAKEFILE'] = true,
+    ['README.md'] = 1,
+    ['Makefile'] = 1,
+    ['MAKEFILE'] = 1,
 }
 
 -- If 0, do not show the icons for one of 'git' 'folder' and 'files'
@@ -58,7 +55,7 @@ vim.g.nvim_tree_icons = {
       untracked = "★",
       deleted = "",
       ignored = "◌"
-      },
+    },
     folder = {
       arrow_open = "",
       arrow_closed = "",
@@ -68,33 +65,43 @@ vim.g.nvim_tree_icons = {
       empty_open = "",
       symlink = "",
       symlink_open = "",
-      },
+    },
 }
 
 -- following options are the default
 require'nvim-tree'.setup {
   -- disables netrw completely
-  disable_netrw       = false,
+  disable_netrw        = true,
   -- hijack netrw window on startup
-  hijack_netrw        = false,
+  hijack_netrw         = false,
   -- open the tree when running this setup function
-  open_on_setup       = false,
+  open_on_setup        = false,
   -- will not open on setup if the filetype is in this list
-  ignore_ft_on_setup  = {},
+  ignore_ft_on_setup   = {},
   -- closes neovim automatically when the tree is the last **WINDOW** in the view
-  auto_close          = true,
+  auto_close           = true,
+  auto_reload_on_write = true,
   -- opens the tree when changing/opening a new tab if the tree wasn't previously opened
-  open_on_tab         = true,
+  open_on_tab          = true,
   -- hijack the cursor in the tree to put it at the start of the filename
-  hijack_cursor       = false,
+  hijack_cursor        = false,
   -- updates the root directory of the tree on `DirChanged` (when your run `:cd` usually)
-  update_cwd          = false,
-  -- update the focused file on `BufEnter`, un-collapses the folders recursively until it finds the file
-  update_to_buf_dir   = {
+  update_cwd           = false,
+  hijack_directories   = {
     enable = true,
     auto_open = true,
   },
-  update_focused_file = {
+  -- show diagnostics in the signcolumn
+  diagnostics = {
+    enable = false,
+    icons = {
+      hint = "",
+      info = "",
+      warning = "",
+      error = "",
+    }
+  },
+  update_focused_file  = {
     -- enables the feature
     enable      = true,
     -- update the root directory of the tree to the one of the folder containing the file if the file is not under the current root directory
@@ -111,16 +118,6 @@ require'nvim-tree'.setup {
     -- the command arguments as a list
     args = {}
   },
-  -- show diagnostics in the signcolumn
-  diagnostics = {
-    enable = false,
-    icons = {
-      hint = "",
-      info = "",
-      warning = "",
-      error = "",
-    }
-  },
   filters = {
     dotfiles = false,
     custom = {}
@@ -130,7 +127,7 @@ require'nvim-tree'.setup {
     ignore = true,
     timeout = 500,
   },
-   view = {
+  view = {
     -- width of the window, can be either a number (columns) or a string in `%`
     width = 40,
     -- side of the tree, can be one of 'left' | 'right' | 'top' | 'bottom'
@@ -152,5 +149,13 @@ require'nvim-tree'.setup {
   trash = {
     cmd = "trash",
     require_confirm = true
-  }
+  },
+  actions = {
+    change_dir = {
+      global = false,
+    },
+    open_file = {
+      quit_on_open = true,
+    }
+  },
 }
