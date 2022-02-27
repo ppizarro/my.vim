@@ -6,7 +6,7 @@ g.loaded_python_provider = 0                                -- disable Python 2 
 g.loaded_ruby_provider = 0                                  -- disable ruby support
 g.loaded_node_provider = 0                                  -- disable node support
 g.loaded_perl_provider = 0                                  -- disable perl support
-g.python3_host_prog = '/usr/bin/python'                     -- path to python interpreter for neovim
+g.python3_host_prog = '/usr/bin/python3'                     -- path to python interpreter for neovim
 
 -- Disable some built-in plugins we don't want
 local disabled_built_ins = {
