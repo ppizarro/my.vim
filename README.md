@@ -4,7 +4,7 @@ My init.vim configuration, plugins and some other vim useful stuff.
 
 # Installation
 
-- neovim >= 0.6
+- neovim >= 0.7
 - npm: required by some lsp servers
 
 ```bash
@@ -111,14 +111,15 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 
 # Completion
 ```help
+`<C-Space>` complete
 `<C-d>`     scroll down
 `<C-f>`     scroll up
-`<C-Space>` complete
-`<C-y>`     disable
-`<C-e>`     abort (insert mode), close (normal mode)
+`<C-y>`     confirm
 `<CR>`      confirm
-`<Tab>`     next
-`<S-Tab>`   previous
+`<C-e>`     close
+`<C-k>`     next
+`<C-j>`     previous
+`<C-l>`     list options
 ```
 
 # Comment.nvim

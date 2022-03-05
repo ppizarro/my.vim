@@ -42,23 +42,30 @@ return require("packer").startup(function(use)
     }
   }
 
-  -- completion and snippets
+  -- snippets
   use {"rafamadriz/friendly-snippets"}
+  use{
+    "L3MON4D3/LuaSnip",
+    config = function()
+      require("pp.luasnip")
+    end
+  }
+
+  -- completion
   use {
-    'hrsh7th/nvim-cmp',
+    "hrsh7th/nvim-cmp",
     config = function()
       require("pp.cmp")
     end,
     requires = {
-      "hrsh7th/cmp-vsnip",
-      "hrsh7th/vim-vsnip",
-      "hrsh7th/cmp-nvim-lsp",
-      "hrsh7th/cmp-nvim-lsp-document-symbol",
       "hrsh7th/cmp-cmdline",
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
-      "hrsh7th/cmp-nvim-lua",
       "onsails/lspkind-nvim",
+      "hrsh7th/cmp-nvim-lua",
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-nvim-lsp-document-symbol",
+      "saadparwaiz1/cmp_luasnip"
     },
   }
 
@@ -76,6 +83,7 @@ return require("packer").startup(function(use)
   }
 
   -- treesitter
+  --[[
   use({
     "nvim-treesitter/nvim-treesitter",
     config = function()
@@ -83,6 +91,7 @@ return require("packer").startup(function(use)
     end,
   })
   --use({ "nvim-treesitter/playground" })
+  --]]
 
   -- git
   use {
