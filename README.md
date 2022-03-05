@@ -32,8 +32,7 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 - [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) - Easy default configs for the builtin LSP client
 - [lspsaga.nvim](https://github.com/glepnir/lspsaga.nvim) - Better UI for LSP outputs (docs, rename, errors)
 - [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) - A completion engine plugin for neovim written in Lua
-- [vim-vsnip](https://github.com/hrsh7th/vim-vsnip), [vim-vsnip-integ](https://github.com/hrsh7th/vim-vsnip-integ) - Snippet engine
-- [friendly-snippets](https://github.com/rafamadriz/friendly-snippets) - Preconfigured snippets for multiple languages
+- [LuaSnip](https://github.com/L3MON4D3/LuaSnip), [cmp_luasnip](https://github.com/saadparwaiz1/cmp_luasnip) - Snippet engine
 - [Comment.nvim](https://github.com/numToStr/Comment.nvim) - Smart and powerful comment plugin for neovim
 
 - [lua-dev.nvim](https://github.com/folke/lua-dev.nvim) - Lua development plugin
@@ -43,8 +42,8 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 ## Buffer
 ```help
 `:ls`          returns information about each buffer
-`<C-j>`        :bnext
-`<C-k>`        :bprevious
+`<leader>j`    :bnext
+`<leader>k`    :bprevious
 `:bn`          switch to the next buffer
 `:bp`          switch to the previous buffer
 `:b<number>`   switch to buffer number <number>
@@ -57,7 +56,7 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 
 ## Search
 ```help
-`<C-l>` :nohlsearch -- clear search highlights
+`<leader>l` :nohlsearch -- clear search highlights
 ```
 
 ## Quickfix
@@ -70,11 +69,11 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 # Telescope
 ```help
 `<leader>ff` find_files
-`<leader>fb` file_browser
-`<leader>l`  live_grep
-`<leader>b`  buffers
-`<leader>ht` help_tags
+`<leader>fg` live_grep
+`<leader>fb` buffers
+`<leader>fh` help_tags
 `<leader>gc` git_commits
+`<leader>gs` git_status
 ```
 
 # LSP

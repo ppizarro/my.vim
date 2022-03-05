@@ -1,4 +1,5 @@
 local telescope = require("telescope")
+local builtin = require('telescope.builtin')
 
 telescope.setup {
   extensions = {
@@ -13,3 +14,10 @@ telescope.setup {
 }
 
 telescope.load_extension('fzf')
+
+vim.keymap.set('n', '<leader>ff', builtin.find_files)
+vim.keymap.set('n', '<leader>fg', function() builtin.live_grep({prompt_prefix='🔍'}) end)
+vim.keymap.set('n', '<leader>fb',  builtin.buffers)
+vim.keymap.set('n', '<leader>fh', builtin.help_tags)
+vim.keymap.set('n', '<leader>gc', builtin.git_commits)
+vim.keymap.set('n', '<leader>gs', builtin.git_status)
