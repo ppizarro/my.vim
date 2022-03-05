@@ -4,7 +4,6 @@ vim.g.nvim_tree_highlight_opened_files = 1 -- 0 by default, will enable folder a
 vim.g.nvim_tree_root_folder_modifier = ':~' -- This is the default. See :help filename-modifiers for more options
 vim.g.nvim_tree_add_trailing = 1 -- 0 by default, append a trailing slash to folder names
 vim.g.nvim_tree_group_empty = 1 --  0 by default, compact folders that only contain a single folder into one node in the file tree
-vim.g.nvim_tree_disable_window_picker = 1 -- 0 by default, will disable the window picker.
 
 -- one space by default, used for rendering the space between the icon and the filename. Use with caution, it could break rendering if you set an empty string depending on your font.
 vim.g.nvim_tree_icon_padding = ' '
@@ -15,16 +14,6 @@ vim.g.nvim_tree_respect_buf_cwd = 1 -- 0 by default, will change cwd of nvim-tre
 
 vim.g.nvim_tree_create_in_closed_folder = 0 -- 1 by default, When creating files, sets the path of a file when cursor is on a closed folder to the parent folder when 0, and inside the folder when 1.
 
-vim.g.nvim_tree_window_picker_exclude = {
-    filetype = {
-        'notify',
-        'packer',
-        'qf',
-    },
-    buftype = {
-        'terminal'
-    },
-}
 --  Dictionary of buffer option names mapped to a list of option values that
 --  indicates to the window picker that the buffer's window should not be
 --  selectable.
