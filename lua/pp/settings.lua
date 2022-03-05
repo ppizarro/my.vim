@@ -27,7 +27,6 @@ local disabled_built_ins = {
   'netrw',
   'netrwPlugin',
   'netrwSettings',
-  'man',
 }
 
 for i = 1, 10 do
