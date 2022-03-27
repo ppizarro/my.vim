@@ -144,7 +144,6 @@ local function make_config(server)
 
   if server == "sumneko_lua" then
     config.settings = lua_settings
-    config.cmd = {vim.fn.expand("~/.local/share/nvim/lsp_servers/sumneko_lua/extension/server/bin/Linux/lua-language-server")}
     local luacfg = require("lua-dev").setup({
       lspconfig = config
     })
