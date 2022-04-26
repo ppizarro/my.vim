@@ -13,10 +13,13 @@ local cmp = require("cmp")
 cmp.setup({
   snippet = {
     expand = function(args)
-      require'luasnip'.lsp_expand(args.body)
+      require('luasnip').lsp_expand(args.body)
     end,
   },
-
+  window = {
+    -- completion = cmp.config.window.bordered(),
+    -- documentation = cmp.config.window.bordered(),
+  },
   sources = {
     { name = "nvim_lua" },
     { name = 'nvim_lsp' },
@@ -24,38 +27,29 @@ cmp.setup({
     { name = 'luasnip' },
     { name = 'buffer', keyword_length = 5 },
   },
-  mapping = {
-    ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    ["<C-space>"] = cmp.mapping.complete(),
-    ["<C-e>"] = cmp.mapping.close(),
-    ["<c-y>"] = cmp.mapping(
-      cmp.mapping.confirm {
-        behavior = cmp.ConfirmBehavior.Insert,
-        select = true,
-      },
-      { "i", "c" }
-    ),
-    --['<CR>'] = cmp.mapping.confirm({ select = true }),
-  },
+  mapping = cmp.mapping.preset.insert({
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  }),
   formatting = {
     format = lspkind.cmp_format(),
   },
-
-  experimental = {
-    native_menu = false,
+  view = {
+    --entries = 'native'
+    entries = {name = 'custom', selection_order = 'near_cursor' }
   }
 })
 
--- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+-- Use buffer source for `/`
 cmp.setup.cmdline('/', {
+  mapping = cmp.mapping.preset.cmdline(),
   sources = {
-    { name = 'buffer', keyword_length = 5 }
+    { name = 'buffer' }
   }
 })
 
--- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+-- Use cmdline & path source for ':'
 cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
     { name = 'path' }
   }, {
