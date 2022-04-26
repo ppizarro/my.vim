@@ -1,6 +1,5 @@
 local nvim_tree = require'nvim-tree'
 
-vim.g.nvim_tree_indent_markers = 1 -- 0 by default, this option shows indent markers when folders are open
 vim.g.nvim_tree_git_hl = 1 -- 0 by default, will enable file highlight for git attributes (can be used without the icons).
 vim.g.nvim_tree_highlight_opened_files = 1 -- 0 by default, will enable folder and file icon highlight for opened files/directories.
 vim.g.nvim_tree_root_folder_modifier = ':~' -- This is the default. See :help filename-modifiers for more options
@@ -61,34 +60,56 @@ vim.g.nvim_tree_icons = {
 
 -- following options are the default
 nvim_tree.setup {
+  auto_reload_on_write = true,
   -- disables netrw completely
   disable_netrw        = true,
-  -- hijack netrw window on startup
-  hijack_netrw         = false,
-  -- open the tree when running this setup function
-  open_on_setup        = false,
-  -- will not open on setup if the filetype is in this list
-  ignore_ft_on_setup   = {},
-  auto_reload_on_write = true,
-  -- opens the tree when changing/opening a new tab if the tree wasn't previously opened
-  open_on_tab          = true,
+  hide_root_folder = false,
   -- hijack the cursor in the tree to put it at the start of the filename
   hijack_cursor        = false,
+  -- hijack netrw window on startup
+  hijack_netrw         = false,
+  hijack_unnamed_buffer_when_opening = false,
+  ignore_buffer_on_setup = false,
+  -- open the tree when running this setup function
+  open_on_setup        = false,
+  open_on_setup_file   = false,
+  -- opens the tree when changing/opening a new tab if the tree wasn't previously opened
+  open_on_tab          = true,
+  -- will not open on setup if the filetype is in this list
+  sort_by = "name",
   -- updates the root directory of the tree on `DirChanged` (when your run `:cd` usually)
   update_cwd           = false,
+  view = {
+    -- width of the window, can be either a number (columns) or a string in `%`
+    width = 50,
+    height = 30,
+    -- side of the tree, can be one of 'left' | 'right' | 'top' | 'bottom'
+    side = 'left',
+    preserve_window_proportions = false,
+    number = false,
+    relativenumber = false,
+    signcolumn = "yes",
+    mappings = {
+      -- custom only false will merge the list with the default mappings
+      -- if true, it will only use your list to set the mappings
+      custom_only = false,
+      -- list of mappings to set on the tree manually
+      list = {}
+    },
+  },
+  renderer = {
+    indent_markers = {
+      enable = false,
+      icons = {
+        corner = "└ ",
+        edge = "│ ",
+        none = "  ",
+      },
+    },
+  },
   hijack_directories   = {
     enable = true,
     auto_open = true,
-  },
-  -- show diagnostics in the signcolumn
-  diagnostics = {
-    enable = false,
-    icons = {
-      hint = "",
-      info = "",
-      warning = "",
-      error = "",
-    }
   },
   update_focused_file  = {
     -- enables the feature
@@ -100,6 +121,7 @@ nvim_tree.setup {
     -- only relevant when `update_focused_file.update_cwd` is true and `update_focused_file.enable` is true
     ignore_list = { '.git' }, -- empty by default
   },
+  ignore_ft_on_setup   = {},
   -- configuration options for the system open command (`s` in the tree by default)
   system_open = {
     -- the command to run this, leaving nil should work in most cases
@@ -107,46 +129,60 @@ nvim_tree.setup {
     -- the command arguments as a list
     args = {}
   },
+  -- show diagnostics in the signcolumn
+  diagnostics = {
+    enable = false,
+    show_on_dirs = false,
+    icons = {
+      hint = "",
+      info = "",
+      warning = "",
+      error = "",
+    }
+  },
   filters = {
     dotfiles = false,
-    custom = {}
+    custom = {},
+    exclude = {},
   },
   git = {
     enable = true,
     ignore = true,
-    timeout = 500,
+    timeout = 400,
   },
-  view = {
-    -- width of the window, can be either a number (columns) or a string in `%`
-    width = 50,
-    height = 30,
-    -- side of the tree, can be one of 'left' | 'right' | 'top' | 'bottom'
-    side = 'left',
-    hide_root_folder = false,
-    -- if true the tree will resize itself after opening a file
-    auto_resize = false,
-    mappings = {
-      -- custom only false will merge the list with the default mappings
-      -- if true, it will only use your list to set the mappings
-      custom_only = false,
-      -- list of mappings to set on the tree manually
-      list = {}
+  actions = {
+    use_system_clipboard = true,
+    change_dir = {
+      enable = true,
+      global = false,
     },
-    number = false,
-    relativenumber = false,
-    signcolumn = "yes"
+    open_file = {
+      quit_on_open = true,
+      resize_window = false,
+      window_picker = {
+        enable = true,
+        chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890",
+        exclude = {
+          filetype = { "notify", "packer", "qf", "diff", "fugitive", "fugitiveblame" },
+          buftype = { "nofile", "terminal", "help" },
+        },
+      },
+    },
   },
   trash = {
     cmd = "trash",
     require_confirm = true
   },
-  actions = {
-    change_dir = {
-      global = false,
+  log = {
+    enable = false,
+    truncate = false,
+    types = {
+      all = false,
+      config = false,
+      copy_paste = false,
+      git = false,
+      profile = false,
     },
-    open_file = {
-      quit_on_open = true,
-    }
   },
 }
 
