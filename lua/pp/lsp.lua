@@ -129,6 +129,7 @@ local go_settings = {
         },
         staticcheck = true,
         buildFlags = { "-tags=integration" },
+        usePlaceholders = true,
     },
 }
 
