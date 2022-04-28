@@ -63,7 +63,6 @@ nvim_tree.setup {
   auto_reload_on_write = true,
   -- disables netrw completely
   disable_netrw        = true,
-  hide_root_folder = false,
   -- hijack the cursor in the tree to put it at the start of the filename
   hijack_cursor        = false,
   -- hijack netrw window on startup
@@ -83,6 +82,7 @@ nvim_tree.setup {
     -- width of the window, can be either a number (columns) or a string in `%`
     width = 50,
     height = 30,
+    hide_root_folder = false,
     -- side of the tree, can be one of 'left' | 'right' | 'top' | 'bottom'
     side = 'left',
     preserve_window_proportions = false,
@@ -105,6 +105,9 @@ nvim_tree.setup {
         edge = "│ ",
         none = "  ",
       },
+    },
+    icons = {
+      webdev_colors = true,
     },
   },
   hijack_directories   = {
@@ -155,6 +158,7 @@ nvim_tree.setup {
     change_dir = {
       enable = true,
       global = false,
+      restrict_above_cwd = false,
     },
     open_file = {
       quit_on_open = true,
@@ -180,6 +184,7 @@ nvim_tree.setup {
       all = false,
       config = false,
       copy_paste = false,
+      diagnostics = false,
       git = false,
       profile = false,
     },
