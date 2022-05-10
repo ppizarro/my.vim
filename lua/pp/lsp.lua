@@ -2,7 +2,7 @@
 -- https://github.com/neovim/nvim-lspconfig
 -- https://github.com/williamboman/nvim-lsp-installer
 
-local servers = require("nvim-lsp-installer.servers")
+local lspconfig = require("lspconfig")
 local lsp_signature = require("lsp_signature")
 local cmp_nvim_lsp = require("cmp_nvim_lsp")
 
@@ -166,20 +166,24 @@ local servers_to_install = {
   "dockerls", -- docker
 }
 
-local function install_servers()
+local function config_servers()
   for _, server in pairs(servers_to_install) do
-    local server_available, requested_server = servers.get_server(server)
-    requested_server:on_ready(function ()
-      local opts = make_config(server)
-      requested_server:setup(opts)
-      vim.cmd([[do User LspAttachBuffers]])
-    end)
-    if server_available then
-      if not requested_server:is_installed() then
-        requested_server:install()
-      end
-    end
+    local opts = make_config(server)
+    lspconfig[server].setup(opts)
+    --vim.cmd([[do User LspAttachBuffers]])
   end
 end
 
-install_servers()
+require("nvim-lsp-installer").setup {
+  ensure_installed = servers_to_install,
+  automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
+  ui = {
+      icons = {
+          server_installed = "✓",
+          server_pending = "➜",
+          server_uninstalled = "✗"
+      }
+  }
+}
+
+config_servers()
