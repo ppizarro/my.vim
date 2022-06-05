@@ -2,8 +2,7 @@ if vim.g.snippets ~= "luasnip" then
   return
 end
 
-local ls = require "luasnip"
-local types = require "luasnip.util.types"
+local ls = require("luasnip")
 
 ls.config.set_config {
   -- This tells LuaSnip to remember to keep around the last snippet.
@@ -17,7 +16,7 @@ ls.config.set_config {
   enable_autosnippets = true,
 }
 
--- To use existing vs-code style snippets from a plugin (rafamadriz/friendly-snippets) 
+-- To use existing vs-code style snippets from a plugin (rafamadriz/friendly-snippets)
 require("luasnip.loaders.from_vscode").lazy_load()
 
 -- <c-k> is my expansion key
