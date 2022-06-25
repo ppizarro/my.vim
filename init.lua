@@ -5,11 +5,12 @@
 -- leader.
 vim.g.mapleader = ","
 
--- I set some global variables to use as configuration throughout my config.
--- These don't have any special meaning.
-vim.g.snippets = "luasnip"
-
 if require('pp.bootstrap').init() then
+  print '=================================='
+  print '    Plugins are being installed'
+  print '    Wait until Packer completes,'
+  print '       then restart nvim'
+  print '=================================='
   return
 end
 
