@@ -1,10 +1,6 @@
 -- documentation:
 -- https://github.com/hrsh7th/nvim-cmp
 
-vim.opt.completeopt = { "menu", "menuone", "noselect" }
--- Don't show the dumb matching stuff.
-vim.opt.shortmess:append "c"
-
 local lspkind = require('lspkind')
 lspkind.init()
 

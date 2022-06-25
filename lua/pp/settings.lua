@@ -1,12 +1,16 @@
+-- [[ Setting options ]]
+-- See `:help vim.o`
+
 local g = vim.g
-local opt = vim.opt
+local o = vim.o
+local wo = vim.wo
 
 -- Skip some remote provider loading
 g.loaded_python_provider = 0                                -- disable Python 2 support
 g.loaded_ruby_provider = 0                                  -- disable ruby support
 g.loaded_node_provider = 0                                  -- disable node support
 g.loaded_perl_provider = 0                                  -- disable perl support
-g.python3_host_prog = '/usr/bin/python3'                     -- path to python interpreter for neovim
+g.python3_host_prog = '/usr/bin/python3'                    -- path to python interpreter for neovim
 
 -- Disable some built-in plugins we don't want
 local disabled_built_ins = {
@@ -34,54 +38,44 @@ for i = 1, 10 do
 end
 
 local indent, width = 4, 120
-opt.formatoptions = "crqnj"              -- automatic formatting options
-opt.expandtab = true                     -- use spaces instead of tabs
-opt.shiftwidth = indent                  -- size of an indent
-opt.tabstop = indent                     -- number of spaces tabs count for
-opt.softtabstop = indent                 -- number of spaces tabs count for
-opt.smartindent = true                   -- insert indents automatically
-opt.textwidth = width                    -- maximum width of text
+o.expandtab = true                     -- use spaces instead of tabs
+o.shiftwidth = indent                  -- size of an indent
+o.tabstop = indent                     -- number of spaces tabs count for
+o.softtabstop = indent                 -- number of spaces tabs count for
+o.smartindent = true                   -- insert indents automatically
+o.textwidth = width                    -- maximum width of text
+o.breakindent = true                   -- enable break indent
 
---opt.colorcolumn = tostring(width)        -- line length marker
-opt.list = false                         -- do not show invisible characters by default
-opt.signcolumn = "yes"                   -- show sign column
-opt.number = true                        -- show line numbers
-opt.relativenumber = false               -- show relative line numbers
-opt.ruler = true                         -- show the line and column numbers of the cursor
+o.signcolumn = "yes"                   -- show sign column
+wo.number = true                         -- show line numbers
+o.relativenumber = true                -- show relative line numbers
 
-opt.guifont = "Hack Nerd Font"
-opt.clipboard = "unnamedplus"            -- use system copy/paste
-opt.hlsearch = true                      -- highlight search results
-opt.incsearch = true                     -- show search matches as you type
-opt.ignorecase = true                    -- ignore case
-opt.smartcase = true                     -- ignore case if search pattern is lowercase
-opt.inccommand = "nosplit"
-opt.joinspaces = false                   -- no double spaces with join after a dot
-opt.shiftround = true                    -- move in multiples of shiftwidth with < and >
---opt.wildmode = "list:longest"            -- command-line completion mode
-opt.mouse = "a"                          -- allow mouse actions
-opt.autochdir = false                    -- change dirs to the file in the current buff
-opt.autoread = true                      -- automatically reread changed files without asking me anything
-opt.laststatus = 3
-opt.showcmd = true                       -- show (partial) command in status line
-opt.showmatch = false                    -- do not show matching brackets by flickering
-opt.showmode = false                     -- we show the mode with airline or lightline
-opt.splitright = true                    -- split vertical windows right to the current windows
-opt.splitbelow = true                    -- split horizontal windows below to the current windows
-opt.updatetime = 500                     -- 500ms of no cursor movement to trigger CursorHold
-opt.autoindent = true
-opt.errorbells = false
-opt.cursorline = true                    -- highlight current line - allows you to track cursor position more easily
-opt.cursorcolumn = false
-opt.maxmempattern = 20000                -- increase max memory to show syntax highlighting for large files
-opt.lazyredraw = true                    -- wait to redraw
+o.clipboard = "unnamedplus"            -- use system copy/paste
+o.hlsearch = false                     -- highlight search results
+o.ignorecase = true                    -- ignore case
+o.smartcase = true                     -- ignore case if search pattern is lowercase
 
-opt.backup = false                       -- do not create backup files
-opt.swapfile = false                     -- do not create swap files
-opt.writebackup = false
+o.shiftround = true                    -- move in multiples of shiftwidth with < and >
+o.mouse = "a"                          -- allow mouse actions
+o.laststatus = 3
+o.showmode = false                     -- we show the mode with airline or lightline
+o.splitright = true                    -- split vertical windows right to the current windows
+o.splitbelow = true                    -- split horizontal windows below to the current windows
+o.updatetime = 250                     -- 250ms of no cursor movement to trigger CursorHold
+o.cursorline = true                    -- highlight current line - allows you to track cursor position more easily
+o.maxmempattern = 20000                -- increase max memory to show syntax highlighting for large files
 
---os.execute("mkdir -p ~/.local/share/nvim/undo/")
---opt.undofile = true                                           -- maintain undo history between sessions
---opt.undodir = "~/.local/share/nvim/undo/"                     -- set undo dir (required for mundo-- )
+o.undofile = true                      -- maintain undo history between sessions
 
---opt.listchars = [[eol:$,tab:>-,trail:~,extends:>,precedes:<]] -- textmate-style tabstops/EOLs
+o.completeopt = "menuone,noselect"
+
+-- [[ Highlight on yank ]]
+-- See `:help vim.highlight.on_yank()`
+local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
+vim.api.nvim_create_autocmd('TextYankPost', {
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+  group = highlight_group,
+  pattern = '*',
+})
