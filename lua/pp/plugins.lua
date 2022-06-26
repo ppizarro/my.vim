@@ -55,18 +55,15 @@ return require("packer").startup(function(use)
     "neovim/nvim-lspconfig",
     requires = {
       "williamboman/nvim-lsp-installer",
-      --"glepnir/lspsaga.nvim",
       "ray-x/lsp_signature.nvim",
     },
   }
 
-  -- treesitter
-  --[[
+  -- highlight, edit, and navigate code
   use({
     "nvim-treesitter/nvim-treesitter",
   })
-  --use({ "nvim-treesitter/playground" })
-  --]]
+  use({ "nvim-treesitter/nvim-treesitter-textobjects" })
 
   -- git
   use {
