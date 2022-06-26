@@ -37,17 +37,22 @@ for i = 1, 10 do
   g['loaded_' .. disabled_built_ins[i]] = 1
 end
 
-local indent, width = 4, 120
-o.expandtab = true                     -- use spaces instead of tabs
-o.shiftwidth = indent                  -- size of an indent
-o.tabstop = indent                     -- number of spaces tabs count for
-o.softtabstop = indent                 -- number of spaces tabs count for
-o.smartindent = true                   -- insert indents automatically
-o.textwidth = width                    -- maximum width of text
-o.breakindent = true                   -- enable break indent
+-- Tabs
+o.autoindent = true
+o.cindent = true
+o.wrap = true
+
+o.tabstop = 4
+o.shiftwidth = 4
+o.softtabstop = 4
+o.expandtab = true
+
+o.breakindent = true
+o.showbreak = string.rep(" ", 3)       -- make it so that long lines wrap smartly
+o.linebreak = true
 
 o.signcolumn = "yes"                   -- show sign column
-wo.number = true                         -- show line numbers
+wo.number = true                       -- show line numbers
 o.relativenumber = true                -- show relative line numbers
 
 o.clipboard = "unnamedplus"            -- use system copy/paste
