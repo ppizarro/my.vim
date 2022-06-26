@@ -72,6 +72,9 @@ local on_attach = function(client, bufnr)
       augroup END
     ]]
   end
+
+  -- Create a command `:Format` local to the LSP buffer
+  vim.api.nvim_buf_create_user_command(bufnr, 'Format', vim.lsp.buf.format or vim.lsp.buf.formatting, { desc = 'Format current buffer with LSP' })
 end
 
 local function default_config()
@@ -167,10 +170,9 @@ local servers_to_install = {
 }
 
 local function config_servers()
-  for _, server in pairs(servers_to_install) do
+  for _, server in ipairs(servers_to_install) do
     local opts = make_config(server)
     lspconfig[server].setup(opts)
-    --vim.cmd([[do User LspAttachBuffers]])
   end
 end
 
