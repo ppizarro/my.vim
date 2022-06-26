@@ -5,7 +5,9 @@
 -- leader.
 vim.g.mapleader = ","
 
-if require('pp.bootstrap').init() then
+if require('pp.bootstrap')() then
+  require("pp.plugins")
+  require('packer').sync()
   print '=================================='
   print '    Plugins are being installed'
   print '    Wait until Packer completes,'
@@ -14,6 +16,16 @@ if require('pp.bootstrap').init() then
   return
 end
 
-require('pp.settings')
 require("pp.plugins")
+require('pp.settings')
 require('pp.mappings')
+require('pp.colors')
+require('pp.lualine')
+require('pp.telescope')
+require('pp.nvim-tree')
+require('pp.luasnip')
+require('pp.cmp')
+require('pp.lsp')
+--require('pp.treesitter')
+require('gitsigns').setup()
+require('Comment').setup()
