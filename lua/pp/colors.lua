@@ -6,7 +6,7 @@ local color_scheme = function()
   opt.background = "dark"
 
   vim.g.tokyonight_style = "night"
-  vim.cmd("colorscheme tokyonight")
+  vim.cmd [[colorscheme tokyonight]]
 end
 
 color_scheme()
