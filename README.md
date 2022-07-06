@@ -28,12 +28,17 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 - [telescope.nvim](https://github.com/nvim-lua/telescope.nvim) - Find, filter, preview and pick using a nice UI
 - [telescope-fzf-native.nvim](https://github.com/nvim-telescope/telescope-fzf-native.nvim) - fzf-native is a c port of fzf 
 
+- [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) - Treesitter-based highlighting 
+
 - [nvim-lsp-installer](https://github.com/williamboman/nvim-lsp-installer) - Easy install LSP servers
 - [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) - Easy default configs for the builtin LSP client
-- [lspsaga.nvim](https://github.com/glepnir/lspsaga.nvim) - Better UI for LSP outputs (docs, rename, errors)
+
 - [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) - A completion engine plugin for neovim written in Lua
 - [LuaSnip](https://github.com/L3MON4D3/LuaSnip), [cmp_luasnip](https://github.com/saadparwaiz1/cmp_luasnip) - Snippet engine
+
 - [Comment.nvim](https://github.com/numToStr/Comment.nvim) - Smart and powerful comment plugin for neovim
+
+- [nvim-tree](https://github.com/kyazdani42/nvim-tree.lua) - A File Explorer For Neovim Written In Lua 
 
 - [lua-dev.nvim](https://github.com/folke/lua-dev.nvim) - Lua development plugin
 
@@ -80,28 +85,32 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 ```help
 `<c-]>` go to definition
 `gd`    go to definition
-`gD`    go to declaration
 `gi`    go to implementation
-`gt`    go to type_definition
 `gr`    go to references
-`gS`    go to document_symbol
-`gW`    go to workspace_symbol
+`gD`    go to declaration
 
 `<leader>rn` rename
 `<leader>ca` code action
+`<leader>D` Type Definition
+`<leader>ds` Document Symbols
+`<leader>ws` Workspace Symbols
+`<leader>wa` Workspace Add Folder
+`<leader>wr` Workspace Remove Folder
+`<leader>wl` Workspace List Folder
 ```
 
 ## jump diagnostic
 ```help
-`[e`        go to previous diagnostic warning/error
-`]e`        go to previous diagnostic warning/error
+`[d`        go to previous diagnostic warning/error
+`]d`        go to previous diagnostic warning/error
 `<leader>e` quick fix list with warnings/errors
+`<leader>q` set loc list with warnings/errors
 ```
 
 ## signature
 ```help
 `K`     hover
-`<c-s>` signature (insert mode)
+`<c-s>` signature
 ```
 
 # nvim-tree
@@ -115,7 +124,6 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 `<C-d>`     scroll down
 `<C-f>`     scroll up
 `<C-y>`     confirm
-`<CR>`      confirm
 `<C-e>`     close
 `<C-k>`     next
 `<C-j>`     previous
