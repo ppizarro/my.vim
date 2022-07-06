@@ -3,56 +3,61 @@
 -- https://github.com/williamboman/nvim-lsp-installer
 
 local lspconfig = require("lspconfig")
-local lsp_signature = require("lsp_signature")
 local cmp_nvim_lsp = require("cmp_nvim_lsp")
+local telescope = require('telescope.builtin')
 
+--[[
 local on_init = function(client)
   client.config.flags = client.config.flags or {}
   client.config.flags.allow_incremental_sync = true
 end
+--]]
 
-local on_attach = function(client, bufnr)
-  local filetype = vim.api.nvim_buf_get_option(0, "filetype")
+local on_attach = function(_, bufnr)
+  local nmap = function(keys, func, desc)
+    if desc then
+      desc = 'LSP: ' .. desc
+    end
 
-  lsp_signature.on_attach(client)
-
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+    vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+  end
 
   --Enable completion triggered by <c-x><c-o>
   vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"
 
   -- Mappings.
-  local opts = { noremap=true, silent=true }
-
-  buf_set_keymap('n', '<c-]>', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  -- gopls and rust-analyzer does not yet support goto declaration
-  buf_set_keymap('n', 'gD', '<Cmd>lua vim.lsp.buf.declaration()<CR>', opts)
-
-  buf_set_keymap('n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', 'gt', '<Cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', 'gr', '<Cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', 'gS', '<Cmd>lua vim.lsp.buf.document_symbol()<CR>', opts)
-  buf_set_keymap('n', 'gW', '<Cmd>lua vim.lsp.buf.workspace_symbol()<CR>', opts)
-
-  -- hover
-  buf_set_keymap('n', 'K', '<Cmd>lua vim.lsp.buf.hover()<CR>', opts)
-
-  -- signature
-  buf_set_keymap('i', '<c-s>', '<Cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-
+  --
   -- rename
-  buf_set_keymap('n', '<leader>rn', '<Cmd>lua vim.lsp.buf.rename()<CR>', opts)
+  nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
 
   -- code action
-  buf_set_keymap('n', '<leader>ca', '<Cmd>lua vim.lsp.buf.code_action()<CR>', opts)
+  nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]tion')
 
-  -- jump diagnostic
-  -- goto previous/next diagnostic warning/error
-  buf_set_keymap('n', '[e', '<Cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']e', '<Cmd>lua vim.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<leader>e', '<cmd>lua vim.diagnostic.set_loclist()<CR>', opts)
+  nmap('<c-]>', vim.lsp.buf.definition, 'Goto Definition')
+  nmap('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+  nmap('gi', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+  nmap('gr', telescope.lsp_references)
+  nmap('<leader>ds', telescope.lsp_document_symbols, '[D]ocument [S]ymbols')
+  nmap('<leader>ws', telescope.lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
+  -- hover
+  nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
+  -- signature
+  nmap('<C-s>', vim.lsp.buf.signature_help, 'Signature Documentation')
+
+  -- Lesser used LSP functionality
+  nmap('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
+  nmap('<leader>D', vim.lsp.buf.type_definition, 'Type Definition')
+  nmap('<leader>wa', vim.lsp.buf.add_workspace_folder, '[W]orkspace [A]dd Folder')
+  nmap('<leader>wr', vim.lsp.buf.remove_workspace_folder, '[W]orkspace [R]emove Folder')
+  nmap('<leader>wl', function()
+    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
+  end, '[W]orkspace [L]ist Folders')
+
+  -- Create a command `:Format` local to the LSP buffer
+  vim.api.nvim_buf_create_user_command(bufnr, 'Format', vim.lsp.buf.format or vim.lsp.buf.formatting, { desc = 'Format current buffer with LSP' })
+
+--[=[
   -- Set autocommands conditional on server_capabilities
   if client.server_capabilities.document_highlight then
       vim.cmd [[
@@ -63,18 +68,7 @@ local on_attach = function(client, bufnr)
       augroup END
       ]]
   end
-
-  if filetype == "go" then
-    vim.cmd [[
-      augroup lsp_buf_format
-        au! BufWritePre <buffer>
-        autocmd BufWritePre <buffer> :lua vim.lsp.buf.formatting_sync()
-      augroup END
-    ]]
-  end
-
-  -- Create a command `:Format` local to the LSP buffer
-  vim.api.nvim_buf_create_user_command(bufnr, 'Format', vim.lsp.buf.format or vim.lsp.buf.formatting, { desc = 'Format current buffer with LSP' })
+--]=]
 end
 
 local function default_config()
@@ -90,34 +84,36 @@ local function default_config()
   capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 
   return {
-      on_init = on_init,
+      --on_init = on_init,
       on_attach = on_attach,
       capabilities = capabilities,
+      --[[
       flags = {
         debounce_text_changes = 50,
       },
+      --]]
   }
 end
+
+-- Make runtime files discoverable to the server
+local runtime_path = vim.split(package.path, ';')
+table.insert(runtime_path, 'lua/?.lua')
+table.insert(runtime_path, 'lua/?/init.lua')
 
 -- Configure lua language server for neovim development
 local lua_settings = {
   Lua = {
     runtime = {
-      -- LuaJIT in the case of Neovim
+      -- Tell the language server which version of Lua you're using (most likely LuaJIT)
       version = 'LuaJIT',
-      path = vim.split(package.path, ';'),
+      -- Setup your lua path
+      path = runtime_path,
     },
     diagnostics = {
       -- Get the language server to recognize the `vim` global
       globals = {'vim'},
     },
-    workspace = {
-      -- Make the server aware of Neovim runtime files
-      library = {
-        [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-        [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-      },
-    },
+    workspace = { library = vim.api.nvim_get_runtime_file('', true) },
   }
 }
 
@@ -141,9 +137,11 @@ local function make_config(server)
 
   if server == "gopls" then
     config.settings = go_settings
+--[[
     config.flags = {
       debounce_text_changes = 200,
     }
+--]]
   end
 
   if server == "sumneko_lua" then
@@ -165,7 +163,6 @@ local servers_to_install = {
   "jsonls", -- json
   "rust_analyzer", -- rust
   "tflint", -- terraform
-  --"ansiblels", -- ansible
   "dockerls", -- docker
 }
 

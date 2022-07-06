@@ -18,7 +18,7 @@ vim.keymap.set("n", "<leader>l", function() vim.cmd [[nohlsearch]] end)
 vim.keymap.set('', '<C-n>', function() vim.cmd [[:cnext]] end)
 vim.keymap.set('', '<C-p>', function() vim.cmd [[:cprevious]] end)
 vim.keymap.set('n', '<leader>a', function() vim.cmd [[cclose]] end)
-  
+
 -- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)

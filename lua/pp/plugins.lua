@@ -1,5 +1,3 @@
-vim.cmd([[autocmd BufWritePost plugins.lua source <afile> | PackerCompile]])
-
 return require("packer").startup(function(use)
   use "wbthomason/packer.nvim"
 
@@ -40,7 +38,6 @@ return require("packer").startup(function(use)
     "neovim/nvim-lspconfig",
     requires = {
       "williamboman/nvim-lsp-installer",
-      "ray-x/lsp_signature.nvim",
     },
   }
 
@@ -60,7 +57,7 @@ return require("packer").startup(function(use)
 
   -- snippets
   use {"rafamadriz/friendly-snippets"}
-  use{
+  use {
     "L3MON4D3/LuaSnip",
     requires = {
       "saadparwaiz1/cmp_luasnip",

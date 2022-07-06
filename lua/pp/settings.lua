@@ -84,3 +84,13 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   group = highlight_group,
   pattern = '*',
 })
+
+local go_format_group = vim.api.nvim_create_augroup('GoLSPBufFormat', { clear = true })
+vim.api.nvim_create_autocmd('BufWritePre', {
+  callback = function()
+    vim.lsp.buf.formatting_sync(nil, 1000)
+  end,
+  group = go_format_group,
+  pattern = '*.go',
+  desc = "Format on saving Go files"
+})
