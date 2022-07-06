@@ -1,15 +1,21 @@
 -- documentation:
 -- https://github.com/hrsh7th/nvim-cmp
 
-local lspkind = require('lspkind')
+local lspkind = require 'lspkind'
 lspkind.init()
 
-local cmp = require("cmp")
+--
+local cmp = require 'cmp'
+local luasnip = require 'luasnip'
 
-cmp.setup({
+if cmp == nil then
+    return
+end
+
+cmp.setup {
   snippet = {
     expand = function(args)
-      require('luasnip').lsp_expand(args.body)
+      luasnip.lsp_expand(args.body)
     end,
   },
   window = {
@@ -17,10 +23,10 @@ cmp.setup({
     documentation = cmp.config.window.bordered(),
   },
   sources = {
-    { name = "nvim_lua" },
     { name = 'nvim_lsp' },
-    { name = 'path' },
     { name = 'luasnip' },
+    { name = 'nvim_lua' },
+    { name = 'path' },
     { name = 'buffer', keyword_length = 5 },
   },
   mapping = cmp.mapping.preset.insert(),
@@ -31,7 +37,7 @@ cmp.setup({
     --entries = 'native'
     entries = {name = 'custom', selection_order = 'near_cursor' }
   }
-})
+}
 
 -- Use buffer source for `/`
 cmp.setup.cmdline('/', {
