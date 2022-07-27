@@ -5,8 +5,7 @@ local color_scheme = function()
   opt.termguicolors = true                 -- true color support
   opt.background = "dark"
 
-  vim.g.tokyonight_style = "night"
-  vim.cmd [[colorscheme tokyonight]]
+  vim.cmd [[colorscheme nightfox]]
 end
 
 color_scheme()

@@ -1,7 +1,7 @@
 require('lualine').setup {
   options = {
       icons_enabled = false,
-      theme = 'tokyonight',
+      theme = 'nightfox',
       component_separators = '|',
       section_separators = '',
   },

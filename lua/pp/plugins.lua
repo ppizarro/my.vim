@@ -2,13 +2,9 @@ return require("packer").startup(function(use)
   use "wbthomason/packer.nvim"
 
   -- visual
-  use {
-    "folke/tokyonight.nvim",
-  }
-  use {"kyazdani42/nvim-web-devicons"}
-  use {
-    "hoob3rt/lualine.nvim",
-  }
+  use { "EdenEast/nightfox.nvim" }
+  use { "kyazdani42/nvim-web-devicons" }
+  use { "hoob3rt/lualine.nvim" }
 
   -- navigation
   use {'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
@@ -28,10 +24,8 @@ return require("packer").startup(function(use)
   }
 
   -- highlight, edit, and navigate code
-  use({
-    "nvim-treesitter/nvim-treesitter",
-  })
-  use({ "nvim-treesitter/nvim-treesitter-textobjects" })
+  use { "nvim-treesitter/nvim-treesitter" }
+  use { "nvim-treesitter/nvim-treesitter-textobjects" }
 
   -- lsp
   use {
@@ -56,7 +50,7 @@ return require("packer").startup(function(use)
   }
 
   -- snippets
-  use {"rafamadriz/friendly-snippets"}
+  use { "rafamadriz/friendly-snippets" }
   use {
     "L3MON4D3/LuaSnip",
     requires = {
@@ -73,9 +67,7 @@ return require("packer").startup(function(use)
   }
 
   -- comments
-  use({
-      "numToStr/Comment.nvim",
-  })
+  use { "numToStr/Comment.nvim" }
 
   -- lua dev
   use {"folke/lua-dev.nvim"}

@@ -19,7 +19,7 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 
 # Plugins
 
-- [tokyonight](https://github.com/folke/tokyonight.nvim) - colorscheme
+- [nightfox](https://github.com/EdenEast/nightfox.nvim) - colorscheme
 - [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons) - web devicons for general usage
 - [lualine.nvim](https://github.com/hoob3rt/lualine.nvim) - statusline
 
