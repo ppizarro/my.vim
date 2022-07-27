@@ -2,7 +2,7 @@ return require("packer").startup(function(use)
   use "wbthomason/packer.nvim"
 
   -- visual
-  use { "EdenEast/nightfox.nvim" }
+  use { "EdenEast/nightfox.nvim", run = ":NightfoxCompile" }
   use { "kyazdani42/nvim-web-devicons" }
   use { "hoob3rt/lualine.nvim" }
 
