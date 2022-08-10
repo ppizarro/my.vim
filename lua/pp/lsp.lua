@@ -127,7 +127,7 @@ local go_settings = {
             unusedwrite = true,
         },
         staticcheck = true,
-        buildFlags = { "-tags=integration" },
+        buildFlags = { "-tags=integration,unit" },
         usePlaceholders = true,
     },
 }
