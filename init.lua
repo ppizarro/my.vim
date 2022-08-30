@@ -7,14 +7,14 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = ' '
 
 if require('pp.bootstrap')() then
-  require("pp.plugins")
-  require('packer').sync()
-  print '=================================='
-  print '    Plugins are being installed'
-  print '    Wait until Packer completes,'
-  print '       then restart nvim'
-  print '=================================='
-  return
+    require("pp.plugins")
+    require('packer').sync()
+    print '=================================='
+    print '    Plugins are being installed'
+    print '    Wait until Packer completes,'
+    print '       then restart nvim'
+    print '=================================='
+    return
 end
 
 require("pp.plugins")
