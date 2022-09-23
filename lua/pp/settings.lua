@@ -33,6 +33,7 @@ local disabled_built_ins = {
     'netrwSettings',
 }
 
+g.loaded = 1
 for i = 1, 10 do
     g['loaded_' .. disabled_built_ins[i]] = 1
 end
