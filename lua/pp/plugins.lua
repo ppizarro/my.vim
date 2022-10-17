@@ -70,5 +70,5 @@ return require("packer").startup(function(use)
     use { "numToStr/Comment.nvim" }
 
     -- lua dev
-    use { "folke/lua-dev.nvim" }
+    use { "folke/neodev.nvim" }
 end)

@@ -40,7 +40,7 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 
 - [nvim-tree](https://github.com/kyazdani42/nvim-tree.lua) - A File Explorer For Neovim Written In Lua 
 
-- [lua-dev.nvim](https://github.com/folke/lua-dev.nvim) - Lua development plugin
+- [neodev.nvim](https://github.com/folke/neodev.nvim) - Lua development plugin
 
 # Basic Usage
 

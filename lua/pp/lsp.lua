@@ -6,6 +6,8 @@ local lspconfig = require("lspconfig")
 local cmp_nvim_lsp = require("cmp_nvim_lsp")
 local telescope = require('telescope.builtin')
 
+require("neodev").setup({})
+
 --[[
 local on_init = function(client)
   client.config.flags = client.config.flags or {}
@@ -97,7 +99,7 @@ local function default_config()
 end
 
 -- Make runtime files discoverable to the server
-local runtime_path = vim.split(package.path, ';')
+local runtime_path = vim.split(package.path, ';', {})
 table.insert(runtime_path, 'lua/?.lua')
 table.insert(runtime_path, 'lua/?/init.lua')
 
@@ -147,10 +149,6 @@ local function make_config(server)
 
     if server == "sumneko_lua" then
         config.settings = lua_settings
-        local luacfg = require("lua-dev").setup({
-            lspconfig = config
-        })
-        return luacfg
     end
 
     return config
