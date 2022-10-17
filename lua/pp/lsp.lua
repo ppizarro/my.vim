@@ -82,7 +82,7 @@ local function default_config()
             "additionalTextEdits",
         }
     }
-    capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
+    capabilities = cmp_nvim_lsp.default_capabilities(capabilities)
 
     return {
         --on_init = on_init,
