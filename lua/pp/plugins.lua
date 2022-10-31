@@ -69,6 +69,17 @@ return require("packer").startup(function(use)
     -- comments
     use { "numToStr/Comment.nvim" }
 
+    -- tests
+    use {
+        "nvim-neotest/neotest",
+        requires = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+            "antoinemadec/FixCursorHold.nvim",
+            "nvim-neotest/neotest-go",
+        }
+    }
+
     -- lua dev
     use { "folke/neodev.nvim" }
 end)
