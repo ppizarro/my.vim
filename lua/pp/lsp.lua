@@ -2,6 +2,9 @@
 -- https://github.com/neovim/nvim-lspconfig
 -- https://github.com/williamboman/nvim-lsp-installer
 
+require("mason").setup()
+require("mason-lspconfig").setup()
+
 local lspconfig = require("lspconfig")
 local cmp_nvim_lsp = require("cmp_nvim_lsp")
 local telescope = require('telescope.builtin')
@@ -90,11 +93,6 @@ local function default_config()
         --on_init = on_init,
         on_attach = on_attach,
         capabilities = capabilities,
-        --[[
-      flags = {
-        debounce_text_changes = 50,
-      },
-      --]]
     }
 end
 
@@ -140,11 +138,6 @@ local function make_config(server)
 
     if server == "gopls" then
         config.settings = go_settings
-        --[[
-    config.flags = {
-      debounce_text_changes = 200,
-    }
---]]
     end
 
     if server == "sumneko_lua" then
@@ -171,17 +164,5 @@ local function config_servers()
         lspconfig[server].setup(opts)
     end
 end
-
-require("nvim-lsp-installer").setup {
-    ensure_installed = servers_to_install,
-    automatic_installation = true, -- automatically detect which servers to install (based on which servers are set up via lspconfig)
-    ui = {
-        icons = {
-            server_installed = "✓",
-            server_pending = "➜",
-            server_uninstalled = "✗"
-        }
-    }
-}
 
 config_servers()
