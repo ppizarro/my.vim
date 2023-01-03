@@ -39,7 +39,8 @@ for i = 1, 10 do
 end
 
 -- Tabs
-o.autoindent = true
+o.smartindent = true
+--o.autoindent = true
 o.cindent = true
 o.wrap = true
 
@@ -52,14 +53,25 @@ o.breakindent = true
 o.showbreak = string.rep(" ", 3) -- make it so that long lines wrap smartly
 o.linebreak = true
 
+o.scrolloff = 8
 o.signcolumn = "yes" -- show sign column
 wo.number = true -- show line numbers
 o.relativenumber = true -- show relative line numbers
 
+o.swapfile = false
+o.backup = false
+
 o.clipboard = "unnamedplus" -- use system copy/paste
 o.hlsearch = false -- highlight search results
+o.incsearch = true
 o.ignorecase = true -- ignore case
 o.smartcase = true -- ignore case if search pattern is lowercase
+
+--o.guicursor = ""
+
+o.termguicolors = true -- true color support
+
+o.colorcolumn = "120"
 
 o.shiftround = true -- move in multiples of shiftwidth with < and >
 o.mouse = "a" -- allow mouse actions
@@ -67,7 +79,7 @@ o.laststatus = 3
 o.showmode = false -- we show the mode with airline or lightline
 o.splitright = true -- split vertical windows right to the current windows
 o.splitbelow = true -- split horizontal windows below to the current windows
-o.updatetime = 250 -- 250ms of no cursor movement to trigger CursorHold
+o.updatetime = 50 -- 50ms of no cursor movement to trigger CursorHold
 o.cursorline = true -- highlight current line - allows you to track cursor position more easily
 o.maxmempattern = 20000 -- increase max memory to show syntax highlighting for large files
 

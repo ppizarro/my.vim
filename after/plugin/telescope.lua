@@ -36,3 +36,4 @@ vim.keymap.set('n', '<leader>fb', function() builtin.buffers { sort_lastused = t
 vim.keymap.set('n', '<leader>fh', builtin.help_tags)
 vim.keymap.set('n', '<leader>gc', builtin.git_commits)
 vim.keymap.set('n', '<leader>gs', builtin.git_status)
+vim.keymap.set('n', '<leader>gf', builtin.git_files)

@@ -2,14 +2,29 @@ return require("packer").startup(function(use)
     use "wbthomason/packer.nvim"
 
     -- visual
-    use { "EdenEast/nightfox.nvim", run = ":NightfoxCompile" }
+    use {
+        "EdenEast/nightfox.nvim",
+        run = ":NightfoxCompile",
+        config = function()
+            vim.cmd("colorscheme nightfox")
+        end
+    }
+    --[[
+    use({
+        "rose-pine/neovim",
+        as = "rose-pine",
+        config = function()
+            vim.cmd("colorscheme rose-pine")
+        end
+    })
+--]]
     use { "kyazdani42/nvim-web-devicons" }
     use { "hoob3rt/lualine.nvim" }
 
     -- navigation
-    use { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
+    use { "nvim-telescope/telescope-fzf-native.nvim", run = "make" }
     use {
-        "nvim-telescope/telescope.nvim", branch = '0.1.x',
+        "nvim-telescope/telescope.nvim", branch = "0.1.x",
         requires = {
             "nvim-lua/popup.nvim",
             "nvim-lua/plenary.nvim",
@@ -24,8 +39,13 @@ return require("packer").startup(function(use)
     }
 
     -- highlight, edit, and navigate code
-    use { "nvim-treesitter/nvim-treesitter" }
+    use { "nvim-treesitter/nvim-treesitter",
+        run = function()
+            pcall(require('nvim-treesitter.install').update { with_sync = true })
+        end,
+    }
     use { "nvim-treesitter/nvim-treesitter-textobjects" }
+    use { "nvim-treesitter/playground" }
 
     -- lsp
     use {

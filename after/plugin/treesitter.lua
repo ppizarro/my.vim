@@ -9,8 +9,11 @@ ts_configs.setup({
         "json",
         "bash",
     },
+    sync_install = false,
+    auto_install = true,
     highlight = { enable = true },
     indent = { enable = true },
+    additional_vim_regex_highlighting = false,
     incremental_selection = {
         enable = true,
         keymaps = {
