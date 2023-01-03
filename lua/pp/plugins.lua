@@ -2,22 +2,8 @@ return require("packer").startup(function(use)
     use "wbthomason/packer.nvim"
 
     -- visual
-    use {
-        "EdenEast/nightfox.nvim",
-        run = ":NightfoxCompile",
-        config = function()
-            vim.cmd("colorscheme nightfox")
-        end
-    }
-    --[[
-    use({
-        "rose-pine/neovim",
-        as = "rose-pine",
-        config = function()
-            vim.cmd("colorscheme rose-pine")
-        end
-    })
---]]
+    use { "EdenEast/nightfox.nvim" }
+    --use { "folke/tokyonight.nvim" }
     use { "kyazdani42/nvim-web-devicons" }
     use { "hoob3rt/lualine.nvim" }
 
