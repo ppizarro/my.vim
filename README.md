@@ -4,11 +4,9 @@ My init.vim configuration, plugins and some other vim useful stuff.
 
 # Installation
 
-- neovim >= 0.7
-- npm: required by some lsp servers
-
+ - neovim >= 0.8
 ```bash
-sudo pacman -S neovim npm
+sudo pacman -S neovim
 ```
 
 Clone the project in $XDG_CONFIG_HOME/nvim folder, usually `~/.config/nvim`:
@@ -19,8 +17,12 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 
 # Plugins
 
+- [lazy.nvim](https://github.com/folke/lazy.nvim) - lazy.nvim is a modern plugin manager for Neovim
+
 - [nightfox](https://github.com/EdenEast/nightfox.nvim) - colorscheme
+
 - [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons) - web devicons for general usage
+
 - [lualine.nvim](https://github.com/hoob3rt/lualine.nvim) - statusline
 
 - [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) - Show git signs in buffer
@@ -29,16 +31,22 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 - [telescope-fzf-native.nvim](https://github.com/nvim-telescope/telescope-fzf-native.nvim) - fzf-native is a c port of fzf 
 
 - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) - Treesitter-based highlighting 
+- [treesitter playground](https://github.com/nvim-treesitter/playground) - View treesitter information directly in Neovim!
+- [treesitter textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) - Syntax aware text-objects, select, move, swap, and peek support
 
-- [nvim-lsp-installer](https://github.com/williamboman/nvim-lsp-installer) - Easy install LSP servers
+- [mason.nvim](https://github.com/williamboman/mason.nvim) - Easily install and manage LSP servers, DAP servers, linters, and formatters
 - [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) - Easy default configs for the builtin LSP client
+- [null-ls.nvim](https://github.com/jose-elias-alvarez/null-ls.nvim) - Use Neovim as a language server to inject LSP diagnostics, code actions, and more via Lua
 
 - [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) - A completion engine plugin for neovim written in Lua
 - [LuaSnip](https://github.com/L3MON4D3/LuaSnip), [cmp_luasnip](https://github.com/saadparwaiz1/cmp_luasnip) - Snippet engine
 
 - [Comment.nvim](https://github.com/numToStr/Comment.nvim) - Smart and powerful comment plugin for neovim
 
-- [nvim-tree](https://github.com/kyazdani42/nvim-tree.lua) - A File Explorer For Neovim Written In Lua 
+- [Neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim) -  Neo-tree is a Neovim plugin to browse the file system
+
+- [neo-test](https://github.com/nvim-neotest/neotest) - A framework for interacting with tests within NeoVim
+- [neotest-go](https://github.com/nvim-neotest/neotest-go) - This plugin provides a go(lang) adapter for the Neotest framework
 
 - [neodev.nvim](https://github.com/folke/neodev.nvim) - Lua development plugin
 
