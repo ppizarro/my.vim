@@ -32,7 +32,7 @@ return {
     dependencies = {
       { "folke/neodev.nvim", config = true },
       { "williamboman/mason.nvim" },
-      { "williamboman/mason-lspconfig.nvim", config = { automatic_installation = true } },
+      { "williamboman/mason-lspconfig.nvim", opts = { automatic_installation = true } },
       { "nvim-telescope/telescope.nvim" },
       "hrsh7th/cmp-nvim-lsp",
     },

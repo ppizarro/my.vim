@@ -4,7 +4,7 @@ return {
     "nvim-lua/plenary.nvim",
   },
   event = "BufReadPre",
-  config = {
+  opts = {
     signs = {
       add = { text = "▎" },
       change = { text = "▎" },

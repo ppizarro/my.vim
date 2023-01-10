@@ -1,7 +1,7 @@
 return {
   "nvim-lualine/lualine.nvim",
   event = "VeryLazy",
-  config = {
+  opts = {
     options = {
       theme = "nightfox",
       globalstatus = true,
