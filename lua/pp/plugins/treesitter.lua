@@ -1,6 +1,7 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
+    dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
     build = ":TSUpdate",
     event = "BufReadPost",
     opts = {
@@ -14,6 +15,7 @@ return {
         "make",
         "markdown",
         "rust",
+        "vim",
         "yaml",
       },
       highlight = { enable = true },
@@ -108,7 +110,6 @@ return {
   },
   {
     "nvim-treesitter/nvim-treesitter-textobjects",
-    dependencies = { "nvim-treesitter/nvim-treesitter" },
     init = function()
       require("lazy.core.loader").disable_rtp_plugin("nvim-treesitter-textobjects")
     end,
