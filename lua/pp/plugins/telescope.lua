@@ -2,9 +2,11 @@ return {
   "nvim-telescope/telescope.nvim",
   dependencies = {
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    { "nvim-telescope/telescope-ui-select.nvim" },
     "nvim-lua/plenary.nvim",
     "nvim-tree/nvim-web-devicons",
   },
+  cmd = "Telescope",
   keys = {
     {
       "<leader>ff",
@@ -81,6 +83,8 @@ return {
         },
       },
     })
+    -- extensions
     telescope.load_extension("fzf")
+    telescope.load_extension("ui-select")
   end,
 }
