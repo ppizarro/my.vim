@@ -78,8 +78,6 @@ return {
         sources = {
           formatting.shfmt,
           formatting.stylua,
-          formatting.terraform_fmt,
-          formatting.yamlfmt,
           --formatting.gofmt,
           diagnostics.golangci_lint,
           diagnostics.jsonlint,
@@ -100,12 +98,14 @@ return {
     keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
     opts = {
       ensure_installed = {
-        "stylua",
+        "jsonlint",
         "golangci-lint",
         --"gomodifytags",
         --"gofmt",
         "shfmt",
         "shellcheck",
+        "stylua",
+        "yamllint",
       },
     },
     config = function(_, opts)
