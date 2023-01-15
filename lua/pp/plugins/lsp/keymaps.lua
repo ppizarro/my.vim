@@ -10,7 +10,8 @@ function M.on_attach(_, bufnr)
   end
 
   --Enable completion triggered by <c-x><c-o>
-  vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"
+  --vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"
+  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 
   -- rename
   nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
@@ -21,7 +22,7 @@ function M.on_attach(_, bufnr)
   nmap("<c-]>", vim.lsp.buf.definition, "Goto Definition")
   nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
   nmap("gi", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
-  nmap("gr", tb.lsp_references)
+  nmap("gr", tb.lsp_references, "[G]oto [R]eferences")
   nmap("<leader>ds", tb.lsp_document_symbols, "[D]ocument [S]ymbols")
   nmap("<leader>ws", tb.lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
 
@@ -38,7 +39,8 @@ function M.on_attach(_, bufnr)
   nmap("<leader>wl", function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, "[W]orkspace [L]ist Folders")
-  --nmap("<leader>F", require("pp.plugins.lsp.format").format, "[F]ormat")
+
+  nmap("<leader>F", require("pp.plugins.lsp.format").format, "[F]ormat")
 end
 
 return M
