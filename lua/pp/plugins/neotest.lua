@@ -32,7 +32,6 @@ end
 return {
   {
     "nvim-neotest/neotest",
-    lazy = true,
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
@@ -40,6 +39,7 @@ return {
       "nvim-neotest/neotest-go",
       "nvim-neotest/neotest-plenary",
     },
+    cmd = "Neotest",
     config = setup,
     keys = {
       -- call test for function in cursor
