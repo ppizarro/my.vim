@@ -26,15 +26,17 @@ local servers = {
   },
   gopls = {
     settings = {
-      analyses = {
-        unusedparams = true,
-        nilness = true,
-        --shadow = true,
-        unusedwrite = true,
+      gopls = {
+        analyses = {
+          unusedparams = true,
+          nilness = true,
+          --shadow = true,
+          unusedwrite = true,
+        },
+        staticcheck = true,
+        buildFlags = { "-tags=integration,unit" },
+        usePlaceholders = true,
       },
-      staticcheck = true,
-      buildflags = { "-tags=integration,unit" },
-      useplaceholders = true,
     },
   },
   terraformls = {},
