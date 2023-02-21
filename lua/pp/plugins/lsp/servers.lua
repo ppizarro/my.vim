@@ -1,6 +1,6 @@
 -- Add any servers here together with their settings
 local servers = {
-  sumneko_lua = {
+  lua_ls = {
     settings = {
       Lua = {
         runtime = {
