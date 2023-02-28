@@ -26,10 +26,44 @@ return {
   -- lspconfig
   {
     "neovim/nvim-lspconfig",
+    version = false,
     event = "BufReadPre",
     dependencies = {
-      { "folke/neodev.nvim", config = true },
-      { "williamboman/mason.nvim" },
+      {
+        "folke/neodev.nvim",
+        config = function()
+          require("neodev").setup({
+            library = { plugins = { "neotest", "plenary.nvim" }, types = true, setup_jsonls = false },
+          })
+        end,
+      },
+      {
+        "williamboman/mason.nvim",
+        cmd = "Mason",
+        keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
+        opts = {
+          ensure_installed = {
+            "jsonlint",
+            "golangci-lint",
+            --"gomodifytags",
+            --"gofmt",
+            "shfmt",
+            "shellcheck",
+            "stylua",
+            "yamllint",
+          },
+        },
+        config = function(_, opts)
+          require("mason").setup(opts)
+          local mr = require("mason-registry")
+          for _, tool in ipairs(opts.ensure_installed) do
+            local p = mr.get_package(tool)
+            if not p:is_installed() then
+              p:install()
+            end
+          end
+        end,
+      },
       { "williamboman/mason-lspconfig.nvim" },
       { "nvim-telescope/telescope.nvim" },
       "hrsh7th/cmp-nvim-lsp",
@@ -68,55 +102,28 @@ return {
       "nvim-lua/plenary.nvim",
     },
     event = "BufReadPre",
-    config = function()
+    ops = function()
       local nls = require("null-ls")
       local formatting = nls.builtins.formatting
       local diagnostics = nls.builtins.diagnostics
       local actions = nls.builtins.code_actions
 
-      nls.setup({
+      return {
         sources = {
           formatting.shfmt,
           formatting.stylua,
           --formatting.gofmt,
           diagnostics.golangci_lint,
           diagnostics.jsonlint,
-          diagnostics.yamllint,
+          diagnostics.yamllint.with({
+            extra_args = { "-d", "{extends: relaxed, rules: {line-length: {max: 200}}}" },
+          }),
           diagnostics.shellcheck,
           --actions.gomodifytags,
           actions.shellcheck,
           actions.gitsigns,
         },
-      })
-    end,
-  },
-
-  -- cmdline tools
-  {
-    "williamboman/mason.nvim",
-    cmd = "Mason",
-    keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
-    opts = {
-      ensure_installed = {
-        "jsonlint",
-        "golangci-lint",
-        --"gomodifytags",
-        --"gofmt",
-        "shfmt",
-        "shellcheck",
-        "stylua",
-        "yamllint",
-      },
-    },
-    config = function(_, opts)
-      require("mason").setup(opts)
-      local mr = require("mason-registry")
-      for _, tool in ipairs(opts.ensure_installed) do
-        local p = mr.get_package(tool)
-        if not p:is_installed() then
-          p:install()
-        end
-      end
+      }
     end,
   },
 

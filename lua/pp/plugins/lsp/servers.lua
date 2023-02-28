@@ -44,6 +44,7 @@ local servers = {
   jsonls = {},
   yamlls = {},
   dockerls = {},
+  docker_compose_language_service = {},
 }
 
 return servers
