@@ -102,7 +102,7 @@ return {
       "nvim-lua/plenary.nvim",
     },
     event = "BufReadPre",
-    ops = function()
+    opts = function()
       local nls = require("null-ls")
       local formatting = nls.builtins.formatting
       local diagnostics = nls.builtins.diagnostics
