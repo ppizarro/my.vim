@@ -50,7 +50,7 @@ return {
             "shfmt",
             "shellcheck",
             "stylua",
-            "yamllint",
+            "yamlfmt",
           },
         },
         config = function(_, opts)
@@ -113,11 +113,9 @@ return {
           formatting.shfmt,
           formatting.stylua,
           --formatting.gofmt,
+          formatting.yamlfmt,
           diagnostics.golangci_lint,
           diagnostics.jsonlint,
-          diagnostics.yamllint.with({
-            extra_args = { "-d", "{extends: relaxed, rules: {line-length: {max: 200}}}" },
-          }),
           diagnostics.shellcheck,
           --actions.gomodifytags,
           actions.shellcheck,
