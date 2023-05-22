@@ -42,9 +42,6 @@ local servers = {
   terraformls = {},
   bashls = {},
   jsonls = {},
-  yamlls = {},
-  dockerls = {},
-  docker_compose_language_service = {},
 }
 
 return servers
