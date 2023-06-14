@@ -128,6 +128,7 @@ return {
   -- progress
   {
     "j-hui/fidget.nvim",
+    tag = "legacy",
     event = "BufReadPre",
     config = true,
   },
