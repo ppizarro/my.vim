@@ -43,10 +43,8 @@ return {
         keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
         opts = {
           ensure_installed = {
-            "jsonlint",
             "golangci-lint",
             --"gomodifytags",
-            --"gofmt",
             "shfmt",
             "shellcheck",
             "stylua",
@@ -112,10 +110,8 @@ return {
         sources = {
           formatting.shfmt,
           formatting.stylua,
-          --formatting.gofmt,
           formatting.yamlfmt,
           diagnostics.golangci_lint,
-          diagnostics.jsonlint,
           diagnostics.shellcheck,
           --actions.gomodifytags,
           actions.shellcheck,
