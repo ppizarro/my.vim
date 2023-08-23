@@ -50,6 +50,8 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 
 - [neodev.nvim](https://github.com/folke/neodev.nvim) - Lua development plugin
 
+- [hardtime.nvim](https://github.com/m4xshen/hardtime.nvim) - A Neovim plugin helping you establish good command workflow and habit
+
 # Basic Usage
 
 ## Buffer
