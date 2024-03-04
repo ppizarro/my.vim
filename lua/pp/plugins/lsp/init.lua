@@ -46,7 +46,6 @@ return {
             "golangci-lint",
             --"gomodifytags",
             "shfmt",
-            "shellcheck",
             "stylua",
             "yamlfmt",
           },
@@ -112,9 +111,7 @@ return {
           formatting.stylua,
           formatting.yamlfmt,
           diagnostics.golangci_lint,
-          diagnostics.shellcheck,
           --actions.gomodifytags,
-          actions.shellcheck,
           actions.gitsigns,
         },
       }
