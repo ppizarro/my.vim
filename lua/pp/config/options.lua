@@ -5,9 +5,9 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Skip some remote provider loading
-vim.g.loaded_python3_provider = 0 -- disable Python 3 support
+--vim.g.loaded_python3_provider = 0 -- disable Python 3 support
 vim.g.loaded_ruby_provider = 0 -- disable ruby support
-vim.g.loaded_node_provider = 0 -- disable node support
+--vim.g.loaded_node_provider = 0 -- disable node support
 vim.g.loaded_perl_provider = 0 -- disable perl support
 
 vim.opt.autowrite = true -- enable auto write
