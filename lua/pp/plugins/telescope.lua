@@ -1,5 +1,6 @@
 return {
   "nvim-telescope/telescope.nvim",
+  branch = "0.1.x",
   dependencies = {
     { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     { "nvim-telescope/telescope-ui-select.nvim" },
@@ -58,6 +59,7 @@ return {
     },
   },
   config = function()
+    local trouble = require("trouble.providers.telescope")
     local telescope = require("telescope")
     telescope.setup({
       defaults = {
@@ -80,6 +82,10 @@ return {
             case_mode = "smart_case", -- or "ignore_case" or "respect_case"
             -- the default case_mode is "smart_case"
           },
+        },
+        mappings = {
+          i = { ["<c-t>"] = trouble.open_with_trouble },
+          n = { ["<c-t>"] = trouble.open_with_trouble },
         },
       },
     })
