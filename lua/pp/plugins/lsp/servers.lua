@@ -42,6 +42,9 @@ local servers = {
   terraformls = {},
   bashls = {},
   jsonls = {},
+  html = {},
+  htmx = {},
+  templ = {},
 }
 
 return servers
