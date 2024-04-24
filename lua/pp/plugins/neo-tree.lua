@@ -1,5 +1,6 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
+  version = "*",
   dependencies = {
     "nvim-lua/plenary.nvim",
     "nvim-tree/nvim-web-devicons",
@@ -8,7 +9,7 @@ return {
   cmd = "Neotree",
   keys = {
     {
-      "<leader>n",
+      "\\",
       function()
         require("neo-tree.command").execute({ toggle = true })
       end,
@@ -24,6 +25,11 @@ return {
         enabled = true,
       },
       hijack_netrw_behavior = "open_current",
+      window = {
+        mappings = {
+          ["\\"] = "close_window",
+        },
+      },
     },
   },
 }

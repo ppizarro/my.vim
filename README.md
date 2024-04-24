@@ -83,10 +83,10 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 
 # Telescope
 ```help
-`<leader>ff` find_files
-`<leader>fg` live_grep
-`<leader>fb` buffers
-`<leader>fh` help_tags
+`<leader>sf` find_files
+`<leader>sg` live_grep
+`<leader>sb` buffers
+`<leader>sh` help_tags
 `<leader>gc` git_commits
 `<leader>gs` git_status
 ```
@@ -125,7 +125,7 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 
 # nvim-tree
 ```help
-`<leader>n` tree toggle
+`\` tree toggle
 ```
 
 # Completion

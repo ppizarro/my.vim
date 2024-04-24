@@ -4,6 +4,8 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+vim.g.have_nerd_font = true
+
 -- Skip some remote provider loading
 --vim.g.loaded_python3_provider = 0 -- disable Python 3 support
 vim.g.loaded_ruby_provider = 0 -- disable ruby support
@@ -24,16 +26,17 @@ vim.opt.grepprg = "rg --vimgrep"
 vim.opt.guifont = "FiraCode Nerd Font:h11"
 vim.opt.hidden = true -- Enable modified buffers in background
 vim.opt.ignorecase = true -- Ignore case
-vim.opt.inccommand = "nosplit" -- preview incremental substitute
+vim.opt.inccommand = "split" -- preview incremental substitute
 vim.opt.joinspaces = false -- No double spaces with join after a dot
 vim.opt.laststatus = 3
 vim.opt.list = true -- Show some invisible characters (tabs...
+vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 vim.opt.mouse = "a" -- enable mouse mode
 vim.opt.number = true -- Print line number
 vim.opt.pumblend = 10 -- Popup blend
 vim.opt.pumheight = 10 -- Maximum number of entries in a popup
 vim.opt.relativenumber = true -- Relative line numbers
-vim.opt.scrolloff = 4 -- Lines of context
+vim.opt.scrolloff = 10 -- Lines of context
 vim.opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize" }
 vim.opt.shiftround = true -- Round indent, move in multiples of shiftwidth with < and >
 vim.opt.shiftwidth = 4 -- Size of an indent
@@ -48,10 +51,10 @@ vim.opt.splitright = true -- Put new windows right of current
 vim.opt.tabstop = 4 -- Number of spaces tabs count for
 vim.opt.softtabstop = 4
 vim.opt.termguicolors = true -- True color support
-vim.opt.timeoutlen = 1000 -- try 300
+vim.opt.timeoutlen = 300
 vim.opt.undofile = true -- maintain undo history between sessions
 vim.opt.undolevels = 10000
-vim.opt.updatetime = 200 -- save swap file and trigger CursorHold
+vim.opt.updatetime = 250 -- save swap file and trigger CursorHold
 vim.opt.wildmode = "longest:full,full" -- Command-line completion mode
 
 vim.opt.wrap = true -- Disable line wrap
@@ -63,7 +66,7 @@ vim.opt.linebreak = true
 vim.opt.swapfile = false
 vim.opt.backup = false
 
-vim.opt.hlsearch = false -- highlight search results
+vim.opt.hlsearch = true -- highlight search results
 vim.opt.incsearch = true
 
 vim.opt.colorcolumn = "120"
@@ -85,3 +88,5 @@ vim.diagnostic.config({
   virtual_text = { spacing = 4, prefix = "●" },
   severity_sort = true,
 })
+
+vim.cmd.hi("Comment gui=none")

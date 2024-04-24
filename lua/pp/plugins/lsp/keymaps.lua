@@ -1,17 +1,29 @@
 local M = {}
 
-function M.on_attach(_, bufnr)
+function M.on_attach(client, bufnr)
   local tb = require("telescope.builtin")
   local nmap = function(keys, func, desc)
-    if desc then
-      desc = "LSP: " .. desc
-    end
-    vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
+    vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
   end
 
-  --Enable completion triggered by <c-x><c-o>
-  --vim.bo.omnifunc = "v:lua.vim.lsp.omnifunc"
-  vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+  nmap("<c-]>", tb.lsp_definitions, "Goto Definition")
+  nmap("gd", tb.lsp_definitions, "[G]oto [D]efinition")
+  nmap("gI", tb.lsp_implementations, "[G]oto [I]mplementation")
+  nmap("gr", tb.lsp_references, "[G]oto [R]eferences")
+  nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+
+  -- Jump to the type of the word under your cursor.
+  --  Useful when you're not sure what type a variable is and you want to see
+  --  the definition of its *type*, not where it was *defined*.
+  nmap("<leader>D", tb.lsp_type_definitions, "Type [D]efinition")
+
+  -- Fuzzy find all the symbols in your current document.
+  --  Symbols are things like variables, functions, types, etc.
+  nmap("<leader>ds", tb.lsp_document_symbols, "[D]ocument [S]ymbols")
+
+  -- Fuzzy find all the symbols in your current workspace.
+  --  Similar to document symbols, except searches over your entire project.
+  nmap("<leader>ws", tb.lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
 
   -- rename
   nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
@@ -19,28 +31,19 @@ function M.on_attach(_, bufnr)
   -- code action
   nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]tion")
 
-  nmap("<c-]>", vim.lsp.buf.definition, "Goto Definition")
-  nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
-  nmap("gi", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
-  nmap("gr", tb.lsp_references, "[G]oto [R]eferences")
-  nmap("<leader>ds", tb.lsp_document_symbols, "[D]ocument [S]ymbols")
-  nmap("<leader>ws", tb.lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
-
   -- hover
   nmap("K", vim.lsp.buf.hover, "Hover Documentation")
+
   -- signature
   nmap("<C-s>", vim.lsp.buf.signature_help, "Signature Documentation")
 
-  -- Lesser used LSP functionality
-  nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-  nmap("<leader>D", vim.lsp.buf.type_definition, "Type Definition")
-  nmap("<leader>wa", vim.lsp.buf.add_workspace_folder, "[W]orkspace [A]dd Folder")
-  nmap("<leader>wr", vim.lsp.buf.remove_workspace_folder, "[W]orkspace [R]emove Folder")
-  nmap("<leader>wl", function()
-    print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-  end, "[W]orkspace [L]ist Folders")
-
-  nmap("<leader>F", require("pp.plugins.lsp.format").format, "[F]ormat")
+  -- The following autocommand is used to enable inlay hints in your
+  -- code, if the language server you are using supports them
+  if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+    nmap("<leader>th", function()
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+    end, "[T]oggle Inlay [H]ints")
+  end
 end
 
 return M

@@ -3,32 +3,19 @@
 -- https://github.com/williamboman/nvim-lsp-installer
 
 local on_attach = function(client, bufnr)
-  require("pp.plugins.lsp.format").on_attach(client, bufnr)
   require("pp.plugins.lsp.keymaps").on_attach(client, bufnr)
-
-  -- highlight code references
-  if client.supports_method("textDocument/documentHighlight") then
-    local lsp_highlight = vim.api.nvim_create_augroup("LspDocumentHighlight", { clear = true })
-    vim.api.nvim_create_autocmd("CursorHold", {
-      group = lsp_highlight,
-      buffer = bufnr,
-      callback = vim.lsp.buf.document_highlight,
-    })
-    vim.api.nvim_create_autocmd("CursorMoved", {
-      buffer = bufnr,
-      group = lsp_highlight,
-      callback = vim.lsp.buf.clear_references,
-    })
-  end
+  require("pp.plugins.lsp.highlights").on_attach(client, bufnr)
 end
 
-return {
-  -- lspconfig
+return { -- LSP Configuration & Plugins
   {
     "neovim/nvim-lspconfig",
-    version = false,
-    event = "BufReadPre",
     dependencies = {
+      -- Automatically install LSPs and related tools to stdpath for Neovim
+      { "williamboman/mason.nvim", config = true }, -- NOTE: Must be loaded before dependants
+      { "williamboman/mason-lspconfig.nvim" },
+      { "WhoIsSethDaniel/mason-tool-installer.nvim" },
+      { "j-hui/fidget.nvim", opts = {} },
       {
         "folke/neodev.nvim",
         config = function()
@@ -37,92 +24,54 @@ return {
           })
         end,
       },
-      {
-        "williamboman/mason.nvim",
-        cmd = "Mason",
-        keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
-        opts = {
-          ensure_installed = {
-            "golangci-lint",
-            --"gomodifytags",
-            "shfmt",
-            "stylua",
-            "yamlfmt",
-          },
-        },
-        config = function(_, opts)
-          require("mason").setup(opts)
-          local mr = require("mason-registry")
-          for _, tool in ipairs(opts.ensure_installed) do
-            local p = mr.get_package(tool)
-            if not p:is_installed() then
-              p:install()
-            end
-          end
-        end,
-      },
-      { "williamboman/mason-lspconfig.nvim" },
-      { "nvim-telescope/telescope.nvim" },
-      "hrsh7th/cmp-nvim-lsp",
     },
     config = function()
       vim.api.nvim_create_autocmd("LspAttach", {
-        callback = function(args)
-          local client = vim.lsp.get_client_by_id(args.data.client_id)
-          local buffer = args.buf
+        group = vim.api.nvim_create_augroup("pp-lsp-attach", {}),
+        callback = function(event)
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
+          local buffer = event.buf
           on_attach(client, buffer)
         end,
       })
 
-      local servers = require("pp.plugins.lsp.servers")
-      local mlc = require("mason-lspconfig")
-      mlc.setup({
-        ensure_installed = vim.tbl_keys(servers),
-      })
-
-      local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
-      mlc.setup_handlers({
-        function(server)
-          local opts = servers[server] or {}
-          opts.capabilities = capabilities
-          require("lspconfig")[server].setup(opts)
+      vim.api.nvim_create_autocmd("LspDetach", {
+        group = vim.api.nvim_create_augroup("pp-lsp-detach", { clear = true }),
+        callback = function(event)
+          vim.lsp.buf.clear_references()
+          vim.api.nvim_clear_autocmds({ group = "pp-lsp-highlight", buffer = event.buf })
         end,
       })
-    end,
-  },
 
-  -- formatters
-  {
-    "nvimtools/none-ls.nvim",
-    dependencies = {
-      { "williamboman/mason.nvim" },
-      "nvim-lua/plenary.nvim",
-    },
-    event = "BufReadPre",
-    opts = function()
-      local nls = require("null-ls")
-      local formatting = nls.builtins.formatting
-      local diagnostics = nls.builtins.diagnostics
-      local actions = nls.builtins.code_actions
+      -- LSP servers and clients are able to communicate to each other what features they support.
+      --  By default, Neovim doesn't support everything that is in the LSP specification.
+      --  When you add nvim-cmp, luasnip, etc. Neovim now has *more* capabilities.
+      --  So, we create new capabilities with nvim cmp, and then broadcast that to the servers.
+      local capabilities = vim.lsp.protocol.make_client_capabilities()
+      capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-      return {
-        sources = {
-          formatting.shfmt,
-          formatting.stylua,
-          formatting.yamlfmt,
-          diagnostics.golangci_lint,
-          --actions.gomodifytags,
-          actions.gitsigns,
+      require("mason").setup()
+
+      local servers = require("pp.plugins.lsp.servers")
+      local ensure_installed = vim.tbl_keys(servers or {})
+      vim.list_extend(ensure_installed, {
+        "golangci-lint", -- Go linter
+        "impl", -- generates Go method stubs for implementing an interface
+        "shfmt", -- Used to format bash script
+        "stylua", -- Used to format Lua code
+        "yamlfmt", -- Used to format yaml files
+      })
+      require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
+
+      require("mason-lspconfig").setup({
+        handlers = {
+          function(server_name)
+            local server = servers[server_name] or {}
+            server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+            require("lspconfig")[server_name].setup(server)
+          end,
         },
-      }
+      })
     end,
-  },
-
-  -- progress
-  {
-    "j-hui/fidget.nvim",
-    tag = "legacy",
-    event = "BufReadPre",
-    config = true,
   },
 }

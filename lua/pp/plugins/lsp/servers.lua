@@ -3,23 +3,16 @@ local servers = {
   lua_ls = {
     settings = {
       Lua = {
-        runtime = {
-          -- Tell the language server which version of Lua you're using (most likely LuaJIT)
-          version = "LuaJIT",
-        },
         diagnostics = {
           -- Get the language server to recognize the `vim` global
           globals = { "vim" },
         },
         workspace = {
           checkThirdParty = false,
-          library = vim.api.nvim_get_runtime_file("", true),
-        },
-        completion = {
-          callSnippet = "Replace",
-        },
-        format = {
-          enable = false,
+          library = {
+            "${3rd}/luv/library",
+            unpack(vim.api.nvim_get_runtime_file("", true)),
+          },
         },
       },
     },
@@ -44,7 +37,7 @@ local servers = {
   jsonls = {},
   html = {},
   htmx = {},
-  templ = {},
+  tailwindcss = {},
 }
 
 return servers
