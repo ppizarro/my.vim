@@ -56,6 +56,7 @@ return { -- LSP Configuration & Plugins
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         "golangci-lint", -- Go linter
+        "markdownlint", -- Markdown linter
         "impl", -- generates Go method stubs for implementing an interface
         "shfmt", -- Used to format bash script
         "stylua", -- Used to format Lua code
