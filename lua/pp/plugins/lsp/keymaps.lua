@@ -31,9 +31,6 @@ function M.on_attach(client, bufnr)
   -- code action
   nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]tion")
 
-  -- hover
-  nmap("K", vim.lsp.buf.hover, "Hover Documentation")
-
   -- signature
   nmap("<C-s>", vim.lsp.buf.signature_help, "Signature Documentation")
 
