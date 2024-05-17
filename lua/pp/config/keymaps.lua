@@ -11,6 +11,15 @@ vim.keymap.set("", "<leader>k", function()
   vim.cmd([[:bprevious]])
 end)
 
+-- close all buffers except the current one
+--:%bd\|e#\|bd#<cr>\|'\"
+vim.keymap.set("n", "<leader>bd", function()
+  vim.cmd("%bd")
+  vim.cmd("e#")
+  vim.cmd("bd#")
+  vim.cmd("'\"")
+end)
+
 -- clear search highlights
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
