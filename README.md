@@ -41,8 +41,6 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 - [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) - A completion engine plugin for neovim written in Lua
 - [LuaSnip](https://github.com/L3MON4D3/LuaSnip), [cmp_luasnip](https://github.com/saadparwaiz1/cmp_luasnip) - Snippet engine
 
-- [Comment.nvim](https://github.com/numToStr/Comment.nvim) - Smart and powerful comment plugin for neovim
-
 - [Neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim) -  Neo-tree is a Neovim plugin to browse the file system
 
 - [neo-test](https://github.com/nvim-neotest/neotest) - A framework for interacting with tests within NeoVim
