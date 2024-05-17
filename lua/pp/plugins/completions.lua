@@ -98,6 +98,7 @@ return { -- Autocompletion
           --    https://github.com/L3MON4D3/LuaSnip?tab=readme-ov-file#keymaps
         }),
         sources = {
+          { name = "copilot", group_index = 2 },
           { name = "nvim_lsp" },
           { name = "luasnip" },
           { name = "path" },
@@ -112,9 +113,18 @@ return { -- Autocompletion
             -- maxwidth = function() return math.floor(0.45 * vim.o.columns) end,
             ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
             show_labelDetails = true, -- show labelDetails in menu. Disabled by default
+            symbol_map = { Copilot = "" },
           }),
         },
       })
+
+      cmp.event:on("menu_opened", function()
+        vim.b.copilot_suggestion_hidden = true
+      end)
+
+      cmp.event:on("menu_closed", function()
+        vim.b.copilot_suggestion_hidden = false
+      end)
     end,
   },
 }
