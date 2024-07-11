@@ -6,7 +6,6 @@ function M.on_attach(client, bufnr)
     vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
   end
 
-  nmap("<c-]>", tb.lsp_definitions, "Goto Definition")
   nmap("gd", tb.lsp_definitions, "[G]oto [D]efinition")
   nmap("gI", tb.lsp_implementations, "[G]oto [I]mplementation")
   nmap("gr", tb.lsp_references, "[G]oto [R]eferences")
