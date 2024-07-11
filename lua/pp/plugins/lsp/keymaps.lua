@@ -35,9 +35,9 @@ function M.on_attach(client, bufnr)
 
   -- The following autocommand is used to enable inlay hints in your
   -- code, if the language server you are using supports them
-  if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+  if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
     nmap("<leader>th", function()
-      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+      vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }))
     end, "[T]oggle Inlay [H]ints")
   end
 end

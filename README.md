@@ -46,7 +46,7 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 - [neo-test](https://github.com/nvim-neotest/neotest) - A framework for interacting with tests within NeoVim
 - [neotest-go](https://github.com/nvim-neotest/neotest-go) - This plugin provides a go(lang) adapter for the Neotest framework
 
-- [neodev.nvim](https://github.com/folke/neodev.nvim) - Lua development plugin
+- [lazydev.nvim](https://github.com/folke/lazydev.nvim) - Lua development plugin
 
 - [hardtime.nvim](https://github.com/m4xshen/hardtime.nvim) - A Neovim plugin helping you establish good command workflow and habit
 
@@ -111,7 +111,7 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 ```help
 `[d`        go to previous diagnostic warning/error
 `]d`        go to previous diagnostic warning/error
-`<leader>e` quick fix list with warnings/errors
+`<C-w>d`    show diagnostic error messages
 `<leader>q` set loc list with warnings/errors
 ```
 

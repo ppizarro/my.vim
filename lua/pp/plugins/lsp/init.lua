@@ -16,7 +16,7 @@ return { -- LSP Configuration & Plugins
       { "williamboman/mason-lspconfig.nvim" },
       { "WhoIsSethDaniel/mason-tool-installer.nvim" },
       { "j-hui/fidget.nvim", opts = {} },
-      { "folke/neodev.nvim", opts = {} },
+      { "folke/lazydev.nvim", ft = "lua", opts = {} },
     },
     config = function()
       vim.api.nvim_create_autocmd("LspAttach", {
