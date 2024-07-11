@@ -3,7 +3,6 @@ return {
   -- nightfox
   {
     "EdenEast/nightfox.nvim",
-    lazy = false,
     priority = 1000,
     config = function()
       local nightfox = require("nightfox")
