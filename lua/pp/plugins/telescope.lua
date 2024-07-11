@@ -15,7 +15,7 @@ return {
     { "nvim-tree/nvim-web-devicons", enabled = vim.g.have_nerd_font },
   },
   config = function()
-    local trouble = require("trouble.providers.telescope")
+    local trouble = require("trouble.sources.telescope")
     local telescope = require("telescope")
     telescope.setup({
       defaults = {
@@ -45,15 +45,15 @@ return {
         mappings = {
           i = {
             ["<c-enter>"] = "to_fuzzy_refine",
-            ["<c-t>"] = trouble.open_with_trouble,
+            ["<c-t>"] = trouble.open,
           },
-          n = { ["<c-t>"] = trouble.open_with_trouble },
+          n = { ["<c-t>"] = trouble.open },
         },
       },
     })
     -- extensions
-    telescope.load_extension("fzf")
-    telescope.load_extension("ui-select")
+    pcall(require("telescope").load_extension, "fzf")
+    pcall(require("telescope").load_extension, "ui-select")
 
     local builtin = require("telescope.builtin")
     vim.keymap.set("n", "<leader>sh", builtin.help_tags, { desc = "[S]earch [H]elp" })
