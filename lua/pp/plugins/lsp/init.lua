@@ -16,30 +16,15 @@ return { -- LSP Configuration & Plugins
       { "williamboman/mason-lspconfig.nvim" },
       { "WhoIsSethDaniel/mason-tool-installer.nvim" },
       { "j-hui/fidget.nvim", opts = {} },
-      {
-        "folke/neodev.nvim",
-        config = function()
-          require("neodev").setup({
-            library = { plugins = { "neotest", "plenary.nvim" }, types = true, setup_jsonls = false },
-          })
-        end,
-      },
+      { "folke/neodev.nvim", opts = {} },
     },
     config = function()
       vim.api.nvim_create_autocmd("LspAttach", {
-        group = vim.api.nvim_create_augroup("pp-lsp-attach", {}),
+        group = vim.api.nvim_create_augroup("pp-lsp-attach", { clear = true }),
         callback = function(event)
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           local buffer = event.buf
           on_attach(client, buffer)
-        end,
-      })
-
-      vim.api.nvim_create_autocmd("LspDetach", {
-        group = vim.api.nvim_create_augroup("pp-lsp-detach", { clear = true }),
-        callback = function(event)
-          vim.lsp.buf.clear_references()
-          vim.api.nvim_clear_autocmds({ group = "pp-lsp-highlight", buffer = event.buf })
         end,
       })
 
