@@ -8,6 +8,7 @@ vim.g.have_nerd_font = true
 
 -- Skip some remote provider loading
 --vim.g.loaded_python3_provider = 0 -- disable Python 3 support
+vim.g.python3_host_prog = "/usr/bin/python3"
 vim.g.loaded_ruby_provider = 0 -- disable ruby support
 --vim.g.loaded_node_provider = 0 -- disable node support
 vim.g.loaded_perl_provider = 0 -- disable perl support
@@ -23,7 +24,8 @@ vim.opt.expandtab = true -- Use spaces instead of tabs
 vim.opt.formatoptions = "jcroqlnt" -- tcqj
 vim.opt.grepformat = "%f:%l:%c:%m"
 vim.opt.grepprg = "rg --vimgrep"
-vim.opt.guifont = "FiraCode Nerd Font:h11"
+--vim.opt.guifont = "FiraCode Nerd Font:h11"
+vim.opt.guifont = "MesloLGS NF:h12"
 vim.opt.hidden = true -- Enable modified buffers in background
 vim.opt.ignorecase = true -- Ignore case
 vim.opt.inccommand = "split" -- preview incremental substitute
