@@ -8,13 +8,7 @@ return {
   },
   cmd = "Neotree",
   keys = {
-    {
-      "\\",
-      function()
-        require("neo-tree.command").execute({ toggle = true })
-      end,
-      desc = "NeoTree",
-    },
+    { "\\", ":Neotree reveal<CR>", desc = "NeoTree reveal" },
   },
   init = function()
     vim.g.neo_tree_remove_legacy_commands = 1

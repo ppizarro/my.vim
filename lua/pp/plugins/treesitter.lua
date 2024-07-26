@@ -18,6 +18,8 @@ return {
         "luadoc",
         "make",
         "markdown",
+        "markdown_inline",
+        "query",
         "rust",
         "vim",
         "vimdoc",

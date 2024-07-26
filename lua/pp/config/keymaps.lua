@@ -1,9 +1,18 @@
--- buffer cycle
+require("which-key").add({
+  { "<leader>c", group = "[C]ode" },
+  { "<leader>d", group = "[D]ocument" },
+  { "<leader>r", group = "[R]ename" },
+  { "<leader>s", group = "[S]earch" },
+  { "<leader>w", group = "[W]orkspace" },
+  { "<leader>t", group = "[T]oggle" },
+  { "<leader>h", group = "Git [H]unk", mode = { "n", "v" } },
+})
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
-vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
+--vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
 
+-- buffer cycle
 vim.keymap.set("", "<leader>j", function()
   vim.cmd([[:bnext]])
 end)

@@ -33,7 +33,7 @@ function M.on_attach(client, bufnr)
   -- signature
   nmap("<C-s>", vim.lsp.buf.signature_help, "Signature Documentation")
 
-  -- The following autocommand is used to enable inlay hints in your
+  -- The following code creates a keymap to toggle inlay hints in your
   -- code, if the language server you are using supports them
   if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
     nmap("<leader>th", function()

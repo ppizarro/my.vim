@@ -13,7 +13,7 @@ return {
           gitsigns = true,
           lsp_trouble = true,
           native_lsp = true,
-          neotest = true,
+          --neotest = true,
           neotree = true,
           telescope = true,
           treesitter = true,

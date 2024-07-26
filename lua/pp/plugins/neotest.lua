@@ -1,3 +1,5 @@
+return {}
+--[=[
 local setup = function()
   local nt = require("neotest")
   nt.setup({
@@ -94,3 +96,4 @@ return {
     },
   },
 }
+--]=]
