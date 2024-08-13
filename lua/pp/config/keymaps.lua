@@ -29,7 +29,8 @@ vim.keymap.set("n", "<leader>bd", function()
   vim.cmd("'\"")
 end)
 
--- clear search highlights
+-- Clear highlights on search when pressing <Esc> in normal mode
+-- See `:help hlsearch`
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
 
 -- quickfix shortcuts

@@ -14,7 +14,14 @@ vim.g.loaded_ruby_provider = 0 -- disable ruby support
 vim.g.loaded_perl_provider = 0 -- disable perl support
 
 vim.opt.autowrite = true -- enable auto write
-vim.opt.clipboard = "unnamedplus" -- sync with system clipboard
+
+-- Sync clipboard between OS and Neovim. --  Schedule the setting after `UiEnter` because it can increase startup-time.
+--  Remove this option if you want your OS clipboard to remain independent.
+--  See `:help 'clipboard'`
+vim.schedule(function()
+  vim.opt.clipboard = "unnamedplus" -- sync with system clipboard
+end)
+
 vim.opt.cmdheight = 1
 vim.opt.completeopt = "menu,menuone,noselect"
 vim.opt.conceallevel = 3 -- Hide * markup for bold and italic
