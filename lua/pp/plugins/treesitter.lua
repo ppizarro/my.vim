@@ -3,6 +3,8 @@ return {
     "nvim-treesitter/nvim-treesitter",
     --dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
     build = ":TSUpdate",
+    main = "nvim-treesitter.configs", -- Sets main module to use for opts
+    -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
       ensure_installed = {
         "bash",
@@ -29,11 +31,5 @@ return {
       highlight = { enable = true },
       indent = { enable = true },
     },
-    config = function(_, opts)
-      -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-
-      ---@diagnostic disable-next-line: missing-fields
-      require("nvim-treesitter.configs").setup(opts)
-    end,
   },
 }
