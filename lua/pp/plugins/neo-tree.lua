@@ -8,7 +8,7 @@ return {
   },
   cmd = "Neotree",
   keys = {
-    { "\\", ":Neotree reveal<CR>", desc = "NeoTree reveal" },
+    { "\\", ":Neotree reveal<CR>", desc = "NeoTree reveal", silent = true },
   },
   init = function()
     vim.g.neo_tree_remove_legacy_commands = 1
