@@ -35,6 +35,7 @@ local servers = {
   html = {},
   htmx = {},
   tailwindcss = {},
+  rust_analyzer = {},
 }
 
 return servers
