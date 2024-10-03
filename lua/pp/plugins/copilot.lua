@@ -1,7 +1,6 @@
 return {
   {
     "zbirenbaum/copilot.lua",
-    enabled = false,
     event = "InsertEnter",
     cmd = "Copilot",
     opts = {
@@ -14,7 +13,6 @@ return {
   },
   {
     "zbirenbaum/copilot-cmp",
-    enabled = false,
     config = function()
       require("copilot_cmp").setup()
     end,
@@ -24,12 +22,12 @@ return {
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
-    enabled = false,
     branch = "canary",
     dependencies = {
       { "zbirenbaum/copilot.lua" },
       { "nvim-lua/plenary.nvim" },
     },
+    build = "make tiktoken",
     keys = {
       {
         "<leader>ccq",

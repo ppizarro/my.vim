@@ -35,7 +35,15 @@ local servers = {
   html = {},
   htmx = {},
   tailwindcss = {},
-  rust_analyzer = {},
+  rust_analyzer = {
+    settings = {
+      ["rust-analyzer"] = {
+        cargo = {
+          allFeatures = true,
+        },
+      },
+    },
+  },
 }
 
 return servers
