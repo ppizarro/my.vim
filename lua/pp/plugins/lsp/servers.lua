@@ -44,6 +44,14 @@ local servers = {
       },
     },
   },
+  clangd = {
+    settings = {
+      clangd = {
+        semanticHighlighting = true,
+        --fallbackFlags = { "-std=c++17" },
+      },
+    },
+  },
 }
 
 return servers
