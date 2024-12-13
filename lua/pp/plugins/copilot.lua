@@ -22,7 +22,7 @@ return {
   },
   {
     "CopilotC-Nvim/CopilotChat.nvim",
-    branch = "canary",
+    branch = "main",
     dependencies = {
       { "zbirenbaum/copilot.lua" },
       { "nvim-lua/plenary.nvim" },
@@ -39,15 +39,6 @@ return {
         end,
         desc = "[C]opilot[C]hat - [Q]uick chat",
       },
-      {
-        "<leader>cch",
-        function()
-          local actions = require("CopilotChat.actions")
-          require("CopilotChat.integrations.telescope").pick(actions.help_actions())
-        end,
-        desc = "[C]opilot[C]hat - [H]elp actions",
-      },
-      -- Show prompts actions with telescope
       {
         "<leader>ccp",
         function()
