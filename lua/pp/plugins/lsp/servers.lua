@@ -41,6 +41,9 @@ local servers = {
         cargo = {
           allFeatures = true,
         },
+        check = {
+          command = "clippy",
+        },
       },
     },
   },
