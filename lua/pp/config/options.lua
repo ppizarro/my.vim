@@ -91,11 +91,11 @@ end
 vim.g.markdown_recommended_style = 0
 
 -- diagnostics
-vim.diagnostic.config({
-  underline = true,
-  update_in_insert = false,
-  virtual_text = { spacing = 4, prefix = "●" },
-  severity_sort = true,
-})
+-- vim.diagnostic.config({
+--   underline = true,
+--   update_in_insert = false,
+--   virtual_text = { spacing = 4, prefix = "●" },
+--   severity_sort = true,
+-- })
 
 vim.cmd.hi("Comment gui=none")

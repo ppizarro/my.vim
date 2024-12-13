@@ -53,7 +53,34 @@ return {
         for type, icon in pairs(signs) do
           diagnostic_signs[vim.diagnostic.severity[type]] = icon
         end
-        vim.diagnostic.config({ signs = { text = diagnostic_signs } })
+        vim.diagnostic.config({
+          signs = { text = diagnostic_signs },
+          float = {
+            header = "",
+            focusable = false,
+            border = "rounded",
+            close_events = {
+              "BufLeave",
+              "CursorMoved",
+              "InsertEnter",
+              "FocusLost",
+            },
+            prefix = "",
+            suffix = "",
+            format = function(diagnostic)
+              if diagnostic.source == "rustc" and diagnostic.user_data.lsp.data ~= nil then
+                return diagnostic.user_data.lsp.data.rendered
+              else
+                return diagnostic.message
+              end
+            end,
+          },
+          --virtual_text = false,
+          -- update_in_insert = true,
+          virtual_text = { spacing = 4, prefix = "●" },
+          update_in_insert = false,
+          underline = true,
+        })
       end
 
       -- LSP servers and clients are able to communicate to each other what features they support.

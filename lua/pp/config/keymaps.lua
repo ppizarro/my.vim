@@ -36,6 +36,7 @@ end)
 
 -- Diagnostic keymaps
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
+vim.keymap.set("n", "<leader>cd", vim.diagnostic.open_float, { desc = "Show [C]ode [D]iagnostic" })
 
 vim.keymap.set("n", "<C-f>", "<cmd>silent !tmux neww tmux-sessionizer<CR>")
 
