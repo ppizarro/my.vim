@@ -11,7 +11,6 @@ return {
         html = { "tidy" },
         json = { "jsonlint" },
         rst = { "vale" },
-        terraform = { "tflint" },
       }
 
       -- Create autocommand which carries out the actual linting
