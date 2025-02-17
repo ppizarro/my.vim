@@ -8,6 +8,7 @@ My init.vim configuration, plugins and some other vim useful stuff.
 ```bash
 sudo pacman -S neovim
 ```
+Emoji fonts (Ubuntu only, and only if you want emoji!) `sudo apt install fonts-noto-color-emoji`
 
 Clone the project in $XDG_CONFIG_HOME/nvim folder, usually `~/.config/nvim`:
 
