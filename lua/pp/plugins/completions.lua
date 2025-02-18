@@ -29,6 +29,7 @@ return { -- Autocompletion
       "onsails/lspkind-nvim",
       "hrsh7th/cmp-nvim-lsp",
       "hrsh7th/cmp-path",
+      "hrsh7th/cmp-nvim-lsp-signature-help",
       "hrsh7th/cmp-nvim-lua",
       --"hrsh7th/cmp-buffer",
       --"hrsh7th/cmp-cmdline",
@@ -107,6 +108,7 @@ return { -- Autocompletion
           { name = "nvim_lsp" },
           { name = "luasnip" },
           { name = "path" },
+          { name = "nvim_lsp_signature_help" },
         },
         formatting = {
           format = lspkind.cmp_format({
