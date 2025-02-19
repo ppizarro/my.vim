@@ -25,7 +25,7 @@ return {
         },
       }
       nightfox.setup({ options = options, groups = groups })
-      vim.cmd.colorscheme("duskfox")
+      vim.cmd.colorscheme("nightfox")
     end,
   },
 
