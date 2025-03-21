@@ -6,7 +6,9 @@ function M.on_attach(client, bufnr)
   --    See `:help CursorHold` for information about when this is executed
   --
   -- When you move your cursor, the highlights will be cleared (the second autocommand).
-  if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
+
+  -- FIXME: for nvim-0.11 replace to client:supports_method(method, bufnr)
+  if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight, { bufnr = bufnr }) then
     local highlight_augroup = vim.api.nvim_create_augroup("pp-lsp-highlight", { clear = false })
     vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
       buffer = bufnr,

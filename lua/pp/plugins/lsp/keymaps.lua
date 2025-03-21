@@ -7,10 +7,17 @@ function M.on_attach(client, bufnr)
     vim.keymap.set(mode, keys, func, { buffer = bufnr, desc = "LSP: " .. desc })
   end
 
+  -- Jump to the definition of the word under your cursor.
+  --  This is where a variable was first declared, or where a function is defined, etc.
+  --  To jump back, press <C-t>.
   map("gd", tb.lsp_definitions, "[G]oto [D]efinition")
-  map("gI", tb.lsp_implementations, "[G]oto [I]mplementation")
+
+  -- Find references for the word under your cursor.
   map("gr", tb.lsp_references, "[G]oto [R]eferences")
-  map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+
+  -- Jump to the implementation of the word under your cursor.
+  --  Useful when your language has ways of declaring types without an actual implementation.
+  map("gI", tb.lsp_implementations, "[G]oto [I]mplementation")
 
   -- Jump to the type of the word under your cursor.
   --  Useful when you're not sure what type a variable is and you want to see
@@ -25,18 +32,28 @@ function M.on_attach(client, bufnr)
   --  Similar to document symbols, except searches over your entire project.
   map("<leader>ws", tb.lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
 
-  -- rename
+  -- Rename the variable under your cursor.
+  --  Most Language Servers support renaming across files, etc.
   map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
 
-  -- code action
+  -- Execute a code action, usually your cursor needs to be on top of an error
+  -- or a suggestion from your LSP for this to activate.
   map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction", { "n", "x" })
 
   -- signature
   map("<C-s>", vim.lsp.buf.signature_help, "Signature Documentation")
 
+  -- WARN: This is not Goto Definition, this is Goto Declaration.
+  --  For example, in C this would take you to the header.
+  map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
+
   -- The following code creates a keymap to toggle inlay hints in your
   -- code, if the language server you are using supports them
-  if client and client:supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
+  --
+  -- This may be unwanted, since they displace some of your code
+  --
+  -- FIXME: for nvim-0.11 replace to client:supports_method(method, bufnr)
+  if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint, { bufnr = bufnr }) then
     map("<leader>th", function()
       vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }))
     end, "[T]oggle Inlay [H]ints")
