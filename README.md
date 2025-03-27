@@ -4,7 +4,7 @@ My init.vim configuration, plugins and some other vim useful stuff.
 
 # Installation
 
- - neovim >= 0.10
+ - neovim >= 0.11
 ```bash
 sudo pacman -S neovim
 ```
