@@ -8,14 +8,10 @@ return {
       panel = { enabled = false },
       filetypes = {
         gitcommit = true,
+        markdown = true,
+        help = true,
       },
     },
-  },
-  {
-    "zbirenbaum/copilot-cmp",
-    config = function()
-      require("copilot_cmp").setup()
-    end,
   },
   {
     "AndreM222/copilot-lualine",
