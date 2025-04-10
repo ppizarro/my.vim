@@ -1,13 +1,15 @@
-# Introduction
+# My Vim
 
 My init.vim configuration, plugins and some other vim useful stuff.
 
-# Installation
+## Installation
 
- - neovim >= 0.11
+- neovim >= 0.11
+
 ```bash
 sudo pacman -S neovim
 ```
+
 Emoji fonts (Ubuntu only, and only if you want emoji!) `sudo apt install fonts-noto-color-emoji`
 
 Clone the project in $XDG_CONFIG_HOME/nvim folder, usually `~/.config/nvim`:
@@ -16,31 +18,24 @@ Clone the project in $XDG_CONFIG_HOME/nvim folder, usually `~/.config/nvim`:
 git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 ```
 
-# Plugins
+## Plugins
 
 - [lazy.nvim](https://github.com/folke/lazy.nvim) - lazy.nvim is a modern plugin manager for Neovim
-
 - [nightfox](https://github.com/EdenEast/nightfox.nvim) - colorscheme
-
 - [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons) - web devicons for general usage
-
 - [lualine.nvim](https://github.com/hoob3rt/lualine.nvim) - statusline
-
 - [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) - Show git signs in buffer
-
 - [telescope.nvim](https://github.com/nvim-lua/telescope.nvim) - Find, filter, preview and pick using a nice UI
 - [telescope-fzf-native.nvim](https://github.com/nvim-telescope/telescope-fzf-native.nvim) - fzf-native is a c port of fzf 
-
 - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) - Treesitter-based highlighting 
 - [treesitter playground](https://github.com/nvim-treesitter/playground) - View treesitter information directly in Neovim!
 - [treesitter textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) - Syntax aware text-objects, select, move, swap, and peek support
-
 - [mason.nvim](https://github.com/williamboman/mason.nvim) - Easily install and manage LSP servers, DAP servers, linters, and formatters
 - [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) - Easy default configs for the builtin LSP client
-- [null-ls.nvim](https://github.com/nvimtools/none-ls.nvim) - Use Neovim as a language server to inject LSP diagnostics, code actions, and more via Lua
+- [conform.nvim](https://github.com/stevearc/conform.nvim) - Lightweight yet powerful formatter plugin for Neovim
 
-- [nvim-cmp](https://github.com/hrsh7th/nvim-cmp) - A completion engine plugin for Neovim written in Lua
-- [LuaSnip](https://github.com/L3MON4D3/LuaSnip), [cmp_luasnip](https://github.com/saadparwaiz1/cmp_luasnip) - Snippet engine
+- [blink.cmp](https://github.com/Saghen/blink.cmp) - Performant, batteries-included completion plugin for Neovim
+- [LuaSnip](https://github.com/L3MON4D3/LuaSnip) - Snippet engine
 
 - [Neo-tree](https://github.com/nvim-neo-tree/neo-tree.nvim) -  Neo-tree is a Neovim plugin to browse the file system
 
@@ -51,9 +46,10 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 
 - [hardtime.nvim](https://github.com/m4xshen/hardtime.nvim) - A Neovim plugin helping you establish good command workflow and habit
 
-# Basic Usage
+## Basic Usage
 
-## Buffer
+### Buffer
+
 ```help
 `:ls`          returns information about each buffer
 `<leader>j`    :bnext
@@ -68,19 +64,19 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 `c-6`          switch to alternate buffer
 ```
 
-## Search
+### Search
 ```help
 `<leader>l` :nohlsearch -- clear search highlights
 ```
 
-## Quickfix
+### Quickfix
 ```help
 `<C-n>`     :cnext
 `<C-p>`     :cprevious
 `<leader>a` :cclose
 ```
 
-# Telescope
+## Telescope
 ```help
 `<leader>sf` find_files
 `<leader>sg` live_grep
@@ -90,22 +86,18 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 `<leader>gs` git_status
 ```
 
-# LSP
+## LSP
 ```help
 `<c-]>` go to definition
-`gd`    go to definition
-`gi`    go to implementation
-`gr`    go to references
+`grd`   go to definition
+`gri`   go to implementation
+`grr`   go to references
+`grn`   rename
+`gra`   code action
+`grt`   go to type definition
 `gD`    go to declaration
-
-`<leader>rn` rename
-`<leader>ca` code action
-`<leader>D` Type Definition
-`<leader>ds` Document Symbols
-`<leader>ws` Workspace Symbols
-`<leader>wa` Workspace Add Folder
-`<leader>wr` Workspace Remove Folder
-`<leader>wl` Workspace List Folder
+`gO`    open document symbols
+`gW`    open workspace symbols
 ```
 
 ## jump diagnostic
@@ -122,12 +114,12 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 `<c-s>` signature
 ```
 
-# nvim-tree
+## nvim-tree
 ```help
 `\` tree toggle
 ```
 
-# Completion
+## Completion
 ```help
 `<C-Space>` complete
 `<C-d>`     scroll down
@@ -139,8 +131,9 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 `<C-l>`     list options
 ```
 
-# Comment.nvim
- - normal mode
+## Comment.nvim
+
+- normal mode
 
 ```help
 `gcc` - Toggles the current line using linewise comment
@@ -154,17 +147,27 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 `gcA` - Insert comment to end of the current line and enters INSERT mode
 ```
 
- - visual mode
+- visual mode
+
 ```help
 `gc` - Toggles the region using linewise comment
 `gb` - Toggles the region using blockwise comment
 ```
 
-# Update
+## Update
+
+To update plugins, you can run:
+
+```vim
+:Lazy
+```
 
 To check the current status of installed tools and/or manually install
-other tools, you can run
-   :Mason
+other tools, you can run:
+
+```vim
+:Mason
+```
 
 You can press `g?` for help in this menu.
 
