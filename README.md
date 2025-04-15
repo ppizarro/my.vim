@@ -65,11 +65,13 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 ```
 
 ### Search
+
 ```help
 `<leader>l` :nohlsearch -- clear search highlights
 ```
 
 ### Quickfix
+
 ```help
 `<C-n>`     :cnext
 `<C-p>`     :cprevious
@@ -77,6 +79,7 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 ```
 
 ## Telescope
+
 ```help
 `<leader>sf` find_files
 `<leader>sg` live_grep
@@ -87,6 +90,7 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 ```
 
 ## LSP
+
 ```help
 `<c-]>` go to definition
 `grd`   go to definition
@@ -101,6 +105,7 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 ```
 
 ## jump diagnostic
+
 ```help
 `[d`        go to previous diagnostic warning/error
 `]d`        go to next diagnostic warning/error
@@ -109,26 +114,37 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 ```
 
 ## signature
+
 ```help
 `K`     hover
 `<c-s>` signature
 ```
 
 ## nvim-tree
+
 ```help
 `\` tree toggle
 ```
 
 ## Completion
+
 ```help
-`<C-Space>` complete
-`<C-d>`     scroll down
-`<C-f>`     scroll up
-`<C-y>`     confirm
-`<C-e>`     close
-`<C-k>`     next
-`<C-j>`     previous
-`<C-l>`     list options
+['<C-space>'] = { 'show', 'show_documentation', 'hide_documentation' },
+['<C-e>'] = { 'hide' },
+['<C-y>'] = { 'select_and_accept' },
+
+['<Up>'] = { 'select_prev', 'fallback' },
+['<Down>'] = { 'select_next', 'fallback' },
+['<C-p>'] = { 'select_prev', 'fallback_to_mappings' },
+['<C-n>'] = { 'select_next', 'fallback_to_mappings' },
+
+['<C-b>'] = { 'scroll_documentation_up', 'fallback' },
+['<C-f>'] = { 'scroll_documentation_down', 'fallback' },
+
+['<Tab>'] = { 'snippet_forward', 'fallback' },
+['<S-Tab>'] = { 'snippet_backward', 'fallback' },
+
+['<C-k>'] = { 'show_signature', 'hide_signature', 'fallback' },
 ```
 
 ## Comment.nvim
