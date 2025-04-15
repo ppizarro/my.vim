@@ -85,15 +85,9 @@ if vim.fn.has("nvim-0.9.0") == 1 then
   vim.o.shortmess = "filnxtToOFWIcC"
 end
 
+vim.o.winborder = "rounded" -- border style for floating windows
+
 -- fix markdown indentation settings
 vim.g.markdown_recommended_style = 0
-
--- diagnostics
--- vim.diagnostic.config({
---   underline = true,
---   update_in_insert = false,
---   virtual_text = { spacing = 4, prefix = "●" },
---   severity_sort = true,
--- })
 
 vim.cmd.hi("Comment gui=none")
