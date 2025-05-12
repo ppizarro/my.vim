@@ -1,6 +1,6 @@
 -- documentation:
 -- https://github.com/neovim/nvim-lspconfig
--- https://github.com/williamboman/nvim-lsp-installer
+-- https://github.com/mason-org/mason-lspconfig.nvim
 
 local on_attach = function(client, bufnr)
   require("pp.plugins.lsp.keymaps").on_attach(client, bufnr)
@@ -26,8 +26,8 @@ return {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       -- Mason must be loaded before its dependents so we need to set it up here.
       -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
-      { "williamboman/mason.nvim", opts = {} },
-      { "williamboman/mason-lspconfig.nvim" },
+      { "mason-org/mason.nvim", opts = {} },
+      { "mason-org/mason-lspconfig.nvim" },
       { "WhoIsSethDaniel/mason-tool-installer.nvim" },
 
       -- Useful status updates for LSP.

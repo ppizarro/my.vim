@@ -30,7 +30,7 @@ git clone https://github.com/ppizarro/my.vim ~/.config/nvim
 - [nvim-treesitter](https://github.com/nvim-treesitter/nvim-treesitter) - Treesitter-based highlighting 
 - [treesitter playground](https://github.com/nvim-treesitter/playground) - View treesitter information directly in Neovim!
 - [treesitter textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) - Syntax aware text-objects, select, move, swap, and peek support
-- [mason.nvim](https://github.com/williamboman/mason.nvim) - Easily install and manage LSP servers, DAP servers, linters, and formatters
+- [mason.nvim](https://github.com/mason-org/mason-lspconfig.nvim) - Easily install and manage LSP servers, DAP servers, linters, and formatters
 - [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) - Easy default configs for the builtin LSP client
 - [conform.nvim](https://github.com/stevearc/conform.nvim) - Lightweight yet powerful formatter plugin for Neovim
 
