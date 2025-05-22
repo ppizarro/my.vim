@@ -35,18 +35,18 @@ local servers = {
   html = {},
   htmx = {},
   tailwindcss = {},
-  rust_analyzer = {
-    settings = {
-      ["rust-analyzer"] = {
-        cargo = {
-          allFeatures = true,
-        },
-        check = {
-          command = "clippy",
-        },
-      },
-    },
-  },
+  -- rust_analyzer = {
+  --   settings = {
+  --     ["rust-analyzer"] = {
+  --       cargo = {
+  --         allFeatures = true,
+  --       },
+  --       check = {
+  --         command = "clippy",
+  --       },
+  --     },
+  --   },
+  -- },
   clangd = {
     settings = {
       clangd = {
