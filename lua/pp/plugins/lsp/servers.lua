@@ -3,6 +3,18 @@ local servers = {
   lua_ls = {
     settings = {
       Lua = {
+        runtime = {
+          version = "LuaJIT",
+        },
+        workspace = {
+          library = {
+            vim.env.VIMRUNTIME,
+          },
+          checkThirdParty = false,
+        },
+        codeLens = {
+          enable = true,
+        },
         diagnostics = {
           -- Get the language server to recognize the `vim` global
           globals = { "vim" },
@@ -10,6 +22,9 @@ local servers = {
         },
         completion = {
           callSnippet = "Replace",
+        },
+        telemetry = {
+          enable = false,
         },
       },
     },
