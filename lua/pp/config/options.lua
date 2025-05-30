@@ -91,3 +91,5 @@ vim.o.winborder = "rounded" -- border style for floating windows
 vim.g.markdown_recommended_style = 0
 
 vim.cmd.hi("Comment gui=none")
+
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
