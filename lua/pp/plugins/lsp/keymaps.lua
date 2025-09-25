@@ -47,10 +47,6 @@ function M.on_attach(client, bufnr)
   -- signature
   map("<C-s>", vim.lsp.buf.signature_help, "Signature Documentation")
 
-  -- WARN: This is not Goto Definition, this is Goto Declaration.
-  --  For example, in C this would take you to the header.
-  map("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-
   -- The following code creates a keymap to toggle inlay hints in your
   -- code, if the language server you are using supports them
   --

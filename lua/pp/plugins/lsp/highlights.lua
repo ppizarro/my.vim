@@ -23,9 +23,9 @@ function M.on_attach(client, bufnr)
 
     vim.api.nvim_create_autocmd("LspDetach", {
       group = vim.api.nvim_create_augroup("pp-lsp-detach", { clear = true }),
-      callback = function(event)
+      callback = function(event2)
         vim.lsp.buf.clear_references()
-        vim.api.nvim_clear_autocmds({ group = "pp-lsp-highlight", buffer = event.buf })
+        vim.api.nvim_clear_autocmds({ group = "pp-lsp-highlight", buffer = event2.buf })
       end,
     })
   end

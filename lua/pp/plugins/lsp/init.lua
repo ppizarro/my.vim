@@ -85,6 +85,17 @@ return {
       local capabilities = require("blink.cmp").get_lsp_capabilities()
 
       local servers = require("pp.plugins.lsp.servers")
+
+      -- The following loop will configure each server with the capabilities we defined above.
+      -- This will ensure that all servers have the same base configuration, but also
+      -- allow for server-specific overrides.
+      for server_name, server_config in pairs(servers) do
+        server_config.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server_config.capabilities or {})
+        vim.lsp.config(server_name, server_config)
+        vim.lsp.enable(server_name)
+      end
+
+      -- Ensure the servers and tools above are installed
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
         "golangci-lint", -- Go linter
@@ -95,19 +106,6 @@ return {
         "yamlfmt", -- Used to format yaml files
       })
       require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
-
-      require("mason-lspconfig").setup({
-        automatic_enable = vim.tbl_keys(servers or {}),
-        ensure_installed = {}, -- explicitly set to an empty table (we populate installs via mason-tool-installer)
-        automatic_installation = false,
-      })
-
-      -- Installed LSPs are configured and enabled automatically with mason-lspconfig
-      -- The loop below is for overriding the default configuration of LSPs with the ones in the servers table
-      for server_name, config in pairs(servers) do
-        config.capabilities = vim.tbl_deep_extend("force", {}, capabilities, config.capabilities or {})
-        vim.lsp.config(server_name, config)
-      end
     end,
   },
   {
