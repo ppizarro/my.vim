@@ -1,6 +1,7 @@
 return {
 
   -- nightfox
+  --[[
   {
     "EdenEast/nightfox.nvim",
     priority = 1000,
@@ -28,8 +29,8 @@ return {
       vim.cmd.colorscheme("nightfox")
     end,
   },
+  --]]
 
-  --[[
   -- tokyonight
   {
     "folke/tokyonight.nvim",
@@ -37,16 +38,16 @@ return {
     priority = 1000,
     config = function()
       ---@diagnostic disable-next-line: missing-fields
-      require('tokyonight').setup {
-        styles = {
-          comments = { italic = false }, -- Disable italics in comments
-        },
-      }
+      require("tokyonight").setup({
+        style = "moon",
+        light_style = "day",
+        transparent = false,
+        terminal_colors = true,
+      })
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-night'
+      vim.cmd.colorscheme("tokyonight-moon")
     end,
   },
---]]
 }
