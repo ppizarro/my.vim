@@ -1,34 +1,6 @@
 -- Add any servers here together with their settings
 local servers = {
-  lua_ls = {
-    settings = {
-      Lua = {
-        runtime = {
-          version = "LuaJIT",
-        },
-        workspace = {
-          library = {
-            vim.env.VIMRUNTIME,
-          },
-          checkThirdParty = false,
-        },
-        codeLens = {
-          enable = true,
-        },
-        diagnostics = {
-          -- Get the language server to recognize the `vim` global
-          globals = { "vim" },
-          --disable = { "missing-fields" },
-        },
-        completion = {
-          callSnippet = "Replace",
-        },
-        telemetry = {
-          enable = false,
-        },
-      },
-    },
-  },
+  lua_ls = {},
   gopls = {
     settings = {
       gopls = {

@@ -29,7 +29,6 @@ return { -- Autocompletion
         opts = {},
       },
       "fang2hou/blink-copilot",
-      "folke/lazydev.nvim",
     },
     opts = {
       keymap = {
@@ -72,7 +71,7 @@ return { -- Autocompletion
       },
 
       sources = {
-        default = { "lsp", "copilot", "path", "snippets", "lazydev" },
+        default = { "lsp", "copilot", "path", "snippets" },
         providers = {
           copilot = {
             name = "copilot",
@@ -80,7 +79,6 @@ return { -- Autocompletion
             score_offset = 100,
             async = true,
           },
-          lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
         },
       },
     },
