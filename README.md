@@ -6,7 +6,7 @@ My init.vim configuration, plugins and some other vim useful stuff.
 
 ### Install Neovim
 
-- neovim >= 0.11
+my.vim targets *only* the latest ['stable'](https://github.com/neovim/neovim/releases/tag/stable) of Neovim
 
 ```bash
 sudo pacman -S neovim
@@ -46,7 +46,6 @@ External Requirements:
 - [treesitter playground](https://github.com/nvim-treesitter/playground) - View treesitter information directly in Neovim!
 - [treesitter textobjects](https://github.com/nvim-treesitter/nvim-treesitter-textobjects) - Syntax aware text-objects, select, move, swap, and peek support
 - [mason.nvim](https://github.com/mason-org/mason-lspconfig.nvim) - Easily install and manage LSP servers, DAP servers, linters, and formatters
-- [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) - Easy default configs for the builtin LSP client
 - [conform.nvim](https://github.com/stevearc/conform.nvim) - Lightweight yet powerful formatter plugin for Neovim
 
 - [blink.cmp](https://github.com/Saghen/blink.cmp) - Performant, batteries-included completion plugin for Neovim
@@ -56,8 +55,6 @@ External Requirements:
 
 - [neo-test](https://github.com/nvim-neotest/neotest) - A framework for interacting with tests within Neovim
 - [neotest-go](https://github.com/nvim-neotest/neotest-go) - This plugin provides a go(lang) adapter for the Neotest framework
-
-- [lazydev.nvim](https://github.com/folke/lazydev.nvim) - Lua development plugin
 
 - [hardtime.nvim](https://github.com/m4xshen/hardtime.nvim) - A Neovim plugin helping you establish good command workflow and habit
 
