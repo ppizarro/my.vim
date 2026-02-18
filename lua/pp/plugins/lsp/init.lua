@@ -1,6 +1,6 @@
 -- documentation:
 -- https://github.com/neovim/nvim-lspconfig
--- https://github.com/mason-org/mason-lspconfig.nvim
+-- https://github.com/mason-org/mason.nvim
 
 local on_attach = function(client, bufnr)
   require('pp.plugins.lsp.keymaps').on_attach(client, bufnr)
@@ -17,7 +17,6 @@ return {
       -- Mason must be loaded before its dependents so we need to set it up here.
       -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
       { 'mason-org/mason.nvim', opts = {} },
-      { 'mason-org/mason-lspconfig.nvim' },
       { 'WhoIsSethDaniel/mason-tool-installer.nvim' },
 
       -- Useful status updates for LSP.
@@ -35,22 +34,6 @@ return {
           on_attach(client, buffer)
         end,
       })
-
-      -- Diagnostic Config
-      -- See :help vim.diagnostic.Opts
-      vim.diagnostic.config {
-        update_in_insert = false,
-        severity_sort = true,
-        float = { border = 'rounded', source = 'if_many' },
-        underline = { severity = vim.diagnostic.severity.ERROR },
-
-        -- Can switch between these as you prefer
-        virtual_text = true, -- Text shows up at the end of the line
-        virtual_lines = false, -- Teest shows up underneath the line, with virtual lines
-
-        -- Auto open the float, so you can easily read the errors when jumping with `[d` and `]d`
-        jump = { float = true },
-      }
 
       -- LSP servers and clients are able to communicate to each other what features they support.
       --  By default, Neovim doesn't support everything that is in the LSP specification.

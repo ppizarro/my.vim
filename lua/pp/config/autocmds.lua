@@ -1,5 +1,5 @@
--- Check if we need to reload the file when it changed
---vim.api.nvim_create_autocmd("FocusGained", { command = "checktime" })
+-- [[ Basic Autocommands ]]
+--  See `:help lua-guide-autocommands`
 
 -- Highlight when yanking (copying) text
 --  Try it with `yap` in normal mode

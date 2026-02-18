@@ -15,12 +15,11 @@ vim.g.loaded_perl_provider = 0 -- disable perl support
 
 vim.o.autowrite = true -- enable auto write
 
--- Sync clipboard between OS and Neovim. --  Schedule the setting after `UiEnter` because it can increase startup-time.
+-- Sync clipboard between OS and Neovim.
+--  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.schedule(function()
-  vim.o.clipboard = 'unnamedplus' -- sync with system clipboard
-end)
+vim.schedule(function() vim.o.clipboard = 'unnamedplus' end)
 
 vim.o.cmdheight = 1
 vim.o.completeopt = 'menu,menuone,noselect'
@@ -103,3 +102,19 @@ vim.g.markdown_recommended_style = 0
 vim.cmd.hi 'Comment gui=none'
 
 vim.o.sessionoptions = 'blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions'
+
+-- Diagnostic Config & Keymaps
+-- See :help vim.diagnostic.Opts
+vim.diagnostic.config {
+  update_in_insert = false,
+  severity_sort = true,
+  float = { border = 'rounded', source = 'if_many' },
+  underline = { severity = vim.diagnostic.severity.ERROR },
+
+  -- Can switch between these as you prefer
+  virtual_text = true, -- Text shows up at the end of the line
+  virtual_lines = false, -- Teest shows up underneath the line, with virtual lines
+
+  -- Auto open the float, so you can easily read the errors when jumping with `[d` and `]d`
+  jump = { float = true },
+}
