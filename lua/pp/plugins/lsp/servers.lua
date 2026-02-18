@@ -11,7 +11,7 @@ local servers = {
           unusedwrite = true,
         },
         staticcheck = true,
-        buildFlags = { "-tags=integration,unit" },
+        buildFlags = { '-tags=integration,unit' },
         usePlaceholders = true,
       },
     },

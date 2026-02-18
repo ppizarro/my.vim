@@ -1,8 +1,8 @@
 return {
   {
-    "zbirenbaum/copilot.lua",
-    event = "InsertEnter",
-    cmd = "Copilot",
+    'zbirenbaum/copilot.lua',
+    event = 'InsertEnter',
+    cmd = 'Copilot',
     opts = {
       suggestion = {
         enabled = true,
@@ -11,11 +11,11 @@ return {
       },
       panel = { enabled = false },
       filetypes = {
-        ["*"] = true,
+        ['*'] = true,
       },
     },
   },
   {
-    "AndreM222/copilot-lualine",
+    'AndreM222/copilot-lualine',
   },
 }

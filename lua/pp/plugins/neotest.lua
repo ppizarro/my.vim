@@ -1,16 +1,16 @@
 return {}
 --[=[
 local setup = function()
-  local nt = require("neotest")
+  local nt = require('neotest')
   nt.setup({
     adapters = {
-      require("neotest-go")({
+      require('neotest-go')({
         experimental = {
           test_table = true,
         },
-        args = { "-v -count=1", "-timeout=60s" },
+        args = { '-v -count=1', '-timeout=60s' },
       }),
-      require("neotest-plenary"),
+      require('neotest-plenary'),
     },
     diagnostic = {
       enabled = true,
@@ -33,64 +33,64 @@ end
 
 return {
   {
-    "nvim-neotest/neotest",
+    'nvim-neotest/neotest',
     dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-treesitter/nvim-treesitter",
-      "antoinemadec/FixCursorHold.nvim",
-      "nvim-neotest/neotest-go",
-      "nvim-neotest/neotest-plenary",
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      'antoinemadec/FixCursorHold.nvim',
+      'nvim-neotest/neotest-go',
+      'nvim-neotest/neotest-plenary',
     },
-    cmd = "Neotest",
+    cmd = 'Neotest',
     config = setup,
     keys = {
       -- call test for function in cursor
       {
-        "<leader>t",
+        '<leader>t',
         function()
-          require("neotest").run.run()
+          require('neotest').run.run()
         end,
       },
       -- call test for current file
       {
-        "<leader>tt",
+        '<leader>tt',
         function()
-          require("neotest").run.run(vim.fn.expand("%"))
+          require('neotest').run.run(vim.fn.expand('%'))
         end,
       },
       -- call test all files
       {
-        "<leader>tp",
+        '<leader>tp',
         function()
-          require("neotest").run.run(vim.fn.getcwd())
+          require('neotest').run.run(vim.fn.getcwd())
         end,
       },
       -- open/close test summary
       {
-        "<leader>ts",
+        '<leader>ts',
         function()
-          require("neotest").summary.toggle()
+          require('neotest').summary.toggle()
         end,
       },
       -- open output panel
       {
-        "<leader>to",
+        '<leader>to',
         function()
-          require("neotest").output_panel.open()
+          require('neotest').output_panel.open()
         end,
       },
       -- jump prev failed test
       {
-        "[t",
+        '[t',
         function()
-          require("neotest").jump.prev({ status = "failed" })
+          require('neotest').jump.prev({ status = 'failed' })
         end,
       },
       -- jump next failed test
       {
-        "]t",
+        ']t',
         function()
-          require("neotest").jump.next({ status = "failed" })
+          require('neotest').jump.next({ status = 'failed' })
         end,
       },
     },

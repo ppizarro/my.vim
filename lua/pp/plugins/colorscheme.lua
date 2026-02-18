@@ -33,21 +33,21 @@ return {
 
   -- tokyonight
   {
-    "folke/tokyonight.nvim",
+    'folke/tokyonight.nvim',
     lazy = false,
     priority = 1000,
     config = function()
       ---@diagnostic disable-next-line: missing-fields
-      require("tokyonight").setup({
-        style = "moon",
-        light_style = "day",
+      require('tokyonight').setup {
+        style = 'moon',
+        light_style = 'day',
         transparent = false,
         terminal_colors = true,
-      })
+      }
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme("tokyonight-moon")
+      vim.cmd.colorscheme 'tokyonight-moon'
     end,
   },
 }
