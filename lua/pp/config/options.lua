@@ -36,8 +36,18 @@ vim.o.ignorecase = true -- Ignore case
 vim.o.inccommand = "split" -- preview incremental substitute
 vim.o.joinspaces = false -- No double spaces with join after a dot
 vim.o.laststatus = 3
+
+-- Sets how neovim will display certain whitespace characters in the editor.
+--  See `:help 'list'`
+--  and `:help 'listchars'`
+--
+--  Notice listchars is set using `vim.opt` instead of `vim.o`.
+--  It is very similar to `vim.o` but offers an interface for conveniently interacting with tables.
+--   See `:help lua-options`
+--   and `:help lua-guide-options`
 vim.o.list = true -- Show some invisible characters (tabs...
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
+
 vim.o.mouse = "a" -- enable mouse mode
 vim.o.number = true -- Print line number
 vim.o.pumblend = 10 -- Popup blend
