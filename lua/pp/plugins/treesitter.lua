@@ -1,12 +1,8 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    --dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
-    build = ":TSUpdate",
-    main = "nvim-treesitter.config", -- Sets main module to use for opts
-    -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
-    opts = {
-      ensure_installed = {
+    config = function()
+      local filetypes = {
         "bash",
         "gitignore",
         "go",
@@ -26,10 +22,14 @@ return {
         "vim",
         "vimdoc",
         "yaml",
-      },
-      auto_install = true,
-      highlight = { enable = true },
-      indent = { enable = true },
-    },
+      }
+      require("nvim-treesitter").install(filetypes)
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = filetypes,
+        callback = function()
+          vim.treesitter.start()
+        end,
+      })
+    end,
   },
 }
