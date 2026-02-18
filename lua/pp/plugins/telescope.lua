@@ -68,6 +68,7 @@ return {
       { "<leader>sd", builtin.diagnostics, desc = "[S]earch [D]iagnostics" },
       { "<leader>sr", builtin.resume, desc = "[S]earch [R]esume" },
       { "<leader>s.", builtin.oldfiles, desc = '[S]earch Recent Files ("." for repeat)' },
+      { "<leader>sc", builtin.commands, { desc = '[S]earch [C]ommands' },
       {
         "<leader><leader>",
         function()
