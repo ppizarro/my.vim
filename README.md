@@ -201,6 +201,3 @@ other tools, you can run:
 ```
 
 You can press `g?` for help in this menu.
-
-`mason` had to be setup earlier: to configure its options see the
-`dependencies` table for `nvim-lspconfig` above.
