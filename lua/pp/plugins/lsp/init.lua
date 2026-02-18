@@ -43,18 +43,11 @@ return {
 
       local servers = require 'pp.plugins.lsp.servers'
 
-      -- The following loop will configure each server with the capabilities we defined above.
-      -- This will ensure that all servers have the same base configuration, but also
-      -- allow for server-specific overrides.
-      for server_name, server_config in pairs(servers) do
-        server_config.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server_config.capabilities or {})
-        vim.lsp.config(server_name, server_config)
-        vim.lsp.enable(server_name)
-      end
-
       -- Ensure the servers and tools above are installed
       local ensure_installed = vim.tbl_keys(servers or {})
       vim.list_extend(ensure_installed, {
+        'lua-language-server', -- Lua LSP
+        'rust-analyzer', -- Rust LSP
         'golangci-lint', -- Go linter
         'markdownlint', -- Markdown linter
         'impl', -- generates Go method stubs for implementing an interface
@@ -64,6 +57,15 @@ return {
       })
 
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
+
+      -- The following loop will configure each server with the capabilities we defined above.
+      -- This will ensure that all servers have the same base configuration, but also
+      -- allow for server-specific overrides.
+      for server_name, server_config in pairs(servers) do
+        server_config.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server_config.capabilities or {})
+        vim.lsp.config(server_name, server_config)
+        vim.lsp.enable(server_name)
+      end
 
       -- Special Lua Config, as recommended by neovim help docs
       vim.lsp.config('lua_ls', {
@@ -95,7 +97,7 @@ return {
   },
   {
     'mrcjkb/rustaceanvim',
-    version = '^6', -- Recommended
+    version = '^8', -- Recommended
     lazy = false, -- This plugin is already lazy
   },
 }

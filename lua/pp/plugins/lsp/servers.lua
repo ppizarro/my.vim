@@ -1,6 +1,5 @@
 -- Add any servers here together with their settings
 local servers = {
-  lua_ls = {},
   gopls = {
     settings = {
       gopls = {
@@ -16,24 +15,12 @@ local servers = {
       },
     },
   },
-  terraformls = {},
-  bashls = {},
-  jsonls = {},
-  html = {},
-  -- htmx = {},
-  tailwindcss = {},
-  -- rust_analyzer = {
-  --   settings = {
-  --     ["rust-analyzer"] = {
-  --       cargo = {
-  --         allFeatures = true,
-  --       },
-  --       check = {
-  --         command = "clippy",
-  --       },
-  --     },
-  --   },
-  -- },
+  ['terraform-ls'] = {},
+  ['bash-language-server'] = {},
+  ['json-lsp'] = {},
+  -- ['html-lsp'] = {},
+  -- ['htmx-lsp'] = {},
+  -- ['tailwindcss-language-server'] = {},
   clangd = {
     settings = {
       clangd = {
