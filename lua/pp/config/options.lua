@@ -68,7 +68,8 @@ vim.o.tabstop = 4 -- Number of spaces tabs count for
 vim.o.softtabstop = 4
 vim.o.termguicolors = true -- True color support
 vim.o.timeoutlen = 300 -- Decrease mapped sequence wait time
-vim.o.undofile = true -- maintain undo history between sessions
+-- Enable undo/redo changes even after closing and reopening a file
+vim.o.undofile = true
 vim.o.undolevels = 10000
 vim.o.updatetime = 250 -- save swap file and trigger CursorHold
 vim.o.wildmode = 'longest:full,full' -- Command-line completion mode
