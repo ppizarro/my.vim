@@ -57,7 +57,6 @@ return {
     local builtin = require 'telescope.builtin'
     local wk = require 'which-key'
     wk.add {
-      { '<leader>s', group = '[S]earch' }, -- group
       { '<leader>sh', builtin.help_tags, desc = '[S]earch [H]elp' },
       { '<leader>sk', builtin.keymaps, desc = '[S]earch [K]eymaps' },
       { '<leader>sf', builtin.find_files, desc = '[S]earch [F]iles' },
