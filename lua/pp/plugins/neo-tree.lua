@@ -1,3 +1,5 @@
+---@module 'lazy'
+---@type LazySpec
 return {
   'nvim-neo-tree/neo-tree.nvim',
   version = '*',
@@ -11,6 +13,8 @@ return {
     { '\\', ':Neotree reveal<CR>', desc = 'NeoTree reveal', silent = true },
   },
   init = function() vim.g.neo_tree_remove_legacy_commands = 1 end,
+  ---@module 'neo-tree'
+  ---@type neotree.Config
   opts = {
     filesystem = {
       follow_current_file = {

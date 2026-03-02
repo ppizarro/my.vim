@@ -1,3 +1,5 @@
+---@module 'lazy'
+---@type LazySpec
 return {
   'nvim-telescope/telescope.nvim',
   -- By default, Telescope is included and acts as your picker for everything.

@@ -1,6 +1,8 @@
 -- documentation:
 -- https://github.com/Saghen/blink.cmp
 
+---@module 'lazy'
+---@type LazySpec
 return { -- Autocompletion
   {
     'saghen/blink.cmp',
@@ -26,6 +28,8 @@ return { -- Autocompletion
       },
       'fang2hou/blink-copilot',
     },
+    ---@module 'blink.cmp'
+    ---@type blink.cmp.Config
     opts = {
       keymap = {
         -- 'default' (recommended) for mappings similar to built-in completions

@@ -1,3 +1,5 @@
+---@module 'lazy'
+---@type LazySpec
 return { -- Autoformat
   'stevearc/conform.nvim',
   event = { 'BufWritePre' },
@@ -10,6 +12,8 @@ return { -- Autoformat
       desc = '[F]ormat buffer',
     },
   },
+  ---@module 'conform'
+  ---@type conform.setupOpts
   opts = {
     notify_on_error = false,
     format_on_save = function(bufnr)

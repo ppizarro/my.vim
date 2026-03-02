@@ -1,3 +1,5 @@
+---@module 'lazy'
+---@type LazySpec
 return {
   { -- Collection of various small independent plugins/modules
     'nvim-mini/mini.nvim',
