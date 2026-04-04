@@ -36,7 +36,6 @@ External Requirements:
 
 ## Plugins
 
-- [lazy.nvim](https://github.com/folke/lazy.nvim) - lazy.nvim is a modern plugin manager for Neovim
 - [nightfox](https://github.com/EdenEast/nightfox.nvim) - colorscheme
 - [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons) - web devicons for general usage
 - [lualine.nvim](https://github.com/hoob3rt/lualine.nvim) - statusline
@@ -188,7 +187,7 @@ External Requirements:
 To update plugins, you can run:
 
 ```vim
-:Lazy
+:lua vim.pack.update {}
 ```
 
 To check the current status of installed tools and/or manually install
