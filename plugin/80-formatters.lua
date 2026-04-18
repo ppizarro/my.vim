@@ -17,17 +17,18 @@ require('conform').setup {
     if disable_filetypes[vim.bo[bufnr].filetype] then
       return nil
     else
-      return {
-        timeout_ms = 500,
-        lsp_format = 'fallback',
-      }
+      return { timeout_ms = 500 }
     end
   end,
+  default_format_opts = {
+    lsp_format = 'fallback', -- Use external formatters if configured below, otherwise use LSP formatting. Set to `false` to disable LSP formatting entirely.
+  },
+  -- You can also specify external formatters in here.
   formatters_by_ft = {
-    lua = { 'stylua' },
+    rust = { 'rustfmt' },
     sh = { 'shfmt' }, -- Used to format bash script
     yml = { 'yamlfmt' }, -- Used to format yaml files
   },
 }
 
-vim.keymap.set('', '<leader>f', function() require('conform').format { async = true, lsp_format = 'fallback' } end, { desc = '[F]ormat buffer' })
+vim.keymap.set('', '<leader>f', function() require('conform').format { async = true } end, { desc = '[F]ormat buffer' })
