@@ -13,7 +13,7 @@ require('conform').setup {
     -- You can specify filetypes to autoformat on save here:
     local enabled_filetypes = {
       lua = true,
-      -- rust = true,
+      rust = true,
       -- python = true,
     }
     if enabled_filetypes[vim.bo[bufnr].filetype] then
