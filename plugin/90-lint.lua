@@ -1,8 +1,6 @@
 -- Linting
 vim.pack.add { 'https://github.com/mfussenegger/nvim-lint' }
 
--- TODO: event = { 'BufReadPre', 'BufNewFile' }
-
 local lint = require 'lint'
 lint.linters_by_ft = {
   markdown = { 'markdownlint' }, -- Make sure to install `markdownlint` via mason / npm
@@ -10,6 +8,8 @@ lint.linters_by_ft = {
   html = { 'tidy' },
   json = { 'jsonlint' },
   rst = { 'vale' },
+  dockerfile = { 'hadolint' },
+  terraform = { 'tflint' },
 }
 
 -- Create autocommand which carries out the actual linting

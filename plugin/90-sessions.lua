@@ -2,7 +2,6 @@ vim.pack.add { 'https://github.com/rmagatti/auto-session' }
 
 ---enables autocomplete for opts
 ---@module "auto-session"
----@type AutoSession.Config
 require('auto-session').setup {
   allowed_dirs = { '~/code/*', '~/code/*/*' },
 }

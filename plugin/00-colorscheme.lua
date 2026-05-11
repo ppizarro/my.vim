@@ -7,6 +7,9 @@ require('tokyonight').setup {
   light_style = 'day',
   transparent = false,
   terminal_colors = true,
+  styles = {
+    comments = { italic = false }, -- Disable italics in comments
+  },
 }
 
 -- Load the colorscheme here.
