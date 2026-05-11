@@ -1,24 +1,12 @@
-vim.api.nvim_create_autocmd('PackChanged', {
-  callback = function(ev)
-    local name, kind = ev.data.spec.name, ev.data.kind
-    if name == 'telescope-fzf-native' and kind == 'update' then
-      if not ev.data.active then vim.cmd.packadd 'telescope-fzf-native' end
-      vim.cmd 'make'
-    end
-  end,
-})
-
 vim.pack.add {
   'https://github.com/nvim-telescope/telescope.nvim',
   'https://github.com/nvim-telescope/telescope-fzf-native.nvim',
   'https://github.com/nvim-telescope/telescope-ui-select.nvim',
 }
 
--- TODO: event = 'VimEnter',
-
 local trouble = require 'trouble.sources.telescope'
-local telescope = require 'telescope'
-telescope.setup {
+
+require('telescope').setup {
   defaults = {
     dynamic_preview_title = true,
     layout_strategy = 'horizontal',
@@ -50,7 +38,8 @@ telescope.setup {
     },
   },
 }
--- extensions
+
+-- Enable Telescope extensions if they are installed
 pcall(require('telescope').load_extension, 'fzf')
 pcall(require('telescope').load_extension, 'ui-select')
 
@@ -106,8 +95,8 @@ wk.add {
   },
 }
 
--- This runs on LSP attach per buffer (see main LSP attach function in 'neovim/nvim-lspconfig' config for more info,
--- it is better explained there). This allows easily switching between pickers if you prefer using something else!
+-- Add Telescope-based LSP pickers when an LSP attaches to a buffer.
+-- If you later switch picker plugins, this is where to update these mappings.
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('telescope-lsp-attach', { clear = true }),
   callback = function(event)

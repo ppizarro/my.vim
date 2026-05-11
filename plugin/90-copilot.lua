@@ -3,9 +3,6 @@ vim.pack.add {
   'https://github.com/AndreM222/copilot-lualine',
 }
 
--- TODO: event = 'InsertEnter',
--- cmd = 'Copilot'
-
 require('copilot').setup {
   suggestion = {
     enabled = true,

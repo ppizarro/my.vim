@@ -34,6 +34,19 @@ External Requirements:
 > See [Install Recipes](#Install-Recipes) for additional Windows and Linux specific notes
 > and quick install snippets
 
+### Post Installation
+
+Start Neovim
+
+```sh
+nvim
+```
+
+That's it! `vim.pack` will install all the plugins from your config. Use
+`:lua vim.pack.update(nil, { offline = true })` to inspect plugin state and
+`:lua vim.pack.update()` to fetch updates (`:write` applies updates, `:quit`
+cancels them).
+
 ## Plugins
 
 - [nightfox](https://github.com/EdenEast/nightfox.nvim) - colorscheme
@@ -182,19 +195,38 @@ External Requirements:
 `gb` - Toggles the region using blockwise comment
 ```
 
-## Update
+## Intro to vim.pack
 
-To update plugins, you can run:
+`vim.pack` is a new plugin manager built into Neovim,
+which provides a Lua interface for installing and managing plugins.
+
+See `:help vim.pack`, `:help vim.pack-examples` or the
+excellent blog post from the creator of vim.pack and mini.nvim:
+[https://echasnovski.com/blog/2026-03-13-a-guide-to-vim-pack]
+
+To inspect plugin state and pending updates, run
 
 ```vim
-:lua vim.pack.update {}
+    :lua vim.pack.update(nil, { offline = true })
 ```
+
+To update plugins, run
+
+```vim
+    :lua vim.pack.update()
+```
+
+Throughout the rest of the config there will be examples
+of how to install and configure plugins using `vim.pack`.
+
+In this section we set up some autocommands to run build
+steps for certain plugins after they are installed or updated.
 
 To check the current status of installed tools and/or manually install
 other tools, you can run:
 
 ```vim
-:Mason
+    :Mason
 ```
 
 You can press `g?` for help in this menu.
