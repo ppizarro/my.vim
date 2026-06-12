@@ -50,7 +50,6 @@ cancels them).
 ## Plugins
 
 - [nightfox](https://github.com/EdenEast/nightfox.nvim) - colorscheme
-- [nvim-web-devicons](https://github.com/kyazdani42/nvim-web-devicons) - web devicons for general usage
 - [lualine.nvim](https://github.com/hoob3rt/lualine.nvim) - statusline
 - [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) - Show git signs in buffer
 - [telescope.nvim](https://github.com/nvim-lua/telescope.nvim) - Find, filter, preview and pick using a nice UI
