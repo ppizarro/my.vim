@@ -1,6 +1,5 @@
 vim.pack.add {
   'https://github.com/zbirenbaum/copilot.lua',
-  'https://github.com/AndreM222/copilot-lualine',
 }
 
 require('copilot').setup {
