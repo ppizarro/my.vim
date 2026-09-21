@@ -6,8 +6,6 @@ lint.linters_by_ft = {
   markdown = { 'markdownlint' }, -- Make sure to install `markdownlint` via mason / npm
   go = { 'golangcilint' },
   html = { 'tidy' },
-  json = { 'jsonlint' },
-  rst = { 'vale' },
   dockerfile = { 'hadolint' },
   terraform = { 'tflint' },
 }
