@@ -36,8 +36,8 @@ vim.api.nvim_create_autocmd('PackChanged', {
       return
     end
 
-    if name == 'luasnip' and vim.fn.executable 'make' == 1 then
-      run_build(name, { 'make', 'install_jsregexp' }, ev.data.path)
+    if name == 'LuaSnip' and vim.fn.executable 'make' == 1 then
+      run_build(name, { 'make' }, ev.data.path)
       return
     end
 
