@@ -23,7 +23,6 @@ require('luasnip.loaders.from_vscode').lazy_load()
 
 vim.pack.add {
   { src = 'https://github.com/saghen/blink.cmp', version = vim.version.range '1.*' },
-  'https://github.com/fang2hou/blink-copilot',
 }
 
 require('blink.cmp').setup {
@@ -68,15 +67,7 @@ require('blink.cmp').setup {
   },
 
   sources = {
-    default = { 'lsp', 'copilot', 'path', 'snippets' },
-    providers = {
-      copilot = {
-        name = 'copilot',
-        module = 'blink-copilot',
-        score_offset = 100,
-        async = true,
-      },
-    },
+    default = { 'lsp', 'path', 'snippets' },
   },
 
   snippets = { preset = 'luasnip' },
