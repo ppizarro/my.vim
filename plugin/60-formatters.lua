@@ -24,6 +24,7 @@ require('conform').setup {
     -- rust = { 'rustfmt' },
     sh = { 'shfmt' }, -- Used to format bash script
     yml = { 'yamlfmt' }, -- Used to format yaml files
+    json = { 'jq' }, -- Used to format json files
   },
 }
 
